@@ -1,0 +1,32 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "chiggitycheck",
+	"main": "worker/index.ts",
+	"compatibility_date": "2026-11-04",
+	"compatibility_flags": ["nodejs_compat"],
+	"assets": {
+		"not_found_handling": "single-page-application",
+		"run_worker_first": ["/api/*", "/hooks/*"]
+	},
+	"observability": { "enabled": true },
+	"upload_source_maps": true,
+	"d1_databases": [
+		{ "binding": "DB", "database_name": "chiggitycheck", "database_id": "46e62918-6367-4bb4-9f4c-6c97ee86edd4", "migrations_dir": "migrations" }
+	],
+	"r2_buckets": [
+		{ "binding": "PHOTOS", "bucket_name": "chiggitycheck-photos" }
+	],
+	"ai": { "binding": "AI" },
+	"vars": {
+		"DEMO_TODAY": "2026-09-23",
+		"DEMO_NOW": "2026-09-23T16:41:00-04:00",
+		"ORG_NAME": "Tidepath Family Alliance",
+		"OFFICE_PHONE": "(305) 555-0142",
+		"STAFF_NAME": "Marisol",
+		"DECISIONS_MODEL": "gpt-6-luna",
+		"DRAFT_MODEL": "gpt-5.5",
+		"VISION_MODEL": "@cf/moondream/moondream3.1-9B-A2B",
+		"VISION_FALLBACK_MODEL": "@cf/meta/llama-3.2-11b-vision-instruct"
+	},
+	"triggers": { "crons": ["0 11 * * *"] }
+}

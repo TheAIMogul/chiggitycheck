@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChiggityCheck mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0C10;--ink-2:#3C4257;--ink-3:#767C95;--ink-4:#A3A8BC;
+  --blue:#4D6BFE;--blue-2:#8EA2FF;--blue-wash:rgba(77,107,254,.10);
+  --violet:#7B6CF6;
+  --urgent:#E5484D;--call:#F0963C;--good:#2FA36B;
+  --card:rgba(255,255,255,.62);--card-edge:rgba(255,255,255,.75);
+  --line:rgba(11,12,16,.07);
+  --shadow:0 1px 1px rgba(20,30,70,.03),0 14px 34px rgba(40,55,120,.08);
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
+  --r:28px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans);font-size:16px;line-height:1.42;color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-0.005em;
+  background:radial-gradient(1200px 600px at 15% -10%,rgba(123,108,246,.35),transparent 60%),radial-gradient(900px 500px at 95% 0%,rgba(77,107,254,.30),transparent 60%),linear-gradient(180deg,#B4BFEA 0%,#D3DAF1 28%,#E9ECF6 55%,#F4F5FA 100%);background-attachment:fixed;min-height:100vh}
+button{font:inherit;border:0;cursor:pointer;color:inherit;background:none}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:600;letter-spacing:-0.025em}
+.num{font-variant-numeric:tabular-nums}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:20px;max-width:1280px;margin:0 auto;padding:22px 32px 6px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:650;font-size:19px;letter-spacing:-0.02em;white-space:nowrap}
+.mark{width:36px;height:36px;border-radius:11px;background:var(--ink);display:grid;place-items:center}
+.mark svg{width:20px;height:20px}
+.seg{display:flex;gap:2px;background:rgba(255,255,255,.45);border:1px solid var(--card-edge);backdrop-filter:blur(20px);padding:4px;border-radius:999px}
+.seg a{padding:9px 18px;border-radius:999px;color:var(--ink-2);font-weight:500;font-size:15px;white-space:nowrap;display:flex;gap:8px;align-items:center}
+.seg a .badge{min-width:20px;height:20px;border-radius:999px;background:var(--urgent);color:#fff;font-size:12px;font-weight:600;display:grid;place-items:center;padding:0 6px}
+.seg a.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,70,.10)}
+.search{flex:1;min-width:0;max-width:360px;margin-left:auto;display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.45);border:1px solid var(--card-edge);color:var(--ink-3);font-size:15px;white-space:nowrap;overflow:hidden}
+.search kbd{margin-left:auto;font-family:var(--sans);font-size:12px;color:var(--ink-3);background:rgba(255,255,255,.7);border-radius:6px;padding:2px 6px}
+.iconbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.45);border:1px solid var(--card-edge);position:relative;flex:none}
+.iconbtn .dot{position:absolute;top:10px;right:11px;width:8px;height:8px;border-radius:50%;background:var(--urgent);border:2px solid #fff}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:15px;color:#fff;flex:none;letter-spacing:0}
+.g1{background:linear-gradient(150deg,#4D6BFE,#9FB0FF)}
+.g2{background:linear-gradient(150deg,#7B6CF6,#BDB4FF)}
+.g3{background:linear-gradient(150deg,#26324F,#7381AE)}
+.g4{background:linear-gradient(150deg,#2FA36B,#8BD8B1)}
+.g5{background:linear-gradient(150deg,#F0963C,#FFC98F)}
+.g6{background:linear-gradient(150deg,#9AA1BD,#D3D7E6)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1280px;margin:0 auto;padding:22px 32px 120px}
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--card-edge);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border-radius:var(--r);padding:26px;min-width:0;box-shadow:var(--shadow)}
+.card.white{background:#fff;border-color:#fff}
+.card.blue{background:linear-gradient(160deg,#4D6BFE 0%,#7D92FF 55%,#AFBDFF 100%);border-color:rgba(255,255,255,.3);color:#fff}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.r2{grid-row:span 2}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.eyebrow{font-size:14px;color:var(--ink-3);font-weight:500}
+.blue .eyebrow{color:rgba(255,255,255,.85)}
+.title{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-0.02em}
+.sub{color:var(--ink-3);font-size:15px}
+.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.7);font-size:13px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.pill.blue{background:var(--blue);color:#fff}
+.pill.wash{background:var(--blue-wash);color:var(--blue)}
+.pill.ghost{background:transparent;border:1px solid rgba(11,12,16,.12)}
+.pill.dark{background:var(--ink);color:#fff}
+.sev{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.sev.u{background:var(--urgent)}.sev.c{background:var(--call)}.sev.w{background:var(--ink-4)}.sev.g{background:var(--good)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:50px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;white-space:nowrap;letter-spacing:-0.01em}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.blue{background:var(--blue);color:#fff}
+.btn.white{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,70,.08)}
+.btn.ghost{background:rgba(255,255,255,.5);border:1px solid var(--card-edge);color:var(--ink)}
+.btn.sm{height:38px;padding:0 16px;font-size:14px}
+.btn.lg{height:58px;padding:0 30px;font-size:17px}
+.segc{display:inline-flex;background:rgba(11,12,16,.05);border-radius:999px;padding:3px;flex:none}
+.segc span{padding:6px 14px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-3);white-space:nowrap}
+.segc span.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,70,.10)}
+.segc span b{font-weight:600;color:var(--ink-3);margin-left:4px}
+.segc span.on b{color:var(--blue)}
+.divider{height:1px;background:var(--line);margin:18px 0}
+
+/* strip */
+.strip{display:inline-flex;gap:5px;align-items:center}
+.strip i{width:9px;height:9px;border-radius:50%;background:var(--blue)}
+.strip i.a{background:transparent;border:1.6px solid var(--urgent)}
+
+/* ---------- TODAY ---------- */
+.hello{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:10px 0 24px}
+.hello h1{font-size:52px;line-height:1.04;letter-spacing:-0.035em}
+.hello .actions{display:flex;gap:10px;flex:none}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:18px}
+.day{border-radius:20px;padding:14px;background:rgba(255,255,255,.45);min-height:168px;display:flex;flex-direction:column;gap:8px}
+.day.today{background:#fff;box-shadow:0 0 0 2px var(--blue) inset}
+.day .d{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-3);font-weight:500}
+.day .d b{font-family:var(--display);font-size:22px;color:var(--ink);font-weight:600}
+.day.today .d b{color:var(--blue)}
+.sess{border-radius:14px;padding:10px 11px;background:rgba(255,255,255,.8);font-size:13px;line-height:1.3}
+.sess b{display:block;font-weight:600;font-size:14px}
+.sess span{color:var(--ink-3)}
+.sess .ok{color:var(--good);font-weight:600;margin-top:4px}
+.sess.wait{background:transparent;border:1.5px dashed rgba(77,107,254,.55)}
+.sess.wait .go{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:999px;padding:5px 10px;font-weight:600;font-size:12px}
+.sess.later{background:transparent;border:1px solid var(--line);color:var(--ink-3)}
+.list .li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.list .li:last-child{border-bottom:0}
+.li .n{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .n .lang{margin-left:6px;vertical-align:2px}
+.li .r{color:var(--ink-3);font-size:14px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .strip{margin-top:7px}
+.lang{font-size:11px;font-weight:600;color:var(--ink-3);border:1px solid rgba(11,12,16,.12);border-radius:6px;padding:1px 5px}
+.kpi{font-family:var(--display);font-size:56px;font-weight:600;letter-spacing:-0.04em;line-height:1}
+.delta{font-size:14px;font-weight:600;color:var(--urgent);display:inline-flex;gap:4px;align-items:center;white-space:nowrap}
+.bars{display:flex;align-items:flex-end;gap:8px;height:96px;margin-top:20px}
+.bars i{flex:1;border-radius:10px;background:linear-gradient(180deg,rgba(77,107,254,.25),rgba(77,107,254,.08))}
+.bars i.on{background:linear-gradient(180deg,#4D6BFE,#9FB0FF)}
+.bx{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-top:8px}
+.feed .f{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 0}
+.feed .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--blue-wash);color:var(--blue)}
+.feed .ic svg{width:16px;height:16px}
+.feed .t{font-size:14.5px;line-height:1.35}
+.feed .t b{font-weight:600}
+.feed .w{font-size:12px;color:var(--ink-4);white-space:nowrap;margin-top:2px}
+.saved{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:14px 16px;border-radius:18px;background:rgba(77,107,254,.08)}
+.saved b{font-family:var(--display);font-size:24px;color:var(--blue);letter-spacing:-0.02em}
+.task{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.task:last-child{border-bottom:0}
+.task .ic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(240,150,60,.14);color:var(--call);flex:none}
+.task .t{flex:1;min-width:0;font-size:15px;font-weight:500}
+.task .t span{display:block;font-size:13px;color:var(--ink-3);font-weight:400}
+.stack{display:flex}
+.stack .av{width:34px;height:34px;font-size:12px;border:2px solid #fff;margin-left:-8px}
+.stack .av:first-child{margin-left:0}
+
+/* ---------- SNAP ---------- */
+.pipe{display:flex;align-items:center;gap:10px;margin:6px 0 20px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:10px;height:44px;padding:0 16px 0 8px;border-radius:999px;background:rgba(255,255,255,.6);border:1px solid var(--card-edge);font-size:14px;font-weight:500;white-space:nowrap}
+.step .c{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--good);color:#fff}
+.step .c svg{width:15px;height:15px;stroke-width:2.6}
+.step small{color:var(--ink-3);font-weight:400}
+.step.now{background:#fff;box-shadow:0 0 0 2px var(--blue) inset}
+.step.now .c{background:var(--blue);font-size:13px;font-weight:700}
+.pipe .ln{width:22px;height:2px;background:rgba(11,12,16,.12);border-radius:2px}
+.snap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:start}
+.photo{position:sticky;top:20px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:12px;background:rgba(255,255,255,.75);font-size:14px;font-weight:500;white-space:nowrap}
+.chip small{color:var(--ink-3);font-weight:400}
+.chip svg{width:14px;height:14px;color:var(--ink-4)}
+.paper{position:relative;background:#FBFAF6;border-radius:18px;padding:20px 22px;box-shadow:0 18px 40px rgba(30,40,90,.14);font-size:12px;color:#5a564d;transform:rotate(-.8deg)}
+.paper .ph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #2a2823;padding-bottom:8px;margin-bottom:2px;gap:6px;flex-wrap:wrap}
+.hw{font-family:"Caveat",cursive;font-size:20px;color:#1b2a6b}
+.paper table{width:100%;border-collapse:separate;border-spacing:0}
+.paper td{border-bottom:1px solid #DDD7CA;height:30px;padding:0 6px}
+.paper td:first-child{width:24px;color:#9a958a;font-size:11px}
+.paper td:last-child{width:40px;text-align:center}
+.paper .k{font-family:"Caveat",cursive;font-size:21px;color:#111;line-height:1}
+.paper tr.box td{background:rgba(77,107,254,.08)}
+.paper tr.focus td{background:rgba(77,107,254,.16);box-shadow:inset 0 2px 0 var(--blue),inset 0 -2px 0 var(--blue)}
+.paper tr.focus td:first-child{box-shadow:inset 2px 0 0 var(--blue),inset 0 2px 0 var(--blue),inset 0 -2px 0 var(--blue)}
+.paper tr.focus td:last-child{box-shadow:inset -2px 0 0 var(--blue),inset 0 2px 0 var(--blue),inset 0 -2px 0 var(--blue)}
+.tools{position:absolute;right:16px;top:-50px;display:flex;gap:6px}
+.tools span{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 2px 8px rgba(0,0,0,.12);display:grid;place-items:center;font-size:16px;color:var(--ink-2)}
+.need{background:#fff;border-radius:24px;padding:22px 24px;margin-top:14px;box-shadow:var(--shadow)}
+.need .meta{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3);font-weight:500;flex-wrap:wrap}
+.need .q{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-0.02em;margin-top:6px}
+.need .w{display:inline-block;font-family:"Caveat",cursive;font-size:30px;color:#1b2a6b;background:#FBFAF6;border-radius:12px;padding:0 14px;margin:10px 0 4px;border:1px solid #EEE9DD}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.opt{min-height:62px;border-radius:18px;background:rgba(11,12,16,.04);padding:10px 14px;display:flex;flex-direction:column;justify-content:center;font-weight:600;font-size:15.5px;border:1.5px solid transparent}
+.opt small{font-weight:500;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.opt.sel{background:var(--blue-wash);border-color:var(--blue);color:var(--blue)}
+.matched{margin-top:10px}
+.mrow{display:grid;grid-template-columns:24px minmax(0,1fr) 16px minmax(0,1.2fr) 80px 22px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.mrow:last-child{border-bottom:0}
+.mrow .ix{font-size:12px;color:var(--ink-4)}
+.mrow .raw{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow .to{color:var(--ink-4)}
+.mrow .who b{font-weight:600}
+.mrow .who small{display:block;font-size:12.5px;color:var(--ink-3)}
+.mrow .who small.new{color:var(--blue);font-weight:600}
+.conf{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-3)}
+.conf i{flex:1;height:5px;border-radius:5px;background:rgba(11,12,16,.08);position:relative;overflow:hidden}
+.conf i::after{content:"";position:absolute;inset:0;width:var(--p);background:var(--good);border-radius:5px}
+.mk svg{width:18px;height:18px;stroke-width:2.4}
+.onsave{margin-top:16px;border-radius:24px;background:var(--ink);color:#fff;padding:20px 22px}
+.onsave .ttl{font-size:13px;color:rgba(255,255,255,.6);font-weight:500;margin-bottom:12px}
+.onsave .g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.onsave .g div{background:rgba(255,255,255,.08);border-radius:14px;padding:12px}
+.onsave .g b{display:block;font-family:var(--display);font-size:22px;letter-spacing:-0.02em}
+.onsave .g span{font-size:12.5px;color:rgba(255,255,255,.7)}
+.onsave .bar{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+
+/* ---------- CALLS ---------- */
+.split{display:grid;grid-template-columns:minmax(0,370px) minmax(0,1fr);gap:18px;align-items:start}
+.inbox .li{padding:14px 12px;border-radius:18px;border-bottom:0;margin-bottom:4px}
+.inbox .li.on{background:#fff;box-shadow:var(--shadow)}
+.inbox .when{font-size:12px;color:var(--ink-3);text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.ph1{display:flex;align-items:center;gap:18px}
+.ph1 .av{width:68px;height:68px;font-size:22px}
+.ph1 h1{font-size:34px}
+.contact{display:flex;gap:8px;margin-left:auto}
+.insight{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;margin-top:22px;padding:18px 20px;border-radius:20px;background:rgba(229,72,77,.07)}
+.insight .big{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-0.02em}
+.meter{display:flex;gap:4px;margin-top:10px}
+.meter i{width:44px;height:6px;border-radius:6px;background:rgba(11,12,16,.08)}
+.meter i.on{background:var(--urgent)}
+.dates{display:flex;gap:8px;flex-wrap:wrap}
+.dt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.75);min-width:58px;font-size:12px;color:var(--ink-3)}
+.dt b{font-size:15px;color:var(--ink);font-weight:600;white-space:nowrap}
+.dt i{width:12px;height:12px;border-radius:50%;background:var(--blue)}
+.dt i.a{background:transparent;border:2px solid var(--urgent)}
+.composer{margin-top:20px;background:#fff;border-radius:24px;padding:20px 22px;box-shadow:var(--shadow)}
+.composer .ctop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.composer .msg{font-size:17px;line-height:1.55}
+.composer .msg mark{background:rgba(77,107,254,.12);color:inherit;border-radius:5px;padding:0 3px}
+.trans{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink-3);line-height:1.5}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fact{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:4px 12px 4px 6px;border-radius:999px;background:rgba(11,12,16,.04);font-size:13px;font-weight:500}
+.fact .src{width:24px;height:24px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.fact .src svg{width:13px;height:13px}
+.fact small{color:var(--ink-3);font-weight:400}
+.sendbar{display:flex;gap:10px;margin-top:18px;align-items:center;flex-wrap:wrap}
+.tl{margin-top:20px;display:flex;align-items:center}
+.tl .p{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--ink-3);flex:1}
+.tl .p b{font-size:14px;color:var(--ink);font-weight:600;display:flex;align-items:center;gap:6px}
+.tl .p.dim b{color:var(--ink-3)}
+.tl .bar{height:2px;flex:.4;background:rgba(11,12,16,.1);margin:0 10px}
+
+/* ---------- PEOPLE (kid) ---------- */
+.crumb{font-size:14px;color:var(--ink-3);margin:4px 0 16px;display:flex;gap:8px;align-items:center}
+.hero{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:24px;align-items:center}
+.hero .av{width:112px;height:112px;font-size:36px}
+.hero h1{font-size:46px;letter-spacing:-0.035em}
+.hero .meta{font-size:17px;color:var(--ink-2);margin-top:6px}
+.stats4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:26px;border-top:1px solid var(--line)}
+.stats4 div{padding:18px 20px 4px;border-left:1px solid var(--line)}
+.stats4 div:first-child{border-left:0;padding-left:0}
+.stats4 b{display:block;font-family:var(--display);font-size:28px;letter-spacing:-0.03em;font-weight:600;white-space:nowrap}
+.stats4 span{font-size:14px;color:var(--ink-3)}
+.cal{display:grid;grid-template-columns:44px repeat(14,minmax(0,1fr));gap:8px;align-items:center;margin-top:18px;font-size:12px;color:var(--ink-3)}
+.cal i{aspect-ratio:1;border-radius:8px;background:var(--blue)}
+.cal i.a{background:rgba(229,72,77,.12);box-shadow:inset 0 0 0 1.5px var(--urgent)}
+.cal i.x{background:rgba(11,12,16,.05)}
+.cal i.f{box-shadow:inset 0 0 0 1.5px var(--urgent),0 0 0 2px #fff,0 0 0 4px var(--call)}
+.legend{display:flex;gap:18px;margin-top:18px;font-size:13px;color:var(--ink-3);flex-wrap:wrap;align-items:center}
+.legend span{display:flex;gap:6px;align-items:center}
+.legend em{width:10px;height:10px;border-radius:3px;display:inline-block}
+.alias{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.alias:last-child{border-bottom:0}
+.alias .src{width:32px;height:32px;border-radius:10px;background:var(--blue-wash);color:var(--blue);display:grid;place-items:center}
+.alias .src svg{width:15px;height:15px}
+.alias .raw{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px}
+.alias small{display:block;font-size:12.5px;color:var(--ink-3);font-family:var(--sans)}
+.events{margin-top:14px}
+.ev{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:14px;padding:10px 0;position:relative}
+.ev::before{content:"";position:absolute;left:9px;top:32px;bottom:-8px;width:2px;background:rgba(11,12,16,.08)}
+.ev:last-child::before{display:none}
+.ev .d{width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 5px var(--blue);margin-top:1px}
+.ev .d.r{box-shadow:inset 0 0 0 5px var(--urgent)}
+.ev .d.g{box-shadow:inset 0 0 0 5px var(--good)}
+.ev .d.o{box-shadow:inset 0 0 0 5px var(--call)}
+.ev .t{font-size:15px;font-weight:500}
+.ev .t span{display:block;font-size:13px;color:var(--ink-3);font-weight:400}
+.ev .w{font-size:13px;color:var(--ink-3);white-space:nowrap}
+
+/* ---------- FAMILY merge ---------- */
+.merge{display:grid;grid-template-columns:minmax(0,1fr) 110px minmax(0,1fr);align-items:center;margin-top:24px}
+.srcs{display:flex;flex-direction:column;gap:14px}
+.srccard{background:#fff;border-radius:22px;padding:16px 18px;box-shadow:var(--shadow);display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center}
+.srccard .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--blue-wash);color:var(--blue)}
+.srccard .k{font-size:13px;color:var(--ink-3);font-weight:500}
+.srccard .v{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14.5px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srccard .v.hand{font-family:"Caveat",cursive;font-size:25px;color:#1b2a6b;line-height:1.1}
+.srccard .p{font-size:14px;font-weight:600;color:var(--good);text-align:right;white-space:nowrap}
+.srccard .p small{display:block;font-weight:400;color:var(--ink-3);font-size:12px}
+.flow{width:100%;height:300px}
+.one{background:linear-gradient(160deg,#4D6BFE,#8B9DFF);color:#fff;border-radius:30px;padding:28px;box-shadow:0 24px 50px rgba(77,107,254,.28)}
+.one .av{width:64px;height:64px;font-size:22px;background:rgba(255,255,255,.22)}
+.one h2{font-size:30px;margin-top:16px}
+.one .m{color:rgba(255,255,255,.88);margin-top:4px}
+.one .kids{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.one .kid{background:rgba(255,255,255,.16);border-radius:16px;padding:10px 14px;font-size:14px}
+.one .kid b{display:block;font-size:15px}
+.hist{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);align-items:center;margin-top:16px;gap:8px}
+.school{background:rgba(255,255,255,.75);border-radius:18px;padding:14px 16px}
+.school small{display:block;color:var(--ink-3);font-size:12.5px}
+.school b{font-size:16px}
+
+/* ---------- REPORT ---------- */
+.rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.rhead h1{font-size:44px;letter-spacing:-0.035em;line-height:1.05}
+.trace{display:flex;align-items:center;gap:14px;margin-top:18px;padding:10px 18px 10px 10px;border-radius:999px;background:rgba(47,163,107,.12);width:fit-content;max-width:100%;font-size:14.5px}
+.trace .c{width:30px;height:30px;border-radius:50%;background:var(--good);display:grid;place-items:center;color:#fff;flex:none}
+.trace b{font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:22px}
+.kc{position:relative}
+.kc .kpi{font-size:50px;margin:14px 0 6px}
+.kc .spark{height:44px;width:100%;margin-top:12px;display:block}
+.kc .go{position:absolute;top:22px;right:22px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;color:var(--ink-3)}
+.kc .go svg{width:15px;height:15px}
+.kc .eyebrow{display:block;padding-right:36px}
+.kc.sel{box-shadow:0 0 0 2px var(--blue),var(--shadow)}
+.hbar{display:grid;grid-template-columns:140px minmax(0,1fr) 54px 64px;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hbar:last-child{border-bottom:0}
+.hbar .tr{height:12px;border-radius:12px;background:rgba(11,12,16,.06);overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:12px;background:linear-gradient(90deg,#4D6BFE,#9FB0FF)}
+.hbar .v{text-align:right;font-weight:600}
+.hbar .p{text-align:right;color:var(--ink-3)}
+.funnel{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.funnel div{height:44px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:14px;font-weight:500;background:rgba(77,107,254,.12)}
+.funnel div b{font-family:var(--display);font-size:18px}
+.dq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.dq div{background:rgba(255,255,255,.7);border-radius:16px;padding:14px}
+.dq b{display:block;font-family:var(--display);font-size:26px;letter-spacing:-0.02em}
+.dq span{font-size:13px;color:var(--ink-3)}
+
+/* drawer */
+.scrim{display:none;position:fixed;inset:0;background:rgba(20,25,50,.16)}
+.drawer{display:none;position:fixed;top:14px;right:14px;bottom:14px;width:540px;background:rgba(255,255,255,.92);backdrop-filter:blur(30px);border-radius:30px;padding:28px;box-shadow:0 30px 80px rgba(30,40,90,.25);overflow:auto;z-index:10}
+body.drawer-open .scrim,body.drawer-open .drawer{display:block}
+.drawer .x{position:absolute;top:22px;right:22px;width:38px;height:38px;border-radius:50%;background:rgba(11,12,16,.06);display:grid;place-items:center}
+.drawer h2{font-size:30px;margin-top:6px}
+.formula{margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(11,12,16,.04);font-size:14px;color:var(--ink-2)}
+.formula b{font-family:var(--display);font-size:17px;color:var(--ink)}
+.rec{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px;border-radius:16px}
+.rec.on{background:var(--blue-wash)}
+.thumb{width:56px;height:56px;border-radius:12px;background:#FBFAF6;border:1px solid rgba(11,12,16,.08);position:relative;overflow:hidden}
+.thumb i{position:absolute;left:8px;right:8px;height:1.5px;background:#D9D4C8}
+.thumb em{position:absolute;left:6px;right:6px;height:7px;border-radius:2px;outline:1.5px solid var(--blue);background:rgba(77,107,254,.18)}
+
+/* phone */
+.pbar{display:none}
+.screen{display:none}.screen.show{display:block}
+
+@media (max-width:860px){
+  .top{padding:16px 16px 4px;gap:10px}
+  .seg,.search,.top .iconbtn{display:none}
+  .top .av{margin-left:auto;width:38px;height:38px}
+  .wrap{padding:12px 16px 120px}
+  .bento,.kpis{grid-template-columns:minmax(0,1fr);gap:14px}
+  .bento>*{grid-column:auto!important;grid-row:auto!important}
+  .card{padding:20px;border-radius:24px}
+  .hello{flex-direction:column;align-items:stretch;margin:6px 0 18px}
+  .hello h1{font-size:36px}
+  .hello .actions .btn{flex:1;padding:0 12px}
+  .week{grid-template-columns:repeat(5,140px);overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .head{flex-wrap:wrap}
+  .snap,.split{grid-template-columns:minmax(0,1fr)}
+  .photo{position:static}
+  .paper{transform:none;padding:16px}
+  .opts{grid-template-columns:minmax(0,1fr)}
+  .mrow{grid-template-columns:minmax(0,1fr) 70px 20px}
+  .mrow .ix,.mrow .raw,.mrow .to{display:none}
+  .onsave .g{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .onsave .bar{flex-direction:column;align-items:stretch}
+  .pipe .ln{display:none}
+  .pipe{gap:6px}
+  .step{height:38px;font-size:13px}
+  .inbox{display:none}
+  .ph1{flex-wrap:wrap}
+  .ph1 h1{font-size:28px}
+  .contact{margin-left:0;width:100%}
+  .contact .btn{flex:1}
+  .insight{grid-template-columns:minmax(0,1fr)}
+  .sendbar .btn{flex:1 1 100%}
+  .sendbar .sub{margin-left:0!important}
+  .tl{flex-direction:column;align-items:stretch;gap:10px}
+  .tl .bar{display:none}
+  .hero{grid-template-columns:auto minmax(0,1fr);gap:16px}
+  .hero .av{width:72px;height:72px;font-size:24px}
+  .hero h1{font-size:30px}
+  .hero .meta{font-size:15px}
+  .hero .acts{grid-column:1/-1}
+  .hero .acts .btn{flex:1}
+  .stats4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats4 div:nth-child(3){border-left:0;padding-left:0}
+  .stats4 b{font-size:22px}
+  .cal{grid-template-columns:30px repeat(14,minmax(0,1fr));gap:3px}
+  .cal i{border-radius:4px}
+  .legend span:last-child{display:none}
+  .merge{grid-template-columns:minmax(0,1fr)}
+  .flow{display:none}
+  .one{margin-top:16px}
+  .rhead h1{font-size:32px}
+  .hbar{grid-template-columns:100px minmax(0,1fr) 44px}
+  .hbar .p{display:none}
+  .dq[style]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .drawer{top:auto;left:0;right:0;bottom:0;width:auto;height:calc(100% - 50px);border-radius:28px 28px 0 0}
+  .pbar{display:flex;position:fixed;left:14px;right:14px;bottom:14px;height:70px;border-radius:999px;background:rgba(255,255,255,.85);backdrop-filter:blur(24px);justify-content:space-around;align-items:center;box-shadow:0 10px 30px rgba(30,40,90,.16);z-index:5}
+  .pbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;color:var(--ink-3);font-weight:500;position:relative}
+  .pbar a.on{color:var(--ink)}
+  .pbar a .bd{position:absolute;top:-4px;right:0;width:18px;height:18px;border-radius:50%;background:var(--urgent);color:#fff;font-size:11px;display:grid;place-items:center;font-weight:700}
+  .pbar svg.i{width:24px;height:24px}
+  .pbar .cam{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
+}
+
+@media (max-width:860px){
+  .hero .acts .btn{padding:0 12px;min-width:0}
+  .dates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .dt{min-width:0;padding:8px 4px}
+  .srccard .v{white-space:normal}
+  .srccard .k{font-size:12px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kc .kpi{font-size:36px;margin:10px 0 4px}
+  .kc .spark{display:none}
+  .kc .go{top:16px;right:16px;width:28px;height:28px}
+  .kc .sub{font-size:13px}
+  .rhead>div:last-child{width:100%}
+  .rhead>div:last-child .btn{flex:1}
+  .rhead>div:last-child .segc{width:100%;justify-content:center}
+  .trace{border-radius:20px}
+}
+/* ---------- demo banner ---------- */
+.demobar{display:flex;justify-content:center;align-items:center;gap:12px;padding:8px 16px;background:rgba(11,12,16,.86);color:rgba(255,255,255,.85);font-size:13px}
+.demobar b{color:#fff;font-weight:600}
+.demobar a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- three-step plan ---------- */
+.plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:18px}
+.pstep{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;background:rgba(255,255,255,.62);border:1px solid var(--card-edge);backdrop-filter:blur(26px);border-radius:26px;padding:20px 22px;box-shadow:var(--shadow)}
+.pstep .n{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:22px;font-weight:700;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px rgba(11,12,16,.08)}
+.pstep.now{background:#fff;box-shadow:0 0 0 2px var(--blue),var(--shadow)}
+.pstep.now .n{background:var(--blue);color:#fff;box-shadow:none}
+.pstep.done .n{background:var(--good);color:#fff;box-shadow:none}
+.pstep .t{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-0.02em}
+.pstep .d{font-size:14px;color:var(--ink-3);margin-top:2px}
+.pstep .a{grid-column:1/-1}
+.pstep .a .btn{width:100%}
+
+/* ---------- capture start ---------- */
+.drop{border-radius:32px;border:2px dashed rgba(77,107,254,.45);background:rgba(255,255,255,.55);padding:56px 32px;text-align:center}
+.drop .big{width:96px;height:96px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;margin:0 auto 22px}
+.drop .big svg{width:40px;height:40px}
+.drop h1{font-size:40px}
+.drop .sub{font-size:18px;margin-top:8px}
+.samples{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:16px}
+.sample{background:#fff;border-radius:24px;padding:14px;box-shadow:var(--shadow);position:relative}
+.sample .pv{height:150px;border-radius:14px;background:#FBFAF6;border:1px solid rgba(11,12,16,.06);position:relative;overflow:hidden;transform:rotate(-1deg)}
+.sample .pv i{position:absolute;left:14px;right:14px;height:1.5px;background:#DDD7CA}
+.sample .pv b{position:absolute;left:16px;height:12px;border-radius:3px;background:rgba(27,42,107,.35)}
+.sample .t{font-weight:600;margin-top:12px}
+.sample .s{font-size:13.5px;color:var(--ink-3)}
+.sample .tag{position:absolute;top:22px;right:22px;z-index:2}
+.sample.go{box-shadow:0 0 0 2px var(--blue),var(--shadow)}
+
+/* ---------- welcome / landing ---------- */
+body.landing .top,body.landing .pbar{display:none!important}
+.wtop{display:flex;align-items:center;gap:24px;max-width:1280px;margin:0 auto;padding:22px 32px}
+.wtop nav{display:flex;gap:28px;margin-left:auto;font-size:15px;color:var(--ink-2);font-weight:500}
+.whero{max-width:1280px;margin:0 auto;padding:40px 32px 20px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px;align-items:center}
+.whero h1{font-size:62px;line-height:1.02;letter-spacing:-0.04em}
+.whero h1 span{color:var(--blue)}
+.whero .lede{font-size:21px;line-height:1.45;color:var(--ink-2);margin-top:22px;max-width:560px}
+.whero .ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.whero .note{font-size:14px;color:var(--ink-3);margin-top:16px}
+.stage{position:relative;height:560px}
+.phone{position:absolute;left:50%;top:10px;transform:translateX(-50%) rotate(-3deg);width:270px;height:540px;border-radius:46px;background:#0B0C10;padding:12px;box-shadow:0 40px 80px rgba(30,40,90,.30)}
+.phone .scr{width:100%;height:100%;border-radius:36px;background:linear-gradient(180deg,#3a3f52,#1c1f2b);overflow:hidden;position:relative}
+.phone .scr .paper{position:absolute;left:20px;right:20px;top:70px;transform:rotate(2deg);padding:12px 12px;font-size:9px}
+.phone .scr .paper .k{font-size:15px}
+.phone .scr .paper td{height:21px}
+.phone .shutter{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;border:4px solid #fff;background:rgba(255,255,255,.25)}
+.phone .vf{position:absolute;inset:56px 12px 100px;border:2px solid rgba(255,255,255,.7);border-radius:18px}
+.float{position:absolute;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border-radius:20px;padding:14px 16px;box-shadow:0 18px 40px rgba(30,40,90,.16);font-size:14px;display:flex;gap:12px;align-items:center;white-space:nowrap}
+.float .ic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
+.float b{display:block;font-size:15px}
+.float span{color:var(--ink-3);font-size:13px}
+.how{max-width:1280px;margin:0 auto;padding:30px 32px 10px}
+.how h2{font-size:40px;letter-spacing:-0.03em;text-align:center}
+.how .sub{text-align:center;font-size:18px;margin-top:8px}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.s3c{background:rgba(255,255,255,.62);border:1px solid var(--card-edge);backdrop-filter:blur(26px);border-radius:30px;padding:30px;box-shadow:var(--shadow)}
+.s3c .n{font-family:var(--display);font-size:15px;font-weight:600;color:var(--blue)}
+.s3c h3{font-size:28px;margin-top:10px}
+.s3c p{font-size:16.5px;color:var(--ink-2);margin:10px 0 0;line-height:1.5}
+.s3c .vis{height:150px;margin-top:22px;border-radius:20px;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;gap:10px;padding:16px}
+.ba{max-width:1280px;margin:30px auto 0;padding:0 32px}
+.bawrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-radius:32px;overflow:hidden;box-shadow:var(--shadow)}
+.bawrap>div{padding:34px}
+.before{background:rgba(255,255,255,.5)}
+.after{background:linear-gradient(160deg,#4D6BFE,#8B9DFF);color:#fff}
+.bawrap .k{font-size:14px;font-weight:600;opacity:.75}
+.bawrap .row{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid rgba(11,12,16,.08);font-size:17px}
+.after .row{border-color:rgba(255,255,255,.2)}
+.bawrap .row b{font-family:var(--display);font-size:26px;letter-spacing:-0.02em}
+.quote{max-width:900px;margin:44px auto 0;padding:0 32px;text-align:center}
+.quote p{font-family:var(--display);font-size:28px;line-height:1.3;letter-spacing:-0.02em;margin:0}
+.quote .by{margin-top:14px;color:var(--ink-3)}
+.under{max-width:1280px;margin:44px auto 0;padding:0 32px 120px}
+.under .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:18px}
+.under .it{background:rgba(255,255,255,.55);border-radius:22px;padding:20px;border:1px solid var(--card-edge)}
+.under .it b{display:block;font-size:16px}
+.under .it span{font-size:14px;color:var(--ink-3)}
+
+@media (max-width:860px){
+  .plan{grid-template-columns:minmax(0,1fr);gap:10px}
+  .pstep{padding:16px}
+  .samples{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .sample .pv{height:100px}
+  .drop{padding:36px 20px}
+  .drop h1{font-size:30px}
+  .wtop{padding:16px}
+  .wtop nav{display:none}
+  .wtop .btn{margin-left:auto}
+  .whero{grid-template-columns:minmax(0,1fr);padding:20px 16px;gap:10px}
+  .whero h1{font-size:46px}
+  .whero .lede{font-size:18px}
+  .whero .ctas .btn{flex:1}
+  .stage{height:470px}
+  .phone{width:220px;height:440px}
+  .float{font-size:12px;padding:10px 12px}
+  .float b{font-size:13px}
+  .f1{left:0!important}.f2{right:0!important}.f3{left:4px!important}
+  .how,.ba,.under{padding-left:16px;padding-right:16px}
+  .how h2{font-size:30px}
+  .steps3,.under .grid{grid-template-columns:minmax(0,1fr)}
+  .bawrap{grid-template-columns:minmax(0,1fr)}
+  .quote p{font-size:22px}
+}
+
+@media (max-width:860px){
+  .whero .pill{white-space:normal;height:auto;padding:6px 12px;line-height:1.3}
+  .bawrap>div{padding:24px}
+  .bawrap .row{font-size:15px;gap:12px}
+  .bawrap .row b{font-size:20px;white-space:nowrap}
+  .phone .scr .paper .k{font-size:12px;white-space:nowrap}
+  .phone .scr .paper td{height:17px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-form" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 005 5h7M14 10l4 4-4 4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 10l9-5 9 5-9 5z"/><path d="M7 12v5c3 2 7 2 10 0v-5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0M16 4a3.5 3.5 0 010 7M21.5 20a6.5 6.5 0 00-5-6.3"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-1 .6-1.5 1-1.5 2M12 16.5v.5"/></symbol>
+</svg>
+
+<div class="demobar" id="demobar"><span><b>Demo</b> · Today is Wed Sep 23, 2026 · Tidepath Family Alliance is fictional</span><a>Reset demo</a></div>
+<header class="top">
+  <div class="brand"><div class="mark"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>ChiggityCheck</div>
+  <nav class="seg">
+    <a id="n-today" href="?screen=today">Today</a>
+    <a id="n-snap" href="?screen=snap">Snap</a>
+    <a id="n-calls" href="?screen=calls">Calls <span class="badge">4</span></a>
+    <a id="n-people" href="?screen=people">People</a>
+    <a id="n-report" href="?screen=report">Report</a>
+  </nav>
+  <div class="search"><svg class="i"><use href="#i-search"/></svg>Search kids, families, any spelling<kbd>⌘K</kbd></div>
+  <div class="iconbtn"><svg class="i"><use href="#i-bell"/></svg><span class="dot"></span></div>
+  <div class="av g1">M</div>
+</header>
+
+<!-- ================= TODAY ================= -->
+<main class="wrap screen" id="s-today">
+  <div class="hello">
+    <div>
+      <div class="eyebrow">Wednesday, September 23 · Good afternoon, Marisol</div>
+      <h1 style="margin-top:8px">4 families need a call.<br><span style="color:var(--ink-3)">Everything else is on track.</span></h1>
+    </div>
+  </div>
+
+  <div class="plan">
+    <div class="pstep now"><div class="n">1</div><div><div class="t">Snap today's sheet</div><div class="d">Citrus Grove mentoring · 4:00 pm</div></div><div class="a"><a class="btn dark" href="?screen=capture"><svg class="i"><use href="#i-cam"/></svg>Snap sheet</a></div></div>
+    <div class="pstep"><div class="n">2</div><div><div class="t">Call 4 families</div><div class="d">0 of 4 done · messages are written</div></div><div class="a"><a class="btn ghost" href="?screen=calls">Start calls</a></div></div>
+    <div class="pstep done"><div class="n"><svg class="i" style="width:22px;height:22px;stroke-width:2.6"><use href="#i-check"/></svg></div><div><div class="t">Q1 report</div><div class="d">Ready for funders · due Oct 15</div></div><div class="a"><a class="btn ghost" href="?screen=report">Open report</a></div></div>
+  </div>
+  <div class="bento">
+    <section class="card s8">
+      <div class="head"><div><div class="title">This week's sessions</div><div class="sub">3 of 4 sheets are in. One is waiting for you today.</div></div><span class="segc"><span class="on">Week</span><span>Month</span></span></div>
+      <div class="week">
+        <div class="day"><div class="d">Mon <b>21</b></div><div class="sess"><b>Counseling</b><span>Office · 6 kids</span><div class="ok">✓ Captured</div></div></div>
+        <div class="day"><div class="d">Tue <b>22</b></div><div class="sess"><b>Workshop</b><span>West Little River · 19</span><div class="ok">✓ Captured</div></div></div>
+        <div class="day today"><div class="d">Today <b>23</b></div><div class="sess wait"><b>Mentoring</b><span>Citrus Grove · 4:00 pm</span><br><span class="go"><svg class="i" style="width:13px;height:13px"><use href="#i-cam"/></svg>Snap sheet</span></div></div>
+        <div class="day"><div class="d">Thu <b>24</b></div><div class="sess later"><b>Mentoring</b>West Little River · 4:30</div></div>
+        <div class="day"><div class="d">Fri <b>25</b></div><div class="sess later" style="border-style:dashed">No sessions</div></div>
+      </div>
+    </section>
+
+    <section class="card white s4 r2">
+      <div class="head"><div class="title">Needs a call</div><a class="btn dark sm" href="?screen=calls">Open</a></div>
+      <div class="sub" style="margin-top:2px">Ranked by risk, then time without contact</div>
+      <div class="list" style="margin-top:6px">
+        <div class="li"><div class="av g1">DR</div><div style="min-width:0"><div class="n">Dariel Ramírez <span class="lang">ES</span></div><div class="r">3 missed in a row · last here Sep 2</div><div class="strip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i class="a"></i></div></div><span class="pill" style="color:var(--urgent);background:rgba(229,72,77,.10);height:26px;padding:0 10px">Urgent</span></div>
+        <div class="li"><div class="av g2">WJ</div><div style="min-width:0"><div class="n">Widlyne Jean-Baptiste <span class="lang">HT</span></div><div class="r">2 missed in a row · mentor Ana</div><div class="strip"><i></i><i></i><i class="a"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i></div></div><span class="sev c"></span></div>
+        <div class="li"><div class="av g3">TW</div><div style="min-width:0"><div class="n">Tyrese Williams <span class="lang">EN</span></div><div class="r">3 of the last 4 missed</div><div class="strip"><i></i><i></i><i></i><i></i><i></i><i class="a"></i><i></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i></div></div><span class="sev c"></span></div>
+        <div class="li"><div class="av g4">CD</div><div style="min-width:0"><div class="n">Camila Delgado <span class="lang">ES</span></div><div class="r">2 missed in a row · mentor Sofía</div><div class="strip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i></div></div><span class="sev c"></span></div>
+        <div class="li"><div class="av g6">5</div><div style="min-width:0"><div class="n" style="color:var(--ink-2)">5 to keep an eye on</div><div class="r">One recent miss each</div></div><span class="pill ghost">View</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="head"><span class="sub">Families reached this quarter</span><b class="num">16 of 19</b></div>
+      <div class="head" style="margin-top:8px"><span class="sub">Median days to first call</span><b class="num">4 days</b></div>
+    </section>
+
+    <section class="card s4">
+      <div class="head"><span class="eyebrow">Showed up · quarter</span><span class="delta">▼ 3 pts this week</span></div>
+      <div class="kpi num" style="margin-top:14px">81%</div>
+      <div class="bars"><i style="height:70%"></i><i style="height:78%"></i><i style="height:82%"></i><i style="height:80%"></i><i style="height:86%"></i><i style="height:84%"></i><i style="height:79%"></i><i style="height:83%"></i><i style="height:81%"></i><i style="height:76%"></i><i class="on" style="height:74%"></i></div>
+      <div class="bx"><span>Jul 6</span><span>Aug 10</span><span>Sep 21</span></div>
+    </section>
+
+    <section class="card s4">
+      <div class="head"><span class="title" style="font-size:19px">Done for you</span><span class="pill wash"><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>Automatic</span></div>
+      <div class="feed" style="margin-top:6px">
+        <div class="f"><div class="ic"><svg class="i"><use href="#i-sheet"/></svg></div><div class="t">Read <b>19 names</b> from Tuesday's workshop sheet</div><div class="w">Tue</div></div>
+        <div class="f"><div class="ic"><svg class="i"><use href="#i-merge"/></svg></div><div class="t">"M.C. Jeanbaptiste" was <b>already a family</b>. Linked it.</div><div class="w">Tue</div></div>
+        <div class="f"><div class="ic"><svg class="i"><use href="#i-copy"/></svg></div><div class="t">Luis reported Sep 16 twice. <b>Counted once.</b></div><div class="w">Sep 17</div></div>
+      </div>
+      <div class="saved"><span class="sub" style="color:var(--ink-2)">Typing saved this quarter</span><b class="num">31 hrs</b></div>
+    </section>
+
+    <section class="card s4">
+      <div class="head"><div class="title" style="font-size:19px">Check these</div><span class="pill">3</span></div>
+      <div style="margin-top:4px">
+        <div class="task"><div class="ic"><svg class="i"><use href="#i-form"/></svg></div><div class="t">2 new sign-ups<span>Might be kids we already know</span></div><span class="pill ghost">Review</span></div>
+        <div class="task"><div class="ic"><svg class="i"><use href="#i-school"/></svg></div><div class="t">Kervens changed schools<span>Brownsville MS since Sep 8</span></div><span class="pill ghost">OK</span></div>
+        <div class="task"><div class="ic"><svg class="i"><use href="#i-q"/></svg></div><div class="t">1 name nobody matched<span>"Jhon P." on the Sep 16 sheet</span></div><span class="pill ghost">Fix</span></div>
+      </div>
+    </section>
+
+    <section class="card s4">
+      <div class="head"><span class="eyebrow">Volunteer hours · quarter</span><span class="pill">18 mentors</span></div>
+      <div class="kpi num" style="margin-top:14px">412.5</div>
+      <div class="sub" style="margin-top:6px">1 double report removed automatically</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:10px">
+        <div class="stack"><div class="av g1">LO</div><div class="av g2">AC</div><div class="av g3">MH</div><div class="av g4">SP</div><div class="av g6">+14</div></div>
+        <span class="sub" style="font-size:14px">Top: Luis · 44 h</span>
+      </div>
+    </section>
+
+    <section class="card blue s4">
+      <div class="head"><span class="eyebrow">Q1 report for funders</span><svg class="i" style="color:#fff"><use href="#i-arrow"/></svg></div>
+      <div class="kpi" style="margin-top:14px">Ready</div>
+      <div style="color:rgba(255,255,255,.9);margin-top:8px">Every number links back to the sheet it came from. Due Oct 15.</div>
+      <a class="btn white sm" style="margin-top:18px" href="?screen=report">Open report</a>
+    </section>
+  </div>
+</main>
+
+<!-- ================= SNAP ================= -->
+<main class="wrap screen" id="s-snap">
+  <div class="pipe">
+    <div class="step"><span class="c"><svg class="i"><use href="#i-check"/></svg></span>Photo saved <small>0.8s</small></div><span class="ln"></span>
+    <div class="step"><span class="c"><svg class="i"><use href="#i-check"/></svg></span>Read 14 names <small>3.1s</small></div><span class="ln"></span>
+    <div class="step"><span class="c"><svg class="i"><use href="#i-check"/></svg></span>Matched to kids <small>1.4s</small></div><span class="ln"></span>
+    <div class="step now"><span class="c">2</span>Your turn</div>
+  </div>
+
+  <div class="snap">
+    <section class="card photo">
+      <div class="chips">
+        <span class="chip">Mentoring <svg class="i"><use href="#i-pen"/></svg></span>
+        <span class="chip">Citrus Grove MS <svg class="i"><use href="#i-pen"/></svg></span>
+        <span class="chip">Wed Sep 23 <svg class="i"><use href="#i-pen"/></svg></span>
+        <span class="chip"><small>Led by</small> Luis Oyola <svg class="i"><use href="#i-pen"/></svg></span>
+      </div>
+      <div class="paper" style="margin-top:58px">
+        <div class="ph"><span>TIDEPATH · MENTORING · Citrus Grove MS</span><span class="hw" style="font-size:18px">9/23/26</span></div>
+        <table>
+          <tr><td>1</td><td class="k">Dariel Rmz</td><td></td></tr>
+          <tr><td>2</td><td class="k">Camila Delgado</td><td></td></tr>
+          <tr><td>3</td><td class="k">Josh Carter</td><td class="k">✓</td></tr>
+          <tr><td>4</td><td class="k">Sofia Fernandez</td><td class="k">✓</td></tr>
+          <tr><td>5</td><td class="k">Kevin Nguyen</td><td class="k">✓</td></tr>
+          <tr><td>6</td><td class="k">Mateo Castellanos</td><td class="k">✓</td></tr>
+          <tr><td>7</td><td class="k">Ashley Pierre-Louis</td><td class="k">✓</td></tr>
+          <tr class="focus"><td>8</td><td class="k">Yaneli P.</td><td class="k">✓</td></tr>
+          <tr><td>9</td><td class="k">Jaden Augustin</td><td class="k">✓</td></tr>
+          <tr><td>10</td><td class="k">Valeria Ramos</td><td class="k">✓</td></tr>
+          <tr class="box"><td>11</td><td class="k">D. Desir</td><td class="k" style="opacity:.5">⁄</td></tr>
+          <tr><td>12</td><td class="k">Brianna Williams</td><td class="k">✓</td></tr>
+          <tr><td>13</td><td class="k">Luis A. Fernández</td><td class="k">✓</td></tr>
+          <tr><td>14</td><td class="k">Nia Carter</td><td class="k">✓</td></tr>
+        </table>
+        <div class="tools"><span>−</span><span>+</span><span>⤢</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h1 style="font-size:34px">12 of 14 matched.</h1>
+        <div class="sub" style="font-size:16px;margin-top:4px">Two names need a quick answer. Tap any name to find it on the photo.</div>
+        <div style="margin-top:16px"><span class="segc"><span class="on">Needs you <b>2</b></span><span>Matched <b>12</b></span><span>All <b>14</b></span></span></div>
+
+        <div class="need" style="box-shadow:0 0 0 2px var(--blue),var(--shadow)">
+          <div class="meta">Line 8 · No enrolled kid looks like this</div>
+          <div class="q">Who is this?</div>
+          <div class="w">Yaneli P.</div>
+          <div class="opts">
+            <div class="opt sel">Add a new kid<small>Family can come later</small></div>
+            <div class="opt">Yanelis Peña<small>Workshop · 31% alike</small></div>
+            <div class="opt">Skip this line<small>Won't be counted</small></div>
+          </div>
+        </div>
+
+        <div class="need">
+          <div class="meta">Line 11 · Daniel Désir <span class="pill wash" style="height:22px;font-size:12px">94% sure of the name</span></div>
+          <div class="q">The check mark is only half there. Was Daniel here?</div>
+          <div class="opts">
+            <div class="opt">Yes, here</div>
+            <div class="opt">No, missed it</div>
+            <div class="opt">Not sure<small>Left out of the rate</small></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;padding:18px 20px;background:rgba(255,255,255,.55);box-shadow:none">
+          <div class="head"><span class="eyebrow">Matched for you</span><span class="sub" style="font-size:13px">How sure</span></div>
+          <div class="matched">
+            <div class="mrow"><span class="ix">1</span><span class="raw">Dariel Rmz</span><span class="to">→</span><span class="who"><b>Dariel Ramírez</b><small class="new">New spelling learned</small></span><span class="conf"><i style="--p:96%"></i>96</span><span class="mk"><svg class="i" style="color:var(--urgent)"><circle cx="12" cy="12" r="7"/></svg></span></div>
+            <div class="mrow"><span class="ix">3</span><span class="raw">Josh Carter</span><span class="to">→</span><span class="who"><b>Joshua Carter</b><small>8th grade · mentor Luis</small></span><span class="conf"><i style="--p:97%"></i>97</span><span class="mk"><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></span></div>
+            <div class="mrow"><span class="ix">4</span><span class="raw">Sofia Fernandez</span><span class="to">→</span><span class="who"><b>Sofía Fernández</b><small>7th grade · mentor Sofía P.</small></span><span class="conf"><i style="--p:98%"></i>98</span><span class="mk"><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></span></div>
+            <div class="mrow"><span class="ix">13</span><span class="raw">Luis A. Fernández</span><span class="to">→</span><span class="who"><b>Luis Fernández</b><small class="new">New spelling learned</small></span><span class="conf"><i style="--p:91%"></i>91</span><span class="mk"><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></span></div>
+          </div>
+          <div class="sub" style="margin-top:8px;font-size:14px">+ 8 more matched above 95%</div>
+        </div>
+
+        <div class="onsave">
+          <div class="ttl">When you save</div>
+          <div class="g">
+            <div><b class="num">14</b><span>attendance lines</span></div>
+            <div><b class="num">3</b><span>new spellings learned</span></div>
+            <div><b class="num">2.0 h</b><span>logged for Luis Oyola</span></div>
+            <div><b>Dariel</b><span>moves to Urgent</span></div>
+          </div>
+          <div class="bar"><span style="color:rgba(255,255,255,.7);font-size:14px">1 answer left</span><button class="btn white">Save attendance</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ================= CALLS ================= -->
+<main class="wrap screen" id="s-calls">
+  <div class="split">
+    <section class="card inbox">
+      <span class="segc" style="margin-bottom:12px"><span class="on">To call <b>4</b></span><span>Sent <b>12</b></span><span>Replied <b>3</b></span></span>
+      <div class="list">
+        <div class="li on"><div class="av g1">DR</div><div style="min-width:0"><div class="n">Dariel Ramírez</div><div class="r">3 missed in a row · Spanish</div></div><div class="when"><span class="sev u"></span>Today</div></div>
+        <div class="li"><div class="av g2">WJ</div><div style="min-width:0"><div class="n">Widlyne Jean-Baptiste</div><div class="r">2 missed in a row · Kreyòl</div></div><div class="when"><span class="sev c"></span>This week</div></div>
+        <div class="li"><div class="av g3">TW</div><div style="min-width:0"><div class="n">Tyrese Williams</div><div class="r">3 of the last 4 · English</div></div><div class="when"><span class="sev c"></span>This week</div></div>
+        <div class="li"><div class="av g4">CD</div><div style="min-width:0"><div class="n">Camila Delgado</div><div class="r">2 missed in a row · Spanish</div></div><div class="when"><span class="sev c"></span>This week</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="sub" style="font-size:13.5px">Messages are drafted the moment a sheet is saved. Nothing goes out until you tap Send.</div>
+    </section>
+
+    <section class="card">
+      <div class="ph1">
+        <div class="av g1">DR</div>
+        <div><h1>Dariel Ramírez</h1><div class="sub" style="font-size:16px;margin-top:2px">7th grade · Citrus Grove MS · Mentor Luis Oyola</div></div>
+        <div class="contact"><span class="btn ghost"><svg class="i"><use href="#i-phone"/></svg>Call Yadira</span></div>
+      </div>
+
+      <div class="insight">
+        <div>
+          <div class="big">Missed 3 Wednesdays in a row. Nobody has called yet.</div>
+          <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          <div class="sub" style="margin-top:8px;font-size:13.5px">Urgent · 86% sure · based on the last 60 days</div>
+        </div>
+        <div class="dates">
+          <div class="dt"><i></i><b>Sep 2</b>here</div>
+          <div class="dt"><i class="a"></i><b>Sep 9</b>missed</div>
+          <div class="dt"><i class="a"></i><b>Sep 16</b>missed</div>
+          <div class="dt"><i class="a"></i><b>Sep 23</b>missed</div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="ctop"><span class="eyebrow">To Yadira Ramírez · (305) 555-0187</span><span class="segc"><span class="on">Español</span><span>English</span><span>Kreyòl</span></span></div>
+        <div class="msg">Hola Sra. Ramírez, le escribe Marisol de Tidepath Family Alliance. <mark>Dariel</mark> no pudo venir a las sesiones de mentoría del <mark>9, 16 y 23 de septiembre</mark> en <mark>Citrus Grove</mark>. <mark>Luis</mark>, su mentor, pregunta por él. ¿Podemos llamarla esta semana? La próxima sesión es el <mark>miércoles 30 a las 4:00 pm</mark>. Marisol, Tidepath Family Alliance, (305) 555-0142.</div>
+        <div class="trans"><b style="color:var(--ink-2)">In English:</b> Hi Mrs. Ramírez, this is Marisol from Tidepath Family Alliance. Dariel couldn't make his mentoring sessions on Sept 9, 16 and 23 at Citrus Grove. Luis, his mentor, is asking about him. Can we call you this week? The next session is Wednesday the 30th at 4:00 pm.</div>
+        <div class="facts">
+          <span class="fact"><span class="src"><svg class="i"><use href="#i-sheet"/></svg></span>Missed Sep 9, 16, 23 <small>3 sheets</small></span>
+          <span class="fact"><span class="src"><svg class="i"><use href="#i-people"/></svg></span>Mentor Luis Oyola <small>since Jul 15</small></span>
+          <span class="fact"><span class="src"><svg class="i"><use href="#i-form"/></svg></span>Spanish <small>sign-up form</small></span>
+          <span class="fact"><span class="src"><svg class="i"><use href="#i-clock"/></svg></span>Next: Wed Sep 30, 4 pm</span>
+        </div>
+      </div>
+
+      <div class="sendbar">
+        <span class="btn dark lg"><svg class="i"><use href="#i-msg"/></svg>Send on WhatsApp</span>
+        <span class="btn ghost lg">I called instead</span>
+        <span class="btn ghost lg"><svg class="i"><use href="#i-spark"/></svg>Rewrite</span>
+        <span class="sub" style="margin-left:auto;font-size:13px">Demo: logged, not delivered</span>
+      </div>
+
+      <div class="tl">
+        <div class="p"><b><span class="sev g"></span>Drafted</b>Today 4:42 pm</div><span class="bar"></span>
+        <div class="p dim"><b><span class="sev w"></span>Sent</b>Waiting on you</div><span class="bar"></span>
+        <div class="p dim"><b><span class="sev w"></span>Reply</b>Reminder Sat if no answer</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ================= PEOPLE: kid ================= -->
+<main class="wrap screen" id="s-people">
+  <div class="crumb">People <span>›</span> Kids <span>›</span> <b style="color:var(--ink)">Dariel Ramírez</b></div>
+  <section class="card white" style="padding:32px">
+    <div class="hero">
+      <div class="av g1">DR</div>
+      <div><h1>Dariel Ramírez</h1><div class="meta">7th grade · Citrus Grove MS · Mentoring on Wednesdays</div></div>
+      <div class="acts" style="display:flex;gap:10px"><a class="btn ghost" href="?screen=calls"><svg class="i"><use href="#i-phone"/></svg>Call family</a><span class="btn dark"><svg class="i"><use href="#i-msg"/></svg>Message</span></div>
+    </div>
+    <div class="stats4">
+      <div><b class="num">75%</b><span>Showed up</span></div>
+      <div><b class="num">9 of 12</b><span>Sessions this quarter</span></div>
+      <div><b>Luis Oyola</b><span>Mentor since Jul 15</span></div>
+      <div><b style="color:var(--urgent)">Urgent</b><span>Call open since today</span></div>
+    </div>
+  </section>
+
+  <div class="bento" style="margin-top:18px">
+    <section class="card s8">
+      <div class="head"><div class="title">Attendance this quarter</div><span class="segc"><span class="on">Q1</span><span>Year</span></span></div>
+      <div class="cal">
+        <span>Jul</span><i></i><i></i><i></i><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i>
+        <span>Aug</span><i></i><i></i><i></i><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i>
+        <span>Sep</span><i></i><i class="a f"></i><i class="a f"></i><i class="a f"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i>
+      </div>
+      <div class="legend">
+        <span><em style="background:var(--blue)"></em>Here</span>
+        <span><em style="box-shadow:inset 0 0 0 1.5px var(--urgent)"></em>Missed</span>
+        <span><em style="box-shadow:0 0 0 2px var(--call)"></em>Why we're calling</span>
+        <span style="margin-left:auto">Tap any square to open that sheet</span>
+      </div>
+    </section>
+
+    <section class="card s4">
+      <div class="title">Family</div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:14px"><div class="av g5">YR</div><div><b>Yadira Ramírez</b><div class="sub">Mom · Spanish · Little Havana</div></div></div>
+      <div class="divider"></div>
+      <div class="head"><span class="sub">Phone</span><b class="num">(305) 555-0187</b></div>
+      <div class="head" style="margin-top:10px"><span class="sub">Sibling</span><b>Mía, 4th grade</b></div>
+      <div class="head" style="margin-top:10px"><span class="sub">Signed up</span><b>Jul 14 · web form</b></div>
+    </section>
+
+    <section class="card s6">
+      <div class="head"><div class="title">Also written as</div><span class="pill wash">Learned automatically</span></div>
+      <div style="margin-top:8px">
+        <div class="alias"><span class="src"><svg class="i"><use href="#i-sheet"/></svg></span><span class="raw">Dariel Rmz<small>Sheets · Sep 9 and Sep 23</small></span><span class="pill">96%</span></div>
+        <div class="alias"><span class="src"><svg class="i"><use href="#i-sheet"/></svg></span><span class="raw">D. Ramirez<small>Sheet · Sep 2</small></span><span class="pill">93%</span></div>
+        <div class="alias"><span class="src"><svg class="i"><use href="#i-form"/></svg></span><span class="raw">Dariel Ramirez<small>Sign-up form · Jul 14</small></span><span class="pill">99%</span></div>
+      </div>
+    </section>
+
+    <section class="card s6">
+      <div class="title">History</div>
+      <div class="events">
+        <div class="ev"><span class="d r"></span><div class="t">Flagged Urgent<span>3rd miss in a row. Spanish message drafted.</span></div><span class="w">Sep 23</span></div>
+        <div class="ev"><span class="d"></span><div class="t">Marked "keep an eye"<span>First miss. No call needed yet.</span></div><span class="w">Sep 9</span></div>
+        <div class="ev"><span class="d g"></span><div class="t">Matched with mentor Luis Oyola</div><span class="w">Jul 15</span></div>
+        <div class="ev"><span class="d g"></span><div class="t">Signed up on the web form<span>Linked to the Ramírez family, 98% sure</span></div><span class="w">Jul 14</span></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ================= PEOPLE: family merge ================= -->
+<main class="wrap screen" id="s-family">
+  <div class="crumb">People <span>›</span> Families <span>›</span> <b style="color:var(--ink)">Jean-Baptiste</b></div>
+  <section class="card">
+    <div class="head" style="align-items:flex-start"><div><h1 style="font-size:40px">One family, found in three places.</h1><div class="sub" style="font-size:17px;margin-top:6px">Nobody typed this family twice. ChiggityCheck connected the spellings.</div></div><span class="btn ghost sm">Not the same? Split</span></div>
+    <div class="merge">
+      <div class="srcs">
+        <div class="srccard"><span class="ic"><svg class="i"><use href="#i-form"/></svg></span><div style="min-width:0"><div class="k">Sign-up form · Jul 8</div><div class="v">Marie-Claire Jean-Baptiste</div></div><div class="p">First seen<small>original</small></div></div>
+        <div class="srccard"><span class="ic"><svg class="i"><use href="#i-sheet"/></svg></span><div style="min-width:0"><div class="k">Workshop sheet · Aug 19</div><div class="v hand">Marie Jean Baptiste</div></div><div class="p">97%<small>same person</small></div></div>
+        <div class="srccard"><span class="ic"><svg class="i"><use href="#i-text"/></svg></span><div style="min-width:0"><div class="k">Hours text from Ana · Sep 3</div><div class="v">M.C. Jeanbaptiste</div></div><div class="p">92%<small>same person</small></div></div>
+      </div>
+      <svg class="flow" viewBox="0 0 110 300" preserveAspectRatio="none"><path d="M0 46 C60 46,50 150,110 150 M0 150 L110 150 M0 254 C60 254,50 150,110 150" stroke="rgba(77,107,254,.6)" stroke-width="2" fill="none" stroke-dasharray="4 5"/></svg>
+      <div class="one">
+        <div class="av">MJ</div>
+        <h2>Jean-Baptiste family</h2>
+        <div class="m">Marie-Claire · Kreyòl · West Little River<br>3 spellings, 1 record</div>
+        <div class="kids">
+          <div class="kid"><b>Widlyne</b>7th · Citrus Grove MS</div>
+          <div class="kid"><b>Kervens</b>5th · Brownsville MS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bento" style="margin-top:18px">
+    <section class="card s7">
+      <div class="head"><div class="title">Kervens changed schools</div><span class="pill wash">Counted once in the report</span></div>
+      <div class="hist">
+        <div class="school"><small>Until Sep 7</small><b>Citrus Grove MS</b></div>
+        <div style="text-align:center;color:var(--ink-4);font-size:22px">→</div>
+        <div class="school" style="background:#fff;box-shadow:0 0 0 2px var(--blue) inset"><small>Since Sep 8</small><b>Brownsville MS</b></div>
+      </div>
+      <div class="sub" style="margin-top:14px">He still comes to Thursday mentoring at West Little River. His attendance and mentor carried over.</div>
+    </section>
+    <section class="card s5">
+      <div class="title">Follow-ups</div>
+      <div class="events">
+        <div class="ev"><span class="d o"></span><div class="t">Widlyne · 2 missed<span>Kreyòl message drafted</span></div><span class="w">Today</span></div>
+        <div class="ev"><span class="d g"></span><div class="t">Called Marie-Claire<span>"Kervens is switching schools, still coming Thursdays"</span></div><span class="w">Sep 9</span></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ================= REPORT ================= -->
+<main class="wrap screen" id="s-report">
+  <div class="rhead">
+    <div>
+      <div class="eyebrow">Tidepath Family Alliance · Program outcomes</div>
+      <h1 style="margin-top:8px">Q1 FY2027<br><span style="color:var(--ink-3)">Jul 1 to Sep 30, 2026</span></h1>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="segc"><span>Q4 FY26</span><span class="on">Q1 FY27</span></span><span class="btn ghost"><svg class="i"><use href="#i-share"/></svg>Share link</span><span class="btn dark">Download PDF</span></div>
+  </div>
+  <div class="trace"><span class="c"><svg class="i" style="width:16px;height:16px;stroke-width:2.6"><use href="#i-check"/></svg></span><span><b>Every number is traceable.</b> 531 of 531 attendance lines link to a photo. Tap any number.</span></div>
+
+  <div class="kpis">
+    <section class="card kc"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="eyebrow">Kids served</span><div class="kpi num">58</div><div class="sub">from 37 families</div><svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><path d="M0 40 L20 34 L40 30 L60 26 L80 22 L100 18 L120 15 L140 12 L160 9 L180 7 L200 5" stroke="#4D6BFE" stroke-width="2" fill="none"/></svg></section>
+    <section class="card kc sel"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="eyebrow">Showed up</span><div class="kpi num">81%</div><div class="sub">9 unclear marks left out</div><svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><path d="M0 24 L20 18 L40 14 L60 16 L80 10 L100 12 L120 18 L140 14 L160 16 L180 22 L200 26" stroke="#4D6BFE" stroke-width="2" fill="none"/></svg></section>
+    <section class="card kc"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="eyebrow">Sessions held</span><div class="kpi num">38</div><div class="sub">at 3 places</div><svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><path d="M0 22 L200 22" stroke="#4D6BFE" stroke-width="2" fill="none" stroke-dasharray="3 6"/></svg></section>
+    <section class="card kc"><span class="go"><svg class="i"><use href="#i-arrow"/></svg></span><span class="eyebrow">Volunteer hours</span><div class="kpi num">412.5</div><div class="sub">1 duplicate removed</div><svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><path d="M0 38 L20 33 L40 30 L60 25 L80 23 L100 19 L120 16 L140 13 L160 10 L180 8 L200 4" stroke="#4D6BFE" stroke-width="2" fill="none"/></svg></section>
+  </div>
+
+  <div class="bento" style="margin-top:18px">
+    <section class="card s7">
+      <div class="head"><div class="title">Who came, by program</div><span class="segc"><span class="on">Program</span><span>Place</span><span>Language</span></span></div>
+      <div style="margin-top:10px">
+        <div class="hbar"><span>Mentoring</span><div class="tr"><i style="width:81%"></i></div><span class="v num">81%</span><span class="p num">34 kids</span></div>
+        <div class="hbar"><span>Workshops</span><div class="tr"><i style="width:79%"></i></div><span class="v num">79%</span><span class="p num">41 kids</span></div>
+        <div class="hbar"><span>Counseling <svg class="i" style="width:13px;height:13px;color:var(--ink-3);vertical-align:-2px"><use href="#i-lock"/></svg></span><div class="tr"><i style="width:88%"></i></div><span class="v num">88%</span><span class="p num">12 kids</span></div>
+      </div>
+      <div class="sub" style="margin-top:12px;font-size:13.5px">Counseling shows totals only. No names leave the counseling record.</div>
+    </section>
+    <section class="card s5">
+      <div class="title">Kids who started missing</div>
+      <div class="funnel">
+        <div style="width:100%">Flagged for a call <b class="num">19</b></div>
+        <div style="width:88%;background:rgba(77,107,254,.18)">Family reached <b class="num">16</b></div>
+        <div style="width:68%;background:rgba(77,107,254,.26)">Back within 2 weeks <b class="num">12</b></div>
+      </div>
+      <div class="sub" style="margin-top:12px">Median 4 days from first miss to a call.</div>
+    </section>
+    <section class="card s5">
+      <div class="title">Mentoring</div>
+      <div class="dq">
+        <div><b class="num">34</b><span>Kids with a mentor</span></div>
+        <div><b class="num">6</b><span>New matches</span></div>
+        <div><b class="num">18</b><span>Active mentors</span></div>
+        <div><b class="num">22.9 h</b><span>Average per mentor</span></div>
+      </div>
+    </section>
+    <section class="card s7">
+      <div class="head"><div class="title">How the data was checked</div><span class="pill" style="color:var(--good);background:rgba(47,163,107,.12)">99% confirmed by staff</span></div>
+      <div class="dq" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div><b class="num">38</b><span>Sheets photographed</span></div>
+        <div><b class="num">531</b><span>Lines read</span></div>
+        <div><b class="num">44</b><span>Spellings learned</span></div>
+        <div><b class="num">4</b><span>Lines left out</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="scrim"></div>
+  <aside class="drawer">
+    <span class="x">✕</span>
+    <span class="eyebrow">Where this number comes from</span>
+    <h2>Showed up 81%</h2>
+    <div class="formula"><b class="num">136</b> here ÷ (<b class="num">136</b> here + <b class="num">32</b> missed) · Mentoring at Citrus Grove · 12 sheets</div>
+    <div style="margin-top:14px">
+      <div class="rec on"><div class="thumb"><i style="top:12px"></i><i style="top:20px"></i><i style="top:28px"></i><i style="top:36px"></i><em style="top:9px"></em></div><div><b>Wed Sep 23</b><div class="sub">11 here · 2 missed · 1 unclear</div></div><span class="pill blue">Viewing</span></div>
+      <div class="rec"><div class="thumb"><i style="top:12px"></i><i style="top:20px"></i><i style="top:28px"></i><i style="top:36px"></i></div><div><b>Wed Sep 16</b><div class="sub">10 here · 4 missed</div></div><span class="pill ghost">Open</span></div>
+      <div class="rec"><div class="thumb"><i style="top:12px"></i><i style="top:20px"></i><i style="top:28px"></i><i style="top:36px"></i></div><div><b>Wed Sep 9</b><div class="sub">12 here · 2 missed</div></div><span class="pill ghost">Open</span></div>
+    </div>
+    <div class="paper" style="transform:none;margin-top:14px;box-shadow:none;border:1px solid rgba(11,12,16,.08)">
+      <div class="ph"><span>MENTORING · Citrus Grove MS</span><span class="hw" style="font-size:18px">9/23/26</span></div>
+      <table>
+        <tr class="focus"><td>1</td><td class="k">Dariel Rmz</td><td></td></tr>
+        <tr><td>2</td><td class="k">Camila Delgado</td><td></td></tr>
+        <tr><td>3</td><td class="k">Josh Carter</td><td class="k">✓</td></tr>
+        <tr><td>4</td><td class="k">Sofia Fernandez</td><td class="k">✓</td></tr>
+      </table>
+    </div>
+    <div class="sub" style="margin-top:12px;font-size:14px">Line 1 counted as <b style="color:var(--ink)">missed</b> for Dariel Ramírez. Read 96% sure, confirmed by Marisol on Sep 23 at 4:41 pm.</div>
+  </aside>
+</main>
+
+<!-- ================= WELCOME (landing) ================= -->
+<div class="screen" id="s-welcome">
+  <div class="wtop">
+    <div class="brand"><div class="mark"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>ChiggityCheck</div>
+    <nav><span>How it works</span><span>For funders</span><span>Under the hood</span></nav>
+    <a class="btn dark sm" href="?screen=today">Open the demo</a>
+  </div>
+
+  <section class="whero">
+    <div>
+      <div class="pill wash">Built for Tidepath Family Alliance · Give Miami Day Hackathon</div>
+      <h1 style="margin-top:20px">Snap the sign-in sheet.<br><span>Everything else is done.</span></h1>
+      <p class="lede">ChiggityCheck reads the paper attendance sheet mentors already fill in. It tells you which families to call this week, writes the message in their language, and keeps the funder report finished.</p>
+      <div class="ctas">
+        <a class="btn dark lg" href="?screen=capture"><svg class="i"><use href="#i-cam"/></svg>Try it with a sheet</a>
+        <a class="btn ghost lg" href="?screen=today">See Marisol's week</a>
+      </div>
+      <div class="note">No sign-up. Demo data is made up. Messages are logged, never sent.</div>
+    </div>
+    <div class="stage">
+      <div class="phone"><div class="scr">
+        <div class="paper" style="transform:rotate(3deg)">
+          <div class="ph"><span>MENTORING · Citrus Grove</span><span class="hw" style="font-size:14px">9/23/26</span></div>
+          <table>
+            <tr><td>1</td><td class="k">Dariel Rmz</td><td></td></tr>
+            <tr><td>2</td><td class="k">Camila Delgado</td><td></td></tr>
+            <tr><td>3</td><td class="k">Josh Carter</td><td class="k">✓</td></tr>
+            <tr><td>4</td><td class="k">Sofia Fernandez</td><td class="k">✓</td></tr>
+            <tr><td>5</td><td class="k">Kevin Nguyen</td><td class="k">✓</td></tr>
+            <tr><td>6</td><td class="k">Mateo Castellanos</td><td class="k">✓</td></tr>
+            <tr><td>7</td><td class="k">Ashley Pierre-Louis</td><td class="k">✓</td></tr>
+            <tr><td>8</td><td class="k">Yaneli P.</td><td class="k">✓</td></tr>
+            <tr><td>9</td><td class="k">Jaden Augustin</td><td class="k">✓</td></tr>
+            <tr><td>10</td><td class="k">Valeria Ramos</td><td class="k">✓</td></tr>
+          </table>
+        </div>
+        <div class="vf"></div><div class="shutter"></div>
+      </div></div>
+      <div class="float f1" style="left:-10px;top:40px"><span class="ic" style="background:var(--good)"><svg class="i"><use href="#i-check"/></svg></span><div><b>14 names read</b><span>3.1 seconds · 12 matched</span></div></div>
+      <div class="float f2" style="right:-10px;top:240px"><span class="ic" style="background:var(--urgent)"><svg class="i"><use href="#i-phone"/></svg></span><div><b>Call Dariel's mom today</b><span>3 missed · message ready in Spanish</span></div></div>
+      <div class="float f3" style="left:-10px;bottom:0px"><span class="ic" style="background:var(--blue)"><svg class="i"><use href="#i-doc"/></svg></span><div><b>Q1 report is ready</b><span>531 of 531 lines link to a photo</span></div></div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>Three steps. That's the whole job.</h2>
+    <div class="sub">Marisol used to lose 5 to 15 hours a week to typing. Now it's one photo per session.</div>
+    <div class="steps3">
+      <div class="s3c"><div class="n">Step 1</div><h3>Snap</h3><p>Take a photo of the paper sheet. We read every name, even messy handwriting, and match it to the right kid.</p>
+        <div class="vis"><span class="chip" style="font-family:'Caveat',cursive;font-size:22px;color:#1b2a6b">Dariel Rmz</span><span style="color:var(--ink-4)">→</span><span class="chip">Dariel Ramírez <span class="pill wash" style="height:22px;font-size:12px">96%</span></span></div></div>
+      <div class="s3c"><div class="n">Step 2</div><h3>Call</h3><p>We spot kids who stop showing up and tell you who to call first. The message is already written in the family's language.</p>
+        <div class="vis"><span class="pill" style="color:var(--urgent);background:rgba(229,72,77,.1)">Urgent</span><span class="pill">ES</span><span class="pill">HT</span><span class="pill">EN</span></div></div>
+      <div class="s3c"><div class="n">Step 3</div><h3>Prove</h3><p>The quarterly report is always finished. Tap any number and see the exact sheet and line it came from.</p>
+        <div class="vis"><span class="kpi num" style="font-size:44px">81%</span><span style="color:var(--ink-4)">→</span><span class="thumb" style="display:inline-block"><i style="top:12px"></i><i style="top:20px"></i><i style="top:28px"></i><em style="top:9px"></em></span></div></div>
+    </div>
+  </section>
+
+  <section class="ba">
+    <div class="bawrap">
+      <div class="before"><div class="k">Before</div>
+        <div class="row"><span>Typing sheets into the spreadsheet</span><b>5–15 h/wk</b></div>
+        <div class="row"><span>Same mom on three lists</span><b>3 spellings</b></div>
+        <div class="row"><span>Kid missed before anyone called</span><b>3 weeks</b></div>
+        <div class="row" style="border:0"><span>Quarterly report</span><b>3 days</b></div>
+      </div>
+      <div class="after"><div class="k">With ChiggityCheck</div>
+        <div class="row"><span>Per session</span><b>1 photo</b></div>
+        <div class="row"><span>Same mom</span><b>1 record</b></div>
+        <div class="row"><span>Flagged after</span><b>2nd miss</b></div>
+        <div class="row" style="border:0"><span>Quarterly report</span><b>Already done</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote"><p>"I just want to type each thing once, know which kids need a call this week, and have the quarterly report ready without losing days to it."</p><div class="by">Marisol, program manager</div></section>
+
+  <section class="under">
+    <div class="eyebrow" style="text-align:center">Under the hood</div>
+    <div class="grid">
+      <div class="it"><b>Reads handwriting</b><span>Cloudflare Workers AI vision model</span></div>
+      <div class="it"><b>Matches names with a probability</b><span>OpenAI Decisions API, one call per sheet</span></div>
+      <div class="it"><b>Writes in ES, HT, EN</b><span>GPT-5.5, only from real facts</span></div>
+      <div class="it"><b>Every number has a receipt</b><span>Report figures link to the photo and line</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CAPTURE START ================= -->
+<main class="wrap screen" id="s-capture">
+  <div class="drop">
+    <div class="big"><svg class="i"><use href="#i-cam"/></svg></div>
+    <h1>Take a photo of the sign-in sheet</h1>
+    <div class="sub">On a phone this opens the camera. On a computer, drop a photo here.</div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap"><span class="btn dark lg"><svg class="i"><use href="#i-cam"/></svg>Open camera</span><span class="btn ghost lg">Choose a photo</span></div>
+  </div>
+  <div class="head" style="margin-top:30px"><div><div class="title">No sheet handy? Use one of ours.</div><div class="sub">Real photos of sample sheets from this quarter.</div></div></div>
+  <div class="samples">
+    <div class="sample go"><span class="pill blue tag">Start here</span><div class="pv"><i style="top:30px"></i><i style="top:52px"></i><i style="top:74px"></i><i style="top:96px"></i><i style="top:118px"></i><b style="top:38px;width:70px"></b><b style="top:60px;width:90px"></b><b style="top:82px;width:60px"></b><b style="top:104px;width:80px"></b></div><div class="t">Citrus Grove · Mentoring</div><div class="s">Wed Sep 23 · not captured yet</div></div>
+    <div class="sample"><div class="pv"><i style="top:30px"></i><i style="top:52px"></i><i style="top:74px"></i><i style="top:96px"></i><i style="top:118px"></i><b style="top:38px;width:80px"></b><b style="top:60px;width:60px"></b><b style="top:82px;width:90px"></b></div><div class="t">West Little River · Mentoring</div><div class="s">Thu Sep 24 · not captured yet</div></div>
+    <div class="sample"><div class="pv"><i style="top:30px"></i><i style="top:52px"></i><i style="top:74px"></i><i style="top:96px"></i><i style="top:118px"></i><b style="top:38px;width:60px"></b><b style="top:60px;width:84px"></b></div><div class="t">West Little River · Workshop</div><div class="s">Tue Sep 22 · <span style="color:var(--good)">captured</span></div></div>
+    <div class="sample"><div class="pv"><i style="top:30px"></i><i style="top:52px"></i><i style="top:74px"></i><i style="top:96px"></i><b style="top:38px;width:74px"></b><b style="top:60px;width:66px"></b><b style="top:82px;width:88px"></b></div><div class="t">Citrus Grove · Mentoring</div><div class="s">Wed Sep 16 · <span style="color:var(--good)">captured</span></div></div>
+  </div>
+</main>
+
+<nav class="pbar">
+  <a id="b-today" href="?screen=today"><svg class="i"><use href="#i-home"/></svg>Today</a>
+  <a id="b-calls" href="?screen=calls"><svg class="i"><use href="#i-phone"/></svg><span class="bd">4</span>Calls</a>
+  <a class="cam" href="?screen=snap"><svg class="i"><use href="#i-cam"/></svg></a>
+  <a id="b-people" href="?screen=people"><svg class="i"><use href="#i-people"/></svg>People</a>
+  <a id="b-report" href="?screen=report"><svg class="i"><use href="#i-doc"/></svg>Report</a>
+</nav>
+
+<script>
+  const q=new URLSearchParams(location.search); const s=q.get('screen')||'today';
+  if(q.get('ev')) document.body.classList.add('drawer-open');
+  document.getElementById('s-'+s).classList.add('show');
+  if(s==='welcome'){document.body.classList.add('landing');document.getElementById('demobar').style.display='none';}
+  const nav = s==='family' ? 'people' : (s==='capture' ? 'snap' : s);
+  const n=document.getElementById('n-'+nav); if(n) n.classList.add('on');
+  const b=document.getElementById('b-'+nav); if(b) b.classList.add('on');
+</script>
+</body>
+</html>

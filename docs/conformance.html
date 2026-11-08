@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChiggityCheck brief check</title>
+<style>
+:root{--ink:#0B0C10;--ink-3:#767C95;--blue:#4D6BFE;--good:#2FA36B;--call:#F0963C;--urgent:#E5484D;--line:rgba(11,12,16,.08)}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#C9D1F0,#F4F5FA 40%);min-height:100vh;-webkit-font-smoothing:antialiased}
+.w{max-width:980px;margin:0 auto;padding:48px 24px 80px}
+h1{font-size:44px;letter-spacing:-0.035em;margin:0}
+.lede{font-size:19px;color:#3C4257;margin-top:10px;line-height:1.45}
+h2{font-size:24px;letter-spacing:-0.02em;margin:40px 0 12px}
+.card{background:rgba(255,255,255,.75);border-radius:24px;padding:8px 24px;box-shadow:0 14px 34px rgba(40,55,120,.08)}
+.r{display:grid;grid-template-columns:minmax(0,1.1fr) 110px minmax(0,1.6fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.45}
+.r:last-child{border-bottom:0}
+.r b{font-weight:600}
+.s{font-size:13px;font-weight:600;border-radius:999px;padding:4px 10px;height:fit-content;width:fit-content}
+.ok{background:rgba(47,163,107,.12);color:var(--good)}
+.part{background:rgba(240,150,60,.14);color:#B86A1E}
+.gap{background:rgba(229,72,77,.10);color:var(--urgent)}
+.n{color:var(--ink-3)}
+ol{font-size:16px;line-height:1.6;padding-left:22px}
+@media(max-width:700px){.r{grid-template-columns:1fr}.w{padding:28px 16px}h1{font-size:32px}}
+</style></head><body><div class="w">
+<h1>Are we on brief?</h1>
+<p class="lede">Mostly yes. The core loop is covered. Five things the brief asks for were missing from the mockup, and the build now includes them.</p>
+
+<h2>Organizer's minimum</h2>
+<div class="card">
+<div class="r"><b>One made-up quarter, end to end</b><span class="s ok">Covered</span><span class="n">Q1 FY2027 seeded through Sep 22. The Sep 23 sheet is the live input.</span></div>
+<div class="r"><b>Sign-ups in the record</b><span class="s gap">Was missing</span><span class="n">Only a "2 new sign-ups" line. Adding a live sign-up form a judge can fill on their phone, resolved to existing families in front of them.</span></div>
+<div class="r"><b>Attendance in the record</b><span class="s ok">Covered</span><span class="n">Snap, match, confirm. Every line keeps its photo.</span></div>
+<div class="r"><b>Mentor matches</b><span class="s part">Partial</span><span class="n">Shown on the kid profile and in the report. Adding a Mentors list under People.</span></div>
+<div class="r"><b>Volunteer hours</b><span class="s part">Partial</span><span class="n">Totals shown. Adding each mentor's hours with the "reported twice, counted once" line.</span></div>
+<div class="r"><b>Follow-ups sent</b><span class="s ok">Covered</span><span class="n">Calls screen with drafted message, Send, and "I called instead".</span></div>
+<div class="r"><b>Report built from the record</b><span class="s ok">Covered</span><span class="n">Live from the database, with an evidence drawer for each number.</span></div>
+</div>
+
+<h2>Stretch goals</h2>
+<div class="card">
+<div class="r"><b>Agent drafts follow-ups and tracks replies</b><span class="s part">Partial</span><span class="n">Drafting is shown. Adding a "They replied" button and a nudge after 3 days.</span></div>
+<div class="r"><b>Kid who changes schools</b><span class="s ok">Covered</span><span class="n">Kervens: history kept, counted once.</span></div>
+<div class="r"><b>Every Tidepath tool</b><span class="s gap">Was missing</span><span class="n">Adding "Bring your lists": drop the program spreadsheet or form export, duplicates merged automatically.</span></div>
+</div>
+
+<h2>Marisol's three asks</h2>
+<div class="card">
+<div class="r"><b>Type each thing once</b><span class="s ok">Covered</span><span class="n">Photo in, spellings learned, families merged.</span></div>
+<div class="r"><b>Know who needs a call this week</b><span class="s ok">Covered</span><span class="n">Today screen and Calls.</span></div>
+<div class="r"><b>Report ready without losing days</b><span class="s ok">Covered</span><span class="n">Report is always current, with PDF download.</span></div>
+</div>
+
+<h2>What makes it safe to demo live</h2>
+<ol>
+<li><b>Reset demo</b> button in the top banner. It puts everything back to Wed Sep 23 in under 5 seconds, so you can rehearse and still start clean on stage.</li>
+<li><b>Real AI, with a safety net.</b> The sample sheets run through the real vision model and the real name matching. If the venue Wi-Fi stalls, the app falls back to the verified reading of that same sheet and keeps going.</li>
+<li><b>Frozen clock.</b> The demo always thinks it is Wed Sep 23, 2026, so "this week" and the 4 calls never drift.</li>
+<li><b>Sample sheets pre-tested.</b> Each one is checked through the live pipeline during the build until every planted name resolves correctly.</li>
+<li><b>Two ways in.</b> The deployed link, plus a local copy on your laptop as backup.</li>
+</ol>
+
+<h2>Welcome page and first screen</h2>
+<ol>
+<li><b>A real landing page</b> for judges. It says what it does in one line, shows the three steps (Snap, Call, Prove), the before and after, Marisol's quote, and the tech in plain words.</li>
+<li><b>Today opens with a three-step plan.</b> Step 1 Snap today's sheet, step 2 Call 4 families, step 3 Q1 report ready. Each step has one big button.</li>
+<li><b>Demo banner</b> on every screen says the date is frozen and the data is fictional, with Reset.</li>
+<li><b>Snap starts with "Start here".</b> The Sep 23 Citrus Grove sheet is highlighted so nobody on stage hunts for it.</li>
+</ol>
+</div></body></html>
