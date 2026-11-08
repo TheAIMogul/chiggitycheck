@@ -104,6 +104,23 @@ function bboxFor(i, printedRows, angle) {
   return [x0 / W, y0 / H, (x1 - x0) / W, (y1 - y0) / H].map((v) => Number(v.toFixed(4)));
 }
 
+// A real photo (sheets/real/<name>.png, made by scripts/realistic-sheet.mjs) replaces the rendered sheet when present.
+const REAL = join(ROOT, 'sheets/real');
+function realPhoto(name, nrows) {
+  const src = join(REAL, name + '.png');
+  const jpg = join(OUT, name + '.jpg');
+  const cached = join(REAL, name + '.boxes.json');
+  if (!existsSync(src)) {
+    // fresh clone: the large source PNG is not in git, but the finished JPG and its row boxes are
+    if (!existsSync(cached) || !existsSync(jpg)) return null;
+    return { sha: createHash('sha256').update(readFileSync(jpg)).digest('hex'), boxes: JSON.parse(readFileSync(cached, 'utf8')).boxes };
+  }
+  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '82', '-Z', '1400', src, '--out', jpg], { stdio: 'ignore' });
+  // row boxes: cached from scripts/vision-lines.mjs + snap-lines.py (gpt-5.5 reads a ruler, then snapped to the printed rules)
+  const { boxes } = existsSync(cached) ? JSON.parse(readFileSync(cached, 'utf8')) : JSON.parse(execFileSync('python3', [join(ROOT, 'scripts/real-boxes.py'), src, String(nrows)], { stdio: ['ignore', 'pipe', 'ignore'] }).toString().split('\n').find((l) => l.startsWith('{')));
+  return { sha: createHash('sha256').update(readFileSync(jpg)).digest('hex'), boxes };
+}
+
 function render(name, opts) {
   const html = join(TMP, name + '.html');
   const png = join(TMP, name + '.png');
@@ -132,6 +149,8 @@ if (!only || only === 'all') {
     const sha = render(name, { title: s.program === 'workshop' ? `Workshop: ${s.title || ''}` : 'Attendance', program: progLabel[s.program], site: siteShort[s.site], dateText: mmdd(s.held_at), facilitator: fac.full_name.split(' ')[0] + (s.co_lead ? ' + Ana' : ''), helper: s.parent_helper || null, rows, hand: fac.hand, ink: INK[s.id % INK.length], angle, printedRows, rand });
     s.photo_key = `sheets/${name}.jpg`; s.photo_url = `/sheets/${name}.jpg`; s.photo_sha256 = sha; s.angle = angle;
     for (const a of rows) a.bbox = bboxFor(a.row_index - 1, printedRows, angle);
+    const real = realPhoto(name, Math.max(...rows.map((a) => a.row_index)));
+    if (real) { s.photo_sha256 = real.sha; s.real_photo = true; for (const a of rows) a.bbox = real.boxes[a.row_index - 1]; }
     n++;
     process.stdout.write(`.`);
   }
@@ -144,6 +163,8 @@ if (!only || only === 'all') {
   const sha = render('demo-cg-2026-09-23', { title: 'Attendance', program: 'Mentoring', site: 'Citrus Grove', dateText: '9/23/26', facilitator: 'Luis', helper: null, rows: d.rows, hand: 'caveat', ink: '#1b2a6b', angle, printedRows: 16, rand });
   d.photo_url = '/sheets/demo-cg-2026-09-23.jpg'; d.photo_key = 'sheets/demo-cg-2026-09-23.jpg'; d.photo_sha256 = sha; d.angle = angle;
   d.rows.forEach((r, i) => (r.bbox = bboxFor(i, 16, angle)));
+  const real = realPhoto('demo-cg-2026-09-23', d.rows.length);
+  if (real) { d.photo_sha256 = real.sha; d.real_photo = true; d.rows.forEach((r, i) => (r.bbox = real.boxes[i])); }
   n++;
 }
 // Samples on the capture screen: the live sheet + three already-captured sheets (shows duplicate protection)

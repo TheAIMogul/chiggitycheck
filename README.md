@@ -67,7 +67,7 @@ Marisol runs every program at Tidepath. Her words: *"Every week I copy new sign-
                       ├─ /api/scenarios    typed request → gpt-5.5 dataset → validated → saved → scored
                       └─ /api/attendance, /api/kids, /api/families  edits → ripple diff
                       D1 (SQLite): families, kids, sessions, attendance, aliases, hours, followups, messages, signups, ai_calls
-                      R2: uploaded photos      Assets: React app + 29 rendered sheet photos
+                      R2: uploaded photos      Assets: React app + 29 sheet photos
  React 19 + Vite 8 app: Today, Snap, Calls, People, Report, Lab, Integrations, Sign-up, Stage explainer
 ```
 
@@ -87,7 +87,7 @@ Marisol runs every program at Tidepath. Her words: *"Every week I copy new sign-
 ```bash
 npm install
 cp .dev.vars.example .dev.vars        # add your OpenAI key
-npm run seed                          # builds the quarter, renders 29 sheet photos, compiles the reset SQL
+npm run seed                          # builds the quarter, renders 29 sheets (real photos from sheets/real win), compiles the reset SQL
 npx wrangler d1 migrations apply chiggitycheck --local
 npm run dev                           # http://localhost:5173, then POST /api/demo/reset once
 ```

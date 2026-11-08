@@ -30,3 +30,8 @@ dist-ssr
 .env*
 !.env.example
 .claude/settings.local.json
+scripts/.ruler-*
+
+# real sheet photo sources (large); public/sheets/*.jpg and sheets/real/*.json are committed
+sheets/real/*.png
+reports/real-sheets/

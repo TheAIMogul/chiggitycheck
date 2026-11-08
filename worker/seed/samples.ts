@@ -9,7 +9,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-23",
   "time": "4:00 pm",
   "photo_url": "/sheets/demo-cg-2026-09-23.jpg",
-  "photo_sha256": "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a",
+  "photo_sha256": "09782f17eafe4594b56974a1e24f62f8997dd4822ea5475fad8f4565c35a775f",
   "recommended": true,
   "session_id": null
  },
@@ -21,7 +21,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-16",
   "time": "4:00 pm",
   "photo_url": "/sheets/s37.jpg",
-  "photo_sha256": "87f6b5db50c98a27d02a245a11c036b497a4ad388421f3ac378e7a7ea49373da",
+  "photo_sha256": "3a7a952f131f185696f4c28b7d8b3a3f84d92b324e540393e712db77229ec222",
   "recommended": false,
   "session_id": 37
  },
@@ -33,7 +33,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-17",
   "time": "4:30 pm",
   "photo_url": "/sheets/s38.jpg",
-  "photo_sha256": "53f480e8bd1d1ec6d43a257858a1fca79e7381530cafafbaa74d0c91cb5a349e",
+  "photo_sha256": "b7ef5b4b2891788ee3e9da82aeda9d074e84a6da1ef4f726b647ce0401685910",
   "recommended": false,
   "session_id": 38
  },
@@ -45,14 +45,14 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-15",
   "time": "6:00 pm",
   "photo_url": "/sheets/s36.jpg",
-  "photo_sha256": "bbcf3cf2c4ff9f7e413ed637946a2eba37c035e82fa6cfd0a736f48c061d74c1",
+  "photo_sha256": "980550883fc87d542b23635730e30c4843fd4ed988fc9a6d2e03db4f3fd882e6",
   "recommended": false,
   "session_id": 36
  }
 ];
 // Verified transcription of the live demo sheet. Used only if every live vision model fails (e.g. venue Wi-Fi), and labeled as such.
 export const VERIFIED_READS: Record<string, { header: { program: string; site: string; date: string; facilitator: string }; rows: { row_index: number; name_as_written: string; mark: 'present' | 'absent' | 'unclear'; bbox: [number, number, number, number] }[] }> = {
- "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a": {
+ "09782f17eafe4594b56974a1e24f62f8997dd4822ea5475fad8f4565c35a775f": {
   "header": {
    "program": "mentoring",
    "site": "Citrus Grove MS",
@@ -65,10 +65,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Dariel Rmz",
     "mark": "absent",
     "bbox": [
-     0.1442,
-     0.3249,
-     0.7009,
-     0.0478
+     0.1406,
+     0.2929,
+     0.748,
+     0.0493
     ]
    },
    {
@@ -76,10 +76,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Camila Delgado",
     "mark": "absent",
     "bbox": [
-     0.1453,
-     0.3599,
-     0.7009,
-     0.0478
+     0.1406,
+     0.3285,
+     0.748,
+     0.0465
     ]
    },
    {
@@ -87,10 +87,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Josh Carter",
     "mark": "present",
     "bbox": [
-     0.1465,
-     0.3949,
-     0.7009,
-     0.0478
+     0.1406,
+     0.3627,
+     0.748,
+     0.0437
     ]
    },
    {
@@ -98,10 +98,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Sofia Fernandez",
     "mark": "present",
     "bbox": [
-     0.1476,
-     0.4299,
-     0.7009,
-     0.0478
+     0.1406,
+     0.3969,
+     0.748,
+     0.0407
     ]
    },
    {
@@ -109,10 +109,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Kevin Nguyen",
     "mark": "present",
     "bbox": [
-     0.1488,
-     0.4648,
-     0.7009,
-     0.0478
+     0.1406,
+     0.4304,
+     0.748,
+     0.038
     ]
    },
    {
@@ -120,10 +120,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Mateo Hernandez",
     "mark": "present",
     "bbox": [
-     0.1499,
-     0.4998,
-     0.7009,
-     0.0478
+     0.1406,
+     0.464,
+     0.748,
+     0.0357
     ]
    },
    {
@@ -131,10 +131,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Ashley Pierre-Louis",
     "mark": "present",
     "bbox": [
-     0.151,
-     0.5348,
-     0.7009,
-     0.0478
+     0.1406,
+     0.496,
+     0.748,
+     0.0375
     ]
    },
    {
@@ -142,10 +142,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Yaneli P.",
     "mark": "present",
     "bbox": [
-     0.1522,
-     0.5698,
-     0.7009,
-     0.0478
+     0.1406,
+     0.5278,
+     0.748,
+     0.0392
     ]
    },
    {
@@ -153,10 +153,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Jaden Augustin",
     "mark": "present",
     "bbox": [
-     0.1533,
-     0.6048,
-     0.7009,
-     0.0478
+     0.1406,
+     0.5599,
+     0.748,
+     0.0406
     ]
    },
    {
@@ -164,10 +164,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Valeria Ramos",
     "mark": "present",
     "bbox": [
-     0.1545,
-     0.6398,
-     0.7009,
-     0.0478
+     0.1406,
+     0.592,
+     0.748,
+     0.042
     ]
    },
    {
@@ -175,10 +175,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "D. Desir",
     "mark": "unclear",
     "bbox": [
-     0.1556,
-     0.6748,
-     0.7009,
-     0.0478
+     0.1406,
+     0.624,
+     0.748,
+     0.0442
     ]
    },
    {
@@ -186,10 +186,10 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Brianna Castillo",
     "mark": "present",
     "bbox": [
-     0.1567,
-     0.7098,
-     0.7009,
-     0.0478
+     0.1406,
+     0.6567,
+     0.748,
+     0.0449
     ]
    },
    {
@@ -197,9 +197,9 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Andres F.",
     "mark": "present",
     "bbox": [
-     0.1579,
-     0.7448,
-     0.7009,
+     0.1406,
+     0.6888,
+     0.748,
      0.0478
     ]
    },
@@ -208,14 +208,14 @@ export const VERIFIED_READS: Record<string, { header: { program: string; site: s
     "name_as_written": "Nia Carter",
     "mark": "present",
     "bbox": [
-     0.159,
-     0.7798,
-     0.7009,
-     0.0478
+     0.1406,
+     0.7221,
+     0.748,
+     0.0485
     ]
    }
   ]
  }
 };
 // Row geometry of the printed template (16-row sheet), so any photo of our sheet gets row boxes.
-export const DEMO_ROW_BOXES: [number, number, number, number][] = [[0.1442,0.3249,0.7009,0.0478],[0.1453,0.3599,0.7009,0.0478],[0.1465,0.3949,0.7009,0.0478],[0.1476,0.4299,0.7009,0.0478],[0.1488,0.4648,0.7009,0.0478],[0.1499,0.4998,0.7009,0.0478],[0.151,0.5348,0.7009,0.0478],[0.1522,0.5698,0.7009,0.0478],[0.1533,0.6048,0.7009,0.0478],[0.1545,0.6398,0.7009,0.0478],[0.1556,0.6748,0.7009,0.0478],[0.1567,0.7098,0.7009,0.0478],[0.1579,0.7448,0.7009,0.0478],[0.159,0.7798,0.7009,0.0478]];
+export const DEMO_ROW_BOXES: [number, number, number, number][] = [[0.1406,0.2929,0.748,0.0493],[0.1406,0.3285,0.748,0.0465],[0.1406,0.3627,0.748,0.0437],[0.1406,0.3969,0.748,0.0407],[0.1406,0.4304,0.748,0.038],[0.1406,0.464,0.748,0.0357],[0.1406,0.496,0.748,0.0375],[0.1406,0.5278,0.748,0.0392],[0.1406,0.5599,0.748,0.0406],[0.1406,0.592,0.748,0.042],[0.1406,0.624,0.748,0.0442],[0.1406,0.6567,0.748,0.0449],[0.1406,0.6888,0.748,0.0478],[0.1406,0.7221,0.748,0.0485]];
