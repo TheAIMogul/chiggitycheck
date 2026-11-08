@@ -11,7 +11,7 @@ export type BBox = [number, number, number, number]; // x, y, w, h normalized 0.
 export interface ApiError { error: { code: string; message: string } }
 
 /* ---------------- shared bits ---------------- */
-export interface StripDot { session_id: number; held_at: string; mark: Mark; flagged: boolean }
+export interface StripDot { attendance_id?: number; session_id: number; held_at: string; mark: Mark; flagged: boolean }
 
 export interface Fact {
   kind: 'sheet' | 'mentor' | 'form' | 'schedule' | 'contact';
@@ -153,10 +153,10 @@ export interface KidDetail extends KidListItem {
     signed_up: string | null; signup_source: string | null;
   };
   mentor_since: string | null; sessions_count: number; present_count: number;
-  calendar: { month: string; cells: { session_id: number; held_at: string; mark: Mark; flagged: boolean }[] }[];
+  calendar: { month: string; cells: { attendance_id?: number; session_id: number; held_at: string; mark: Mark; flagged: boolean }[] }[];
   aliases: { raw_text: string; source: string; dates: string; probability: number | null }[];
   history: { kind: 'urgent' | 'call' | 'watch' | 'match' | 'signup' | 'school' | 'contact' | 'sent' | 'reply'; title: string; detail: string; date: string }[];
-  sessions: { session_id: number; held_at: string; site: string; program: Program; row_index: number | null; raw_text: string | null; mark: Mark; probability: number | null; photo_url: string | null; bbox: BBox | null }[];
+  sessions: { attendance_id: number; session_id: number; held_at: string; site: string; program: Program; row_index: number | null; raw_text: string | null; mark: Mark; probability: number | null; photo_url: string | null; bbox: BBox | null }[];
   followup_id: number | null; followup_status: FollowupStatus | null;
   school_history: { from_school: string; to_school: string; changed_at: string; note: string }[];
 }
@@ -251,3 +251,13 @@ export interface ScenarioResult {
   steps: { label: string; ms: number }[];              // e.g. "Model wrote the dataset", "Validated 214 records", "Saved to database", "Scored follow-ups"
   highlights: { label: string; detail: string; href: string }[]; // e.g. kid profiles flagged, the new program's report evidence
 }
+
+/* ---------------- Live edits: every edit returns what else changed across the app ---------------- */
+export interface Ripple { label: string; from: string; to: string; href: string; kind: 'calls' | 'report' | 'kid' | 'family' | 'today' | 'people' }
+export interface EditResponse { ok: true; changes: Ripple[]; ms: number }
+// PATCH /api/attendance/:id            body { mark: Mark }                                   -> EditResponse
+// PATCH /api/kids/:id                  body { first_name?, last_name?, preferred_name?, grade?, school?, program?, site?, status? } -> EditResponse
+// PATCH /api/families/:id              body { primary_contact_name?, relationship?, phone?, language?, neighborhood? }            -> EditResponse
+// PATCH /api/sessions/:id/attendance   body { kid_id: number, mark: Mark }  (add a kid to a session) -> EditResponse
+// GET   /api/live                      -> LiveSummary (for nav badges / pulses)
+export interface LiveSummary { calls_open: number; urgent: number; watch: number; attendance_rate: number; kids_served: number; hours: number; sheets: number; aliases: number; updated_at: string }

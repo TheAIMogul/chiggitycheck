@@ -19,7 +19,7 @@ async function stripsFor(env: Env, kidIds: number[]): Promise<Map<number, StripD
   const out = new Map<number, StripDot[]>();
   if (!kidIds.length) return out;
   const ph = kidIds.map(() => '?').join(',');
-  const rows = await all(env, `SELECT a.kid_id, a.session_id, a.mark, s.held_at, s.program, s.site, k.program AS kp, k.site AS ks FROM attendance a JOIN sessions s ON s.id=a.session_id JOIN kids k ON k.id=a.kid_id
+  const rows = await all(env, `SELECT a.id, a.kid_id, a.session_id, a.mark, s.held_at, s.program, s.site, k.program AS kp, k.site AS ks FROM attendance a JOIN sessions s ON s.id=a.session_id JOIN kids k ON k.id=a.kid_id
     WHERE a.kid_id IN (${ph}) AND s.held_at BETWEEN ? AND ? AND s.status='confirmed' ORDER BY s.held_at`, ...kidIds, Q.start, Q.end);
   const flags = await all(env, `SELECT kid_id, reason_json FROM followups WHERE kid_id IN (${ph}) AND status='open' AND severity IN ('call','urgent')`, ...kidIds);
   const flagged = new Map<number, Set<string>>();
@@ -28,7 +28,7 @@ async function stripsFor(env: Env, kidIds: number[]): Promise<Map<number, StripD
     if (r.program !== r.kp && r.kp !== 'workshop') continue; // primary program only (workshop kids show workshops)
     if (r.kp === 'mentoring' && r.site !== r.ks) continue;
     const list = out.get(r.kid_id) || [];
-    list.push({ session_id: r.session_id, held_at: r.held_at, mark: r.mark, flagged: !!flagged.get(r.kid_id)?.has(r.held_at) });
+    list.push({ attendance_id: r.id, session_id: r.session_id, held_at: r.held_at, mark: r.mark, flagged: !!flagged.get(r.kid_id)?.has(r.held_at) });
     out.set(r.kid_id, list);
   }
   return out;
@@ -285,7 +285,7 @@ export async function kidDetail(env: Env, id: number): Promise<KidDetail | null>
     calendar: months,
     aliases: [...aliasMap.values()].filter((a) => normalize(a.raw_text) !== normalize(name) || a.source !== 'record').map((a) => ({ raw_text: a.raw_text, source: a.source === 'sheet' ? 'Sheet' : a.source === 'form' ? 'Sign-up form' : a.source === 'text' ? 'Text message' : 'Record', dates: a.dates.join(', '), probability: a.probability })),
     history,
-    sessions: sess.map((s) => ({ session_id: s.session_id, held_at: s.held_at, site: s.site, program: s.program, row_index: s.row_index, raw_text: s.raw_text, mark: s.mark, probability: s.match_probability, photo_url: s.photo_url, bbox: parseBox(s.bbox) })),
+    sessions: sess.map((s) => ({ attendance_id: s.id, session_id: s.session_id, held_at: s.held_at, site: s.site, program: s.program, row_index: s.row_index, raw_text: s.raw_text, mark: s.mark, probability: s.match_probability, photo_url: s.photo_url, bbox: parseBox(s.bbox) })),
     followup_id: fu?.id ?? null, followup_status: fu?.status ?? null,
     school_history: (await all(env, `SELECT * FROM kid_status_history WHERE kid_id=?`, id)).map((h) => ({ from_school: h.from_school, to_school: h.to_school, changed_at: h.changed_at, note: h.note })),
   };

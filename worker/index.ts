@@ -1,7 +1,8 @@
 import { Hono, type Context } from 'hono';
-import type { ConfirmRequest, FollowupItem, Lang } from '../shared/types';
+import type { ConfirmRequest, FollowupItem, Lang, Mark } from '../shared/types';
 import { SEED_STATEMENTS } from './seed/seed-sql';
 import { refreshFollowups, draftMessage, featuresFor } from './lib/followups';
+import * as edits from './lib/edits';
 import * as integrations from './lib/integrations';
 import * as messaging from './lib/messaging';
 import { buildScenario, listScenarios, sheetSvg } from './lib/scenario';
@@ -118,6 +119,13 @@ app.post('/api/import', async (c) => {
   return c.json(await signups.importCsv(c.env, await file.text()));
 });
 app.get('/api/search', async (c) => c.json(await views.search(c.env, c.req.query('q') || '')));
+
+/* ---------- Live edits ---------- */
+app.get('/api/live', async (c) => c.json(await edits.liveSummary(c.env)));
+app.patch('/api/attendance/:id', async (c) => { const { mark } = await c.req.json<{ mark: Mark }>(); return c.json(await edits.editAttendance(c.env, Number(c.req.param('id')), mark)); });
+app.patch('/api/sessions/:id/attendance', async (c) => { const b = await c.req.json<{ kid_id: number; mark: Mark }>(); return c.json(await edits.addAttendance(c.env, Number(c.req.param('id')), Number(b.kid_id), b.mark)); });
+app.patch('/api/kids/:id', async (c) => c.json(await edits.editKid(c.env, Number(c.req.param('id')), await c.req.json())));
+app.patch('/api/families/:id', async (c) => c.json(await edits.editFamily(c.env, Number(c.req.param('id')), await c.req.json())));
 
 /* ---------- Report ---------- */
 app.get('/api/report', async (c) => {
