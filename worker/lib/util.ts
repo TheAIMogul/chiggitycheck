@@ -1,6 +1,6 @@
 // Small shared helpers: dates on the frozen demo clock, name normalization, string similarity.
 
-export type Env = Cloudflare.Env & { OPENAI_API_KEY: string };
+export type Env = Cloudflare.Env & { OPENAI_API_KEY?: string; AI_GATEWAY_ID: string };
 
 /** The demo clock: date frozen at DEMO_TODAY, time of day is the real current time in Miami. */
 export function nowISO(env: Env): string {

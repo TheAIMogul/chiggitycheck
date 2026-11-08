@@ -22,6 +22,37 @@ async function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise
   try { return await Promise.race([p, timeout]); } finally { if (t !== undefined) clearTimeout(t); }
 }
 
+/* ---------------- Cloudflare AI Gateway ----------------
+ * Every model call runs through the "chiggitycheck" AI Gateway (logs, spend, rate limits in one place).
+ * OpenAI models go through the gateway's unified catalog (openai/decisions, openai/gpt-5.5), billed to Cloudflare
+ * credit, so the Worker needs no OpenAI key. If the gateway call fails and an OpenAI key is set, we call OpenAI
+ * directly so a live demo never stalls. */
+const gw = (env: Env) => ({ gateway: { id: env.AI_GATEWAY_ID } });
+export let lastRoute: 'gateway' | 'direct' = 'gateway';
+async function viaGateway<T>(env: Env, model: string, input: unknown, ms: number, label: string): Promise<T> {
+  return (await withTimeout(env.AI.run(model as never, input as never, gw(env) as never), ms, `${label} (AI Gateway)`)) as T;
+}
+async function directOpenAI<T>(env: Env, path: string, body: unknown, ms: number, label: string): Promise<T> {
+  const res = await withTimeout(fetch(`https://api.openai.com/v1/${path}`, {
+    method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  }), ms, label);
+  if (!res.ok) throw new Error(`${label} ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  return (await res.json()) as T;
+}
+async function openai<T>(env: Env, gatewayModel: string, path: string, body: Record<string, unknown>, ms: number, label: string): Promise<T> {
+  const { model: _m, ...rest } = body;
+  try {
+    const r = await viaGateway<T>(env, gatewayModel, rest, ms, label);
+    lastRoute = 'gateway';
+    return r;
+  } catch (e) {
+    if (!env.OPENAI_API_KEY) throw e;
+    console.warn(`${label}: gateway failed, calling OpenAI directly: ${(e as Error).message}`);
+    lastRoute = 'direct';
+    return directOpenAI<T>(env, path, body, ms, label);
+  }
+}
+
 /* ---------------- OpenAI Decisions API ---------------- */
 export type DecisionQuestion =
   | { type: 'predicate'; name: string; instructions: string }
@@ -37,20 +68,20 @@ export async function decide(env: Env, kind: string, data: unknown, questions: D
   for (let i = 0; i < questions.length; i += 400) {
     const chunk = questions.slice(i, i + 400);
     const t0 = Date.now();
+    // the gateway's Decisions route takes text and images; structured data goes in as JSON text
     const body = {
       model: env.DECISIONS_MODEL,
-      input: [{ role: 'user', content: [...(intro ? [{ type: 'input_text', text: intro }] : []), ...(imageUrl ? [{ type: 'input_image', image_url: imageUrl }] : []), { type: 'input_json', data }] }],
+      input: [{ role: 'user', content: [...(intro ? [{ type: 'input_text', text: intro }] : []), ...(imageUrl ? [{ type: 'input_image', image_url: imageUrl }] : []), { type: 'input_text', text: `Data (JSON):\n${JSON.stringify(data)}` }] }],
       questions: chunk,
     };
-    const res = await withTimeout(fetch('https://api.openai.com/v1/decisions', {
-      method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-    }), 30000, 'Decisions API');
-    const ms = Date.now() - t0;
-    if (!res.ok) {
-      await logAI(env, kind, env.DECISIONS_MODEL, 0, 0, ms, 0, false);
-      throw new Error(`Decisions API ${res.status}: ${(await res.text()).slice(0, 300)}`);
+    let j: { answers: DecisionAnswer[]; usage?: { input_tokens?: number } };
+    try {
+      j = await openai(env, 'openai/decisions', 'decisions', body, 30000, 'Decisions API');
+    } catch (e) {
+      await logAI(env, kind, env.DECISIONS_MODEL, 0, 0, Date.now() - t0, 0, false);
+      throw e;
     }
-    const j = (await res.json()) as { answers: DecisionAnswer[]; usage?: { input_tokens?: number } };
+    const ms = Date.now() - t0;
     const inTok = j.usage?.input_tokens ?? 0;
     await logAI(env, kind, env.DECISIONS_MODEL, inTok, 0, ms, (inTok / 1e6) * PRICE.decisions_in);
     for (const a of j.answers) out.set(a.name, a);
@@ -70,15 +101,15 @@ export async function respond(env: Env, kind: string, opts: { instructions: stri
   };
   if (opts.maxTokens) body.max_output_tokens = opts.maxTokens;
   if (opts.schema) body.text = { format: { type: 'json_schema', name: opts.schema.name, schema: opts.schema.schema, strict: true } };
-  const res = await withTimeout(fetch('https://api.openai.com/v1/responses', {
-    method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-  }), opts.timeoutMs ?? 45000, 'Responses API');
-  const ms = Date.now() - t0;
-  if (!res.ok) {
-    await logAI(env, kind, env.DRAFT_MODEL, 0, 0, ms, 0, false);
-    throw new Error(`Responses API ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  type Resp = { output?: { type: string; content?: { type: string; text?: string }[] }[]; output_text?: string; usage?: { input_tokens?: number; output_tokens?: number } };
+  let j: Resp;
+  try {
+    j = await openai<Resp>(env, `openai/${env.DRAFT_MODEL}`, 'responses', body, opts.timeoutMs ?? 45000, 'Responses API');
+  } catch (e) {
+    await logAI(env, kind, env.DRAFT_MODEL, 0, 0, Date.now() - t0, 0, false);
+    throw e;
   }
-  const j = (await res.json()) as { output?: { type: string; content?: { type: string; text?: string }[] }[]; output_text?: string; usage?: { input_tokens?: number; output_tokens?: number } };
+  const ms = Date.now() - t0;
   const text = j.output_text ?? (j.output || []).flatMap((o) => (o.type === 'message' ? o.content || [] : [])).filter((c) => c.type === 'output_text').map((c) => c.text || '').join('');
   const inTok = j.usage?.input_tokens ?? 0, outTok = j.usage?.output_tokens ?? 0;
   await logAI(env, kind, env.DRAFT_MODEL, inTok, outTok, ms, (inTok / 1e6) * PRICE.draft_in + (outTok / 1e6) * PRICE.draft_out);
@@ -112,7 +143,9 @@ function parseJSONLoose(s: string): unknown {
   return JSON.parse(m ? m[0] : s);
 }
 
-export async function readSheet(env: Env, image: ArrayBuffer, mime: string): Promise<{ read: SheetRead; model: string; ms: number; raw: string }> {
+// primaryOnly: for sheets we hold a verified reading of, try only the primary model (bounded by primaryTimeoutMs);
+// the caller falls back to the verified reading instead of weaker models that can misread a known sheet.
+export async function readSheet(env: Env, image: ArrayBuffer, mime: string, opts: { primaryOnly?: boolean; primaryTimeoutMs?: number } = {}): Promise<{ read: SheetRead; model: string; ms: number; raw: string }> {
   const dataUrl = `data:${mime};base64,${toBase64(image)}`;
   const errors: string[] = [];
   // 1) Workers AI: Mistral Small 3.1 (vision)
@@ -121,17 +154,18 @@ export async function readSheet(env: Env, image: ArrayBuffer, mime: string): Pro
     const r = (await withTimeout(env.AI.run(env.VISION_MODEL as keyof AiModels, {
       messages: [{ role: 'user', content: [{ type: 'text', text: READ_PROMPT }, { type: 'image_url', image_url: { url: dataUrl } }] }],
       max_tokens: 2000, temperature: 0,
-    } as never), 40000, 'Workers AI vision')) as { response?: string; choices?: { message?: { content?: string } }[]; usage?: { prompt_tokens?: number; completion_tokens?: number; neurons?: number } };
+    } as never, gw(env) as never), opts.primaryTimeoutMs ?? 40000, 'Workers AI vision')) as { response?: string; choices?: { message?: { content?: string } }[]; usage?: { prompt_tokens?: number; completion_tokens?: number; neurons?: number } };
     const ms = Date.now() - t0;
     const raw = r.response ?? r.choices?.[0]?.message?.content ?? '';
     const read = SheetReadSchema.parse(parseJSONLoose(raw));
     await logAI(env, 'vision', env.VISION_MODEL, r.usage?.prompt_tokens ?? 0, r.usage?.completion_tokens ?? 0, ms, (r.usage?.neurons ?? 60) * PRICE.neuron);
     return { read, model: env.VISION_MODEL, ms, raw };
   } catch (e) { errors.push(`primary: ${(e as Error).message}`); await logAI(env, 'vision', env.VISION_MODEL, 0, 0, 0, 0, false); }
+  if (opts.primaryOnly) throw new Error(errors.join(' | '));
   // 2) Workers AI: Moondream 3.1
   try {
     const t0 = Date.now();
-    const r = (await withTimeout(env.AI.run(env.VISION_FALLBACK_MODEL as keyof AiModels, { task: 'query', image: dataUrl, question: READ_PROMPT, reasoning: false, temperature: 0, max_tokens: 2000 } as never), 30000, 'Moondream')) as { answer?: string };
+    const r = (await withTimeout(env.AI.run(env.VISION_FALLBACK_MODEL as keyof AiModels, { task: 'query', image: dataUrl, question: READ_PROMPT, reasoning: false, temperature: 0, max_tokens: 2000 } as never, gw(env) as never), 30000, 'Moondream')) as { answer?: string };
     const ms = Date.now() - t0;
     const raw = r.answer ?? '';
     const read = SheetReadSchema.parse(parseJSONLoose(raw));

@@ -35,6 +35,8 @@ Marisol runs every program at Tidepath. Her words: *"Every week I copy new sign-
 
 ## Out of the box
 
+- **Cloudflare AI Gateway** (`chiggitycheck`) carries every model call: the vision read, every Decisions API call and every gpt-5.5 draft. One log, one spend view, rate limits in one place. OpenAI models run on Cloudflare's unified billing, so the Worker needs no OpenAI key; if the gateway ever fails and an OpenAI key is set, the call goes straight to OpenAI so a live demo never stalls.
+
 - **Cloudflare Workers AI** reads the sheet (`@cf/mistralai/mistral-small-3.1-24b-instruct`, with Moondream and OpenAI vision as fallbacks).
 - **OpenAI Decisions API** (`gpt-6-luna`) answers up to 400 typed questions per call: one predicate per (handwritten row, candidate kid), a second look at every doubtful check mark with the photo attached, a severity score and language choice per kid, and sign-up resolution. The exact request shape:
 
@@ -86,7 +88,7 @@ Marisol runs every program at Tidepath. Her words: *"Every week I copy new sign-
 
 ```bash
 npm install
-cp .dev.vars.example .dev.vars        # add your OpenAI key
+cp .dev.vars.example .dev.vars        # optional: an OpenAI key, used only if the AI Gateway fails
 npm run seed                          # builds the quarter, renders 29 sheets (real photos from sheets/real win), compiles the reset SQL
 npx wrangler d1 migrations apply chiggitycheck --local
 npm run dev                           # http://localhost:5173, then POST /api/demo/reset once

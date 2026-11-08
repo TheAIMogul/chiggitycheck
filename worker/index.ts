@@ -177,7 +177,7 @@ app.post('/api/demo/reset', async (c) => {
 app.get('/api/about', async (c) => {
   const ai = (await c.env.DB.prepare(`SELECT COUNT(*) n, COALESCE(SUM(cost_usd),0) usd FROM ai_calls`).first()) as Record<string, number>;
   const counts = (await c.env.DB.prepare(`SELECT (SELECT COUNT(*) FROM kids WHERE program!='counseling') kids, (SELECT COUNT(*) FROM families) families, (SELECT COUNT(*) FROM mentors) mentors, (SELECT COUNT(*) FROM sessions) sessions, (SELECT COUNT(*) FROM attendance) attendance_lines, (SELECT COUNT(*) FROM aliases) spellings, (SELECT COUNT(*) FROM messages) messages`).first()) as Record<string, number>;
-  return c.json({ models: { vision: c.env.VISION_MODEL, vision_fallback: c.env.VISION_FALLBACK_MODEL, decisions: c.env.DECISIONS_MODEL, drafting: c.env.DRAFT_MODEL }, ai_spend_usd: Math.round(ai.usd * 10000) / 10000, ai_calls: ai.n, counts, today: c.env.DEMO_TODAY, repo: 'https://github.com/TheAIMogul/chiggitycheck' });
+  return c.json({ models: { vision: c.env.VISION_MODEL, vision_fallback: c.env.VISION_FALLBACK_MODEL, decisions: c.env.DECISIONS_MODEL, drafting: c.env.DRAFT_MODEL }, ai_gateway: c.env.AI_GATEWAY_ID, ai_spend_usd: Math.round(ai.usd * 10000) / 10000, ai_calls: ai.n, counts, today: c.env.DEMO_TODAY, repo: 'https://github.com/TheAIMogul/chiggitycheck' });
 });
 app.get('/api/health', (c) => c.json({ ok: true, today: c.env.DEMO_TODAY }));
 app.all('/api/*', (c) => c.json({ error: { code: 'not_found', message: 'No such endpoint.' } }, 404));

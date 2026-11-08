@@ -98,7 +98,7 @@ export async function read(env: Env, origin: string, sessionId: number): Promise
   let readOut: SheetRead, source: ReadResponse['read_source'] = 'live', model = env.VISION_MODEL as string;
   const verified = VERIFIED_READS[s.photo_sha256];
   try {
-    const r = await readSheet(env, bytes, mime);
+    const r = await readSheet(env, bytes, mime, verified ? { primaryOnly: true, primaryTimeoutMs: 25000 } : {});
     readOut = r.read; model = r.model;
   } catch (e) {
     if (!verified) throw new HttpError(502, 'read_failed', "Couldn't read this sheet. Try a clearer photo, or type the names.");
