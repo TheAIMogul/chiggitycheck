@@ -92,6 +92,7 @@ function Detail({ id, initial, onChanged }: { id: number; initial: FollowupItem 
   const [draft, setDraft] = useState('')
   const [form, setForm] = useState<'called' | 'replied' | null>(null)
   const [note, setNote] = useState('')
+  const [savedAt, setSavedAt] = useState(0)
   const pollUntil = useRef(0)
 
   const load = useCallback(() => {
@@ -158,7 +159,7 @@ function Detail({ id, initial, onChanged }: { id: number; initial: FollowupItem 
 
       <div className="composer">
         <div className="ctop">
-          <span className="eyebrow">To {f.guardian_name} · {f.guardian_phone}</span>
+          <span className="eyebrow" style={{ display: 'inline-flex', gap: 10, alignItems: 'center' }}>To {f.guardian_name} · {f.guardian_phone}{savedAt > 0 && <span key={savedAt} className="savedflash" role="status"><Icon name="check" />Saved</span>}</span>
           {isOpen && (
             <Seg<Lang> label="Message language" value={lang} onChange={(l) => l !== lang && act('lang', () => api.regenerate(f.id, l))}
               options={(['es', 'en', 'ht'] as Lang[]).map((l) => ({ value: l, label: LANG_NATIVE[l] }))} />
@@ -168,14 +169,16 @@ function Detail({ id, initial, onChanged }: { id: number; initial: FollowupItem 
           <div aria-busy="true"><div className="sub" style={{ marginBottom: 10, display: 'flex', gap: 8, alignItems: 'center' }}><span className="spin dk" />Writing it again from the real facts…</div><Shimmer h={16} /><Shimmer h={16} style={{ marginTop: 10 }} /><Shimmer h={16} w="70%" style={{ marginTop: 10 }} /></div>
         ) : editing ? (
           <>
-            <textarea value={draft} onChange={(e) => setDraft(e.target.value)} aria-label="Edit message" autoFocus />
-            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-              <button className="btn dark sm" disabled={!draft.trim() || busy === 'edit'} onClick={() => act('edit', () => api.editDraft(f.id, draft.trim()), () => setEditing(false))}>{busy === 'edit' ? 'Saving…' : 'Save message'}</button>
+            <textarea className="inplace" value={draft} onChange={(e) => setDraft(e.target.value)} aria-label="Edit message" autoFocus
+              onKeyDown={(e) => { if (e.key === 'Escape') setEditing(false); if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && draft.trim()) void act('edit', () => api.editDraft(f.id, draft.trim()), () => { setEditing(false); setSavedAt(Date.now()) }) }} />
+            <div style={{ display: 'flex', gap: 8, marginTop: 14, alignItems: 'center' }}>
+              <button className="btn dark sm" disabled={!draft.trim() || busy === 'edit'} onClick={() => act('edit', () => api.editDraft(f.id, draft.trim()), () => { setEditing(false); setSavedAt(Date.now()) })}>{busy === 'edit' ? <><span className="spin" />Saving…</> : 'Save message'}</button>
               <button className="btn ghost sm" onClick={() => setEditing(false)}>Cancel</button>
+              <span className="sub" style={{ fontSize: 12.5 }}>⌘↵ saves</span>
             </div>
           </>
         ) : (
-          <div className="msg"><Highlighted text={f.draft_text} marks={f.draft_highlights} /></div>
+          <div key={savedAt} className={`msg${savedAt > 0 ? ' justsaved' : ''}`}><Highlighted text={f.draft_text} marks={f.draft_highlights} /></div>
         )}
         {f.draft_translation && !editing && busy !== 'lang' && busy !== 'rewrite' && (
           <div className="trans"><b style={{ color: 'var(--ink-2)' }}>In English:</b> {f.draft_translation}</div>

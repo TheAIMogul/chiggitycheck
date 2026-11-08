@@ -260,7 +260,7 @@ export async function kidDetail(env: Env, id: number): Promise<KidDetail | null>
   for (const s of sess) { const n = normalize(s.raw_text || ''); const al = aliasMap.get(n); if (al && !al.dates.includes(md(s.held_at))) al.dates.push(md(s.held_at)); }
   const name = `${k.first_name} ${k.last_name}`;
   const months: KidDetail['calendar'] = [];
-  for (const m of ['07', '08', '09']) months.push({ month: ['Jul', 'Aug', 'Sep'][Number(m) - 7], cells: list.strip.filter((d) => d.held_at.slice(5, 7) === m).map((d) => ({ session_id: d.session_id, held_at: d.held_at, mark: d.mark, flagged: d.flagged })) });
+  for (const m of ['07', '08', '09']) months.push({ month: ['Jul', 'Aug', 'Sep'][Number(m) - 7], cells: list.strip.filter((d) => d.held_at.slice(5, 7) === m).map((d) => ({ attendance_id: d.attendance_id, session_id: d.session_id, held_at: d.held_at, mark: d.mark, flagged: d.flagged })) });
   const history: KidDetail['history'] = [];
   for (const f of await all(env, `SELECT * FROM followups WHERE kid_id=? ORDER BY created_at DESC`, id)) {
     const missed = (JSON.parse(f.reason_json || '{}').missed || []) as string[];

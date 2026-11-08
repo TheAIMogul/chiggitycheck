@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
-import type { FamilyDetail as FD } from '../../shared/types'
+import type { FamilyDetail as FD, Lang, Ripple } from '../../shared/types'
 import { api } from '../api'
 import { Lightbox } from '../components/Photo'
-import { Avatar, ErrorState, Icon, ShimmerCard, useApi, type IconName } from '../components/ui'
-import { LANG_NAME, PROGRAM, SEV, firstName, fmtDay, gradeLabel, initials, prob, word } from '../format'
+import { InlineEdit, useFlash, useRipple } from '../components/Ripple'
+import { Avatar, ErrorState, Icon, Seg, ShimmerCard, useApi, type IconName } from '../components/ui'
+import { LANG_NAME, LANG_SHORT, PROGRAM, SEV, firstName, fmtDay, gradeLabel, initials, prob, word } from '../format'
 
 const SRC_ICON: Record<FD['sources'][number]['kind'], IconName> = { form: 'form', sheet: 'sheet', text: 'text' }
 const FU_DOT: Record<string, string> = { urgent: 'r', call: 'o', watch: '', fine: 'g' }
@@ -23,6 +24,8 @@ export default function FamilyDetail() {
   const { id } = useParams()
   const f = useApi(() => api.family(Number(id)), [id])
   const [open, setOpen] = useState<number | null>(null)
+  const { run } = useRipple()
+  const { flash, cls } = useFlash()
 
   if (f.error) return <ErrorState error={f.error} onRetry={f.reload} />
   if (!f.data) return <><div className="crumb">People › Families</div><ShimmerCard className="card" lines={6} tall /></>
@@ -30,6 +33,25 @@ export default function FamilyDetail() {
   const n = d.sources.length
   const src = open !== null ? d.sources[open] : null
   const short = d.household_name.replace(/\s+family$/i, '')
+  const openFollowup = d.followups.find((x) => x.status === 'open' || x.status === 'sent')
+
+  /** optimistic edit → PATCH → ripple → quiet refetch */
+  const save = (body: Parameters<typeof api.patchFamily>[1], optimistic: Partial<FD>, keys: string[], extra: Ripple[] = []) => {
+    const prev = d
+    f.setData({ ...d, ...optimistic })
+    void run(() => api.patchFamily(d.id, body), { extra }).then((res) => {
+      if (!res) { f.setData(prev); return }
+      flash(keys)
+      api.family(d.id).then((x) => f.setData(x), () => {})
+    })
+  }
+  const setLang = (l: Lang) => {
+    if (l === d.language) return
+    const extra: Ripple[] = openFollowup
+      ? [{ kind: 'calls', label: 'Open draft rewritten', from: '', to: `${firstName(openFollowup.kid_name)}'s message`, href: `/calls/${openFollowup.id}` }]
+      : []
+    save({ language: l }, { language: l }, ['lang'], extra)
+  }
 
   return (
     <>
@@ -95,10 +117,25 @@ export default function FamilyDetail() {
           </div>
         </section>
         <section className={`card ${d.school_changes.length ? 's12' : 's5'}`}>
-          <div className="title">Contact</div>
-          <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 14 }}><Avatar text={initials(d.guardian_name)} seed={d.id + 4} /><div><b>{d.guardian_name}</b><div className="sub">{d.relationship} · {LANG_NAME[d.language]}</div></div></div>
+          <div className="head"><div className="title">Contact</div><span className="pill wash" style={{ height: 26, fontSize: 12 }}>Tap to edit</span></div>
+          <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 14 }}>
+            <Avatar text={initials(d.guardian_name)} seed={d.id + 4} />
+            <div style={{ minWidth: 0 }}>
+              <InlineEdit as="b" value={d.guardian_name} label="Guardian name" className={cls('name')} onSave={(v) => save({ primary_contact_name: v }, { guardian_name: v }, ['name'])} />
+              <div className="sub">{d.relationship} · {LANG_NAME[d.language]}</div>
+            </div>
+          </div>
           <div className="divider" />
-          <div className="head"><span className="sub">Phone</span><a className="num" style={{ fontWeight: 700 }} href={`tel:${d.phone.replace(/[^\d+]/g, '')}`}>{d.phone}</a></div>
+          <div className="head"><span className="sub">Phone</span>
+            <InlineEdit as="b" value={d.phone} label="Phone" className={`num ${cls('phone') ?? ''}`.trim()} onSave={(v) => save({ phone: v }, { phone: v }, ['phone'])}
+              display={<a className="num" style={{ fontWeight: 700 }} href={`tel:${d.phone.replace(/[^\d+]/g, '')}`}>{d.phone}</a>} />
+          </div>
+          <div className="head" style={{ marginTop: 10 }}><span className="sub">Message language</span>
+            <span className={cls('lang')}>
+              <Seg<Lang> label="Message language" value={d.language} onChange={setLang} options={(['en', 'es', 'ht'] as Lang[]).map((l) => ({ value: l, label: LANG_SHORT[l] }))} />
+            </span>
+          </div>
+          {openFollowup && <div className="sub" style={{ fontSize: 12.5, marginTop: 6, textAlign: 'right' }}>Changing the language rewrites {firstName(openFollowup.kid_name)}'s open draft.</div>}
           {d.email && <div className="head" style={{ marginTop: 10 }}><span className="sub">Email</span><b>{d.email}</b></div>}
           <div className="head" style={{ marginTop: 10 }}><span className="sub">Address</span><b style={{ textAlign: 'right' }}>{d.address}</b></div>
           <div className="head" style={{ marginTop: 10 }}><span className="sub">Kids</span><b style={{ textAlign: 'right' }}>{d.kids.map((k) => `${firstName(k.name)} (${PROGRAM[k.program as keyof typeof PROGRAM] ?? k.program})`).join(', ')}</b></div>

@@ -3,7 +3,7 @@ import type {
   CallsResponse, FollowupItem, Lang, KidListItem, KidDetail, FamilyListItem, FamilyDetail,
   MentorListItem, MentorDetail, SignupItem, SignupForm, SignupResult, ImportResult,
   ReportResponse, EvidenceResponse, Integration, SearchResult, AboutResponse,
-  ScenarioResult,
+  ScenarioResult, EditResponse, LiveSummary, Mark,
 } from '../shared/types'
 
 export class ApiError extends Error {
@@ -91,6 +91,15 @@ export const api = {
 
   scenarios: () => get<ScenarioResult[]>('/api/scenarios'),
   buildScenario: (prompt: string) => post<ScenarioResult>('/api/scenarios', { prompt }),
+
+  // live edits: every edit answers with what else changed across the app
+  live: () => get<LiveSummary>('/api/live'),
+  patchAttendance: (attendanceId: number, mark: Mark) => req<EditResponse>('PATCH', `/api/attendance/${attendanceId}`, { mark }),
+  patchKid: (id: number, body: { first_name?: string; last_name?: string; preferred_name?: string; grade?: string; school?: string; program?: string; site?: string; status?: string }) =>
+    req<EditResponse>('PATCH', `/api/kids/${id}`, body),
+  patchFamily: (id: number, body: { primary_contact_name?: string; relationship?: string; phone?: string; language?: Lang; neighborhood?: string }) =>
+    req<EditResponse>('PATCH', `/api/families/${id}`, body),
+  addToSession: (sessionId: number, kid_id: number, mark: Mark) => req<EditResponse>('PATCH', `/api/sessions/${sessionId}/attendance`, { kid_id, mark }),
 }
 
 export function errMsg(e: unknown): string {

@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router'
-import type { ConfirmResponse, ConfirmRow, Mark, MentorListItem, Program, ReadResponse, ReadRow } from '../../shared/types'
+import type { ConfirmResponse, ConfirmRow, LiveSummary, Mark, MentorListItem, Program, ReadResponse, ReadRow, Ripple } from '../../shared/types'
 import { api, errMsg } from '../api'
 import { useApp } from '../components/AppContext'
 import { Lightbox, PhotoWithBox } from '../components/Photo'
-import { ErrorState, Icon, Seg, SevPill, Shimmer } from '../components/ui'
+import { MiniFlow } from '../components/Explainer'
+import { CountTo, RippleRow } from '../components/Ripple'
+import { ErrorState, Icon, Seg, Shimmer } from '../components/ui'
 import { PROGRAM, SEV, firstName, fmtDow, gradeLabel, hrs, plural, prob, probNum, secs, word } from '../format'
 
 /* one read per session, even under StrictMode double effects */
@@ -67,6 +69,8 @@ export default function SnapReview() {
   const [saving, setSaving] = useState(false)
   const [saveErr, setSaveErr] = useState<string | null>(null)
   const [done, setDone] = useState<ConfirmResponse | null>(null)
+  const [liveBefore, setLiveBefore] = useState<LiveSummary | null>(null)
+  const [liveAfter, setLiveAfter] = useState<LiveSummary | null>(null)
   const [big, setBig] = useState(false)
   const [attempt, setAttempt] = useState(0)
   const t0 = useRef(0)
@@ -119,43 +123,67 @@ export default function SnapReview() {
       return { row_index: r.row_index, kid_id: a.kid_id ?? r.best?.kid_id ?? null, action: 'accept', mark }
     })
     try {
+      const before = await api.live().catch(() => null)
+      setLiveBefore(before)
       const res = await api.confirm(id, { header: { program: header.program, site: header.site, held_at: header.held_at, facilitator_mentor_id: header.facilitator_mentor_id }, rows: out })
       setDone(res)
       refreshCounts()
+      api.live().then(setLiveAfter, () => {})
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (e) { setSaveErr(errMsg(e)) } finally { setSaving(false) }
   }
 
-  /* ---------- success ---------- */
+  /* ---------- success: here's what just changed ---------- */
   if (done) {
-    const changes = [
-      ...done.followups.created.map((c) => ({ id: c.followup_id, name: c.kid_name, to: c.severity, from: null as string | null })),
-      ...done.followups.updated.map((c) => ({ id: c.followup_id, name: c.kid_name, to: c.to, from: SEV[c.from] })),
+    const kidIdFor = (name: string) => rows.flatMap((r) => r.candidates).find((c) => c.name === name)?.kid_id ?? null
+    const changes: (Ripple & { kid_id: number | null })[] = [
+      ...done.followups.updated.map((c) => ({ kind: 'calls' as const, label: c.kid_name, from: SEV[c.from], to: SEV[c.to], href: `/calls/${c.followup_id}`, kid_id: kidIdFor(c.kid_name) })),
+      ...done.followups.created.map((c) => ({ kind: 'calls' as const, label: c.kid_name, from: 'On track', to: SEV[c.severity], href: `/calls/${c.followup_id}`, kid_id: kidIdFor(c.kid_name) })),
     ]
+    const star = changes.find((c) => c.kid_id !== null) ?? changes[0]
+    const starHref = star ? (star.kid_id !== null ? `/people/kids/${star.kid_id}` : `/people?tab=kids&q=${encodeURIComponent(star.label)}`) : '/people'
+    const callsN = liveAfter?.calls_open ?? null
+    const live = liveBefore && liveAfter ? ([
+      { label: 'Calls', from: String(liveBefore.calls_open), to: String(liveAfter.calls_open) },
+      { label: 'Urgent', from: String(liveBefore.urgent), to: String(liveAfter.urgent) },
+      { label: 'Showed up', from: `${liveBefore.attendance_rate}%`, to: `${liveAfter.attendance_rate}%` },
+      { label: 'Sheets', from: String(liveBefore.sheets), to: String(liveAfter.sheets) },
+      { label: 'Hours', from: hrs(liveBefore.hours), to: hrs(liveAfter.hours) },
+    ]) : []
     return (
       <section className="card" style={{ maxWidth: 820, margin: '0 auto' }}>
+        <div style={{ marginBottom: 18 }}><MiniFlow active={['kids', 'calls', 'report']} pulse /></div>
         <div className="trace" style={{ marginTop: 0 }}><span className="c"><Icon name="check" style={{ width: 16, height: 16, strokeWidth: 2.6 }} /></span><span><b>Saved.</b> {done.attendance_written} attendance lines are in the record. {secs(done.ms)}</span></div>
-        <h1 style={{ fontSize: 38, marginTop: 18 }}>{done.present} here, {done.absent} missed{done.unclear ? `, ${done.unclear} unclear` : ''}.</h1>
-        <div className="dq" style={{ gridTemplateColumns: 'repeat(4,minmax(0,1fr))' }}>
-          <div><b className="num">{done.attendance_written}</b><span>Attendance lines</span></div>
-          <div><b className="num">{done.aliases_learned}</b><span>Spellings learned</span></div>
-          <div><b className="num">{hrs(done.hours_logged)} h</b><span>Volunteer hours</span></div>
-          <div><b className="num">{done.new_kids}</b><span>New kids</span></div>
+        <h1 className="done-hero">Here's what just changed.</h1>
+        <div className="sub" style={{ fontSize: 16, marginTop: 6 }}>{done.present} here, {done.absent} missed{done.unclear ? `, ${done.unclear} unclear` : ''}. Every number below moved the moment you tapped Save.</div>
+        <div className="dq count" style={{ gridTemplateColumns: 'repeat(4,minmax(0,1fr))' }}>
+          <div><b><CountTo to={done.attendance_written} /></b><span>Attendance lines</span></div>
+          <div><b><CountTo to={done.aliases_learned} delay={120} /></b><span>Spellings learned</span></div>
+          <div><b><CountTo to={`${hrs(done.hours_logged)} h`} delay={240} /></b><span>Volunteer hours</span></div>
+          <div><b><CountTo to={done.new_kids} delay={360} /></b><span>New kids</span></div>
         </div>
-        <div className="title" style={{ fontSize: 19, marginTop: 24 }}>Follow-ups updated</div>
-        <div className="done-list">
+        {live.length > 0 && (
+          <div className="livebar" aria-label="Live numbers before and after">
+            {live.map((x, i) => (
+              <span key={x.label} className={x.from !== x.to ? 'up' : undefined} style={{ animationDelay: `${400 + i * 90}ms` }}>
+                {x.label} {x.from !== x.to ? <><s>{x.from}</s><span className="rp-arrow">→</span></> : null}<b><CountTo from={x.from !== x.to ? x.from : null} to={x.to} delay={500 + i * 90} /></b>
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="title" style={{ fontSize: 19, marginTop: 24 }}>Follow-ups</div>
+        <div style={{ marginTop: 10 }}>
           {changes.length === 0 && <div className="sub" style={{ padding: '10px 0' }}>No follow-ups changed. Everyone on this sheet is on track.</div>}
-          {changes.map((c) => (
-            <Link key={c.id} to={`/calls/${c.id}`} className="row">
-              <span><b>{c.name}</b> <span className="sub">→ {SEV[c.to]}{c.from ? ` (was ${c.from})` : ' · new'}</span></span>
-              <SevPill severity={c.to} />
-            </Link>
-          ))}
+          {changes.map((c, i) => <RippleRow key={c.href} r={c} i={i + 4} big />)}
         </div>
         {changes.length > 0 && <div className="sub" style={{ marginTop: 10 }}>Messages are already drafted in each family's language.</div>}
-        <div style={{ display: 'flex', gap: 10, marginTop: 22, flexWrap: 'wrap' }}>
-          <button className="btn dark" onClick={() => nav('/calls')}><Icon name="phone" />Go to calls</button>
-          <button className="btn ghost" onClick={() => nav('/today')}>Back to Today</button>
+        <div className="dests">
+          <Link to="/calls" className="dest pri" style={{ animationDelay: '600ms' }}><span className="ic"><Icon name="phone" /></span><b>See the calls{callsN !== null ? ` (${callsN})` : ''}</b><span>Drafts ready to send</span></Link>
+          <Link to={starHref} className="dest" style={{ animationDelay: '780ms' }}><span className="ic"><Icon name="people" /></span><b>{star ? `See ${firstName(star.label)}'s profile` : 'See the kids'}</b><span>{star ? 'Calendar, history, family' : 'Every kid on this sheet'}</span></Link>
+          <Link to="/report" className="dest" style={{ animationDelay: '960ms' }}><span className="ic"><Icon name="doc" /></span><b>See it in the report</b><span>Traced back to this sheet</span></Link>
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginTop: 18, flexWrap: 'wrap' }}>
+          <button className="btn ghost sm" onClick={() => nav('/today')}>Back to Today</button>
         </div>
       </section>
     )

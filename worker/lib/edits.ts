@@ -16,10 +16,11 @@ export async function liveSummary(env: Env): Promise<LiveSummary> {
 
 async function kidSnapshot(env: Env, kidId: number) {
   const k = (await env.DB.prepare(`SELECT k.first_name, k.last_name, k.grade, k.school, k.site, k.program, (SELECT severity FROM followups f WHERE f.kid_id=k.id AND f.status='open' ORDER BY created_at DESC LIMIT 1) sev,
-    (SELECT COUNT(*) FROM attendance a JOIN sessions s ON s.id=a.session_id WHERE a.kid_id=k.id AND a.mark='present' AND s.status='confirmed') p,
-    (SELECT COUNT(*) FROM attendance a JOIN sessions s ON s.id=a.session_id WHERE a.kid_id=k.id AND a.mark='absent' AND s.status='confirmed') ab FROM kids k WHERE k.id=?`).bind(kidId).first()) as Row | null;
+    (SELECT id FROM followups f WHERE f.kid_id=k.id AND f.status='open' ORDER BY created_at DESC LIMIT 1) fu,
+    (SELECT COUNT(*) FROM attendance a JOIN sessions s ON s.id=a.session_id WHERE a.kid_id=k.id AND a.mark='present' AND s.status='confirmed' AND s.program=k.program AND (k.program!='mentoring' OR s.site=k.site) AND s.held_at BETWEEN '2026-07-01' AND '2026-09-30') p,
+    (SELECT COUNT(*) FROM attendance a JOIN sessions s ON s.id=a.session_id WHERE a.kid_id=k.id AND a.mark='absent' AND s.status='confirmed' AND s.program=k.program AND (k.program!='mentoring' OR s.site=k.site) AND s.held_at BETWEEN '2026-07-01' AND '2026-09-30') ab FROM kids k WHERE k.id=?`).bind(kidId).first()) as Row | null;
   if (!k) return null;
-  return { name: `${k.first_name} ${k.last_name}`, sev: (k.sev || 'fine') as Severity, rate: k.p + k.ab ? Math.round((k.p / (k.p + k.ab)) * 100) : null, grade: k.grade, school: k.school };
+  return { name: `${k.first_name} ${k.last_name}`, sev: (k.sev || 'fine') as Severity, fu: k.fu as number | null, rate: k.p + k.ab ? Math.round((k.p / (k.p + k.ab)) * 100) : null, grade: k.grade, school: k.school };
 }
 const SEV_LABEL: Record<Severity, string> = { fine: 'On track', watch: 'Keep an eye', call: 'Call this week', urgent: 'Urgent' };
 
@@ -29,7 +30,7 @@ async function diff(env: Env, before: LiveSummary, kidIds: number[], kidsBefore:
   for (const id of kidIds) {
     const b = kidsBefore.get(id), a = await kidSnapshot(env, id);
     if (!a) continue;
-    if (b && b.sev !== a.sev) out.push({ kind: 'kid', label: a.name, from: SEV_LABEL[b.sev], to: SEV_LABEL[a.sev], href: a.sev === 'call' || a.sev === 'urgent' ? '/calls' : `/people/kids/${id}` });
+    if (b && b.sev !== a.sev) out.push({ kind: (a.sev === 'call' || a.sev === 'urgent') ? 'calls' : 'kid', label: a.name, from: SEV_LABEL[b.sev], to: SEV_LABEL[a.sev], href: (a.sev === 'call' || a.sev === 'urgent') && a.fu ? `/calls/${a.fu}` : `/people/kids/${id}` });
     if (b && b.rate !== a.rate && a.rate !== null) out.push({ kind: 'people', label: `${a.name} · showed up`, from: `${b.rate ?? '–'}%`, to: `${a.rate}%`, href: `/people/kids/${id}` });
     if (b && b.name !== a.name) out.push({ kind: 'people', label: 'Name everywhere', from: b.name, to: a.name, href: `/people/kids/${id}` });
   }

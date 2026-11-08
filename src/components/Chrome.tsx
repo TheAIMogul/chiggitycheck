@@ -9,13 +9,27 @@ import { Icon, Shimmer, useDebounced, useEscape, type IconName } from './ui'
 
 const navCls = ({ isActive }: { isActive: boolean }) => (isActive ? 'on' : undefined)
 
-export function Brand({ to = '/today' }: { to?: string }) {
+export function Brand({ to = '/today', live }: { to?: string; live?: boolean }) {
+  const { liveTick } = useApp()
   return (
     <Link to={to} className="brand" aria-label="ChiggityCheck home">
       <div className="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
       ChiggityCheck
+      {live && <span key={liveTick} className={`livedot${liveTick ? ' go' : ''}`} title="Live: numbers update the moment anything is edited" aria-label="Live" />}
     </Link>
   )
+}
+
+/** true for ~1.2s after `tick` changes */
+function useRecent(tick: number, ms = 1200) {
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    if (!tick) return
+    setOn(true)
+    const t = setTimeout(() => setOn(false), ms)
+    return () => clearTimeout(t)
+  }, [tick, ms])
+  return on
 }
 
 /* ---------- reset demo (shared by banner + avatar menu) ---------- */
@@ -166,7 +180,8 @@ function AboutDialog({ onClose }: { onClose: () => void }) {
 
 /* ---------- header ---------- */
 export function Header() {
-  const { openCount } = useApp()
+  const { openCount, pulse } = useApp()
+  const reportGlow = useRecent(pulse.report)
   const [palette, setPalette] = useState(false)
   const [menu, setMenu] = useState(false)
   const [about, setAbout] = useState(false)
@@ -191,13 +206,13 @@ export function Header() {
 
   return (
     <header className="top">
-      <Brand />
+      <Brand live />
       <nav className="seg" aria-label="Main">
         <NavLink to="/today" className={navCls}>Today</NavLink>
         <NavLink to="/snap" className={navCls}>Snap</NavLink>
-        <NavLink to="/calls" className={navCls}>Calls {!!openCount && <span className="badge" aria-label={`${openCount} open`}>{openCount}</span>}</NavLink>
+        <NavLink to="/calls" className={navCls}>Calls {!!openCount && <span key={pulse.calls} className={`badge${pulse.calls ? ' bump' : ''}`} aria-label={`${openCount} open`}>{openCount}</span>}</NavLink>
         <NavLink to="/people" className={navCls}>People</NavLink>
-        <NavLink to="/report" className={navCls}>Report</NavLink>
+        <NavLink to="/report" className={({ isActive }) => [isActive ? 'on' : '', reportGlow ? 'glow' : ''].join(' ').trim() || undefined}>Report</NavLink>
       </nav>
       <button type="button" className="search" onClick={() => setPalette(true)} aria-label="Search kids, families, any spelling">
         <Icon name="search" />Search kids, families, any spelling<kbd>⌘K</kbd>
@@ -228,14 +243,15 @@ export function Header() {
 }
 
 export function PhoneBar() {
-  const { openCount } = useApp()
+  const { openCount, pulse } = useApp()
+  const reportGlow = useRecent(pulse.report)
   return (
     <nav className="pbar" aria-label="Main">
       <NavLink to="/today" className={navCls}><Icon name="home" />Today</NavLink>
-      <NavLink to="/calls" className={navCls}><Icon name="phone" />{!!openCount && <span className="bd">{openCount}</span>}Calls</NavLink>
+      <NavLink to="/calls" className={navCls}><Icon name="phone" />{!!openCount && <span key={pulse.calls} className={`bd${pulse.calls ? ' bump' : ''}`}>{openCount}</span>}Calls</NavLink>
       <Link className="cam" to="/snap" aria-label="Snap a sheet"><Icon name="cam" /></Link>
       <NavLink to="/people" className={navCls}><Icon name="people" />People</NavLink>
-      <NavLink to="/report" className={navCls}><Icon name="doc" />Report</NavLink>
+      <NavLink to="/report" className={({ isActive }) => [isActive ? 'on' : '', reportGlow ? 'glow' : ''].join(' ').trim() || undefined}><Icon name="doc" />Report</NavLink>
     </nav>
   )
 }
