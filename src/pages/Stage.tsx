@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Icon } from '../components/ui'
+import Explainer from '../components/Explainer'
 
 /* Stage explainer: landscape slides for the presenter. → / Space / PageDown / click = next, ← / PageUp = back, F = full screen, D = demo. */
 
@@ -19,7 +20,8 @@ function Pain({ n, unit, text }: { n: string; unit: string; text: string }) {
   )
 }
 
-const SLIDES: { key: string; render: (go: (to: string) => void) => ReactNode }[] = [
+type Ctx = { active: boolean; mobile: boolean }
+const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => ReactNode }[] = [
   {
     key: 'problem',
     render: () => (
@@ -36,18 +38,13 @@ const SLIDES: { key: string; render: (go: (to: string) => void) => ReactNode }[]
   },
   {
     key: 'what',
-    render: () => (
-      <div className="stg-what">
-        <img src="/sheets/demo-cg-2026-09-23.jpg" alt="Paper sign-in sheet on a clipboard" className="stg-what-img" />
+    render: (_go, ctx) => (
+      <div className="xp-slide">
         <div>
           <p className="stg-eyebrow">What ChiggityCheck does</p>
-          <h2 className="stg-h1">Take a photo of the sign-in sheet.<br /><span className="blue">It does the rest.</span></h2>
-          <ul className="stg-list">
-            <li><Icon name="check" /><span><b>Reads every name</b>, even messy handwriting, and saves attendance.</span></li>
-            <li><Icon name="phone" /><span><b>Tells you who to call</b> this week, with the message written in the family's language.</span></li>
-            <li><Icon name="doc" /><span><b>Keeps the funder report finished.</b> Every number links to the photo.</span></li>
-          </ul>
+          <h2 className="stg-h1 sm">Take a photo of the sign-in sheet. <span className="blue">It does the rest.</span></h2>
         </div>
+        <Explainer active={ctx.active} still={ctx.mobile} />
       </div>
     ),
   },
@@ -113,7 +110,7 @@ export default function Stage() {
       </div>
       {SLIDES.map((s, idx) => (
         <section key={s.key} className={`stg-slide${idx === i ? ' on' : idx < i ? ' past' : ''}`} aria-hidden={idx !== i}>
-          {s.render(go)}
+          {s.render(go, { active: idx === i, mobile: false })}
         </section>
       ))}
       <div className="stg-dots" onClick={(e) => e.stopPropagation()}>
@@ -122,7 +119,7 @@ export default function Stage() {
       
       {/* Portrait / phone: the same story as one scrolling page */}
       <div className="stg-mobile">
-        {SLIDES.map((s) => <section key={s.key} className="stg-mslide">{s.render(go)}</section>)}
+        {SLIDES.map((s) => <section key={s.key} className="stg-mslide">{s.render(go, { active: false, mobile: true })}</section>)}
       </div>
     </div>
   )
