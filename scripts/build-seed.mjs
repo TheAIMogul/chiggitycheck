@@ -157,20 +157,30 @@ for (const [key, first, last, grade, school, site, household, guardian, lang, ar
 // Signed up, never attended (still enrolled, report counts them as not served)
 const NEVER = [
   ['emily', 'Emily', 'Vargas', '6th', 'Citrus Grove MS', 'CG', 'Vargas', 'Daisy Vargas', 'es', 'Little Havana'],
-  ['wesley', 'Wesley', 'Dorvil', '7th', 'Madison MS', 'WLR', 'Dorvil', 'Rachelle Dorvil', 'ht', 'West Little River'],
+  ['wesley', 'Wesley', 'Louis', '7th', 'Madison MS', 'WLR', 'Louis', 'Fabienne Louis', 'ht', 'West Little River'],
   ['brandon', 'Brandon', 'Hughes', '8th', 'Brownsville MS', 'WLR', 'Hughes', 'Crystal Hughes', 'en', 'West Little River'],
-  ['sofiar', 'Sofía', 'Reyes', '5th', 'Citrus Grove Elementary', 'CG', 'Reyes', 'Yesenia Reyes', 'es', 'Little Havana'],
+  ['sofiar', 'Sofía', 'Martínez', '5th', 'Citrus Grove Elementary', 'CG', 'Martínez', 'Tatiana Martínez', 'es', 'Little Havana'],
 ];
 for (const [key, first, last, grade, school, site, household, guardian, lang, area] of NEVER) {
-  const f = addFamily({ key: household.toLowerCase(), household, guardian, lang, area });
+  const existing = families.find((x) => x.key === household.toLowerCase());
+  const f = existing || addFamily({ key: household.toLowerCase(), household, guardian, lang, area });
   kid(f, { key, first, last, grade, school, program: 'workshop', site, enrolled: '2026-08-10', never: true });
 }
-// Counseling clients (aggregate only, never shown by name)
-const COUNSEL = [['Ortega', 'es'], ['Baptiste', 'ht'], ['Simmons', 'en'], ['Rivero', 'es'], ['Charles', 'ht'], ['Pineda', 'es'], ['Florestal', 'ht'], ['Gómez', 'es']];
-COUNSEL.forEach(([last, lang], i) => {
-  const f = addFamily({ key: 'counsel' + i, household: last, guardian: `${pick(['María', 'Rose', 'Denise', 'Carmen', 'Nadia', 'Elena'])} ${last}`, lang, area: i % 2 ? 'West Little River' : 'Little Havana', from: 'intake' });
-  kid(f, { key: 'counsel' + i, first: pick(['Alex', 'Jordan', 'Sam', 'Riley', 'Chris', 'Taylor', 'Morgan', 'Jamie']), last, grade: pick(['6th', '7th', '8th']), school: i % 2 ? 'Madison MS' : 'Citrus Grove MS', program: 'counseling', site: 'OFF', enrolled: '2026-05-01' });
+// Counseling clients (aggregate only, never shown by name). Most are siblings in families we already serve.
+const COUNSEL_SIBS = ['delgado', 'nguyen', 'castillo', 'johnson', 'moore', 'benítez'];
+COUNSEL_SIBS.forEach((fk, i) => {
+  const f = families.find((x) => x.key === fk);
+  const last = kids.find((x) => x.family_id === f.id).last_name;
+  kid(f, { key: 'counsel' + i, first: pick(['Alex', 'Jordan', 'Sam', 'Riley', 'Chris', 'Taylor', 'Morgan', 'Jamie']), last, grade: pick(['6th', '7th', '8th', '9th']), school: f.neighborhood === 'Little Havana' ? 'Citrus Grove MS' : 'Madison MS', program: 'counseling', site: 'OFF', enrolled: '2026-05-01' });
 });
+[['Ortega', 'es'], ['Florestal', 'ht']].forEach(([last, lang], i) => {
+  const f = addFamily({ key: 'counselnew' + i, household: last, guardian: `${pick(['María', 'Rose', 'Denise', 'Carmen'])} ${last}`, lang, area: i ? 'West Little River' : 'Little Havana', from: 'intake' });
+  kid(f, { key: 'counseln' + i, first: pick(['Alex', 'Riley', 'Chris']), last, grade: '7th', school: i ? 'Madison MS' : 'Citrus Grove MS', program: 'counseling', site: 'OFF', enrolled: '2026-05-01' });
+});
+// More workshop siblings so families with 2-3 kids are common
+sib('augustin', 'naika', 'Naïka', '4th', 'Citrus Grove Elementary', 'CG');
+sib('étienne', 'samantha', 'Samantha', '5th', 'Shadowlawn Elementary', 'WLR');
+sib('cruz', 'mateoc', 'Matías', '4th', 'Shadowlawn Elementary', 'WLR');
 
 /* ---------- mentor matches ---------- */
 const matches = [];
@@ -218,6 +228,8 @@ const WORKSHOPS = [['2026-07-07', 'CG'], ['2026-07-21', 'WLR'], ['2026-08-04', '
 const sessions = [];
 const attendance = [];
 const facilitatorOf = { CG: 'luis', WLR: 'marcus' };
+// Spellings Luis uses on the live Sep 23 sheet: history must not already contain them, so saving it teaches new aliases.
+const DEMO_FORBID = { dariel: ['Dariel Rmz'], danield: ['D. Desir'], andres: ['Andres F.'], mateo: ['Mateo Hernandez'], joshua: ['Josh Carter'], sofiaf: ['Sofia Fernandez'] };
 let sessId = 0;
 
 // planted absence patterns (dates the kid was ABSENT); anything not listed is present with noise
@@ -269,7 +281,7 @@ function rowsFor(list, date, writer, site) {
       const prev = attendance.filter((a) => a.kid_id === k.id).slice(-1)[0];
       if (prev && prev.mark === 'absent') mark = 'present';
     }
-    return { kid: k, mark, raw_text: spell(k, writer), row_index: i + 1 };
+    return { kid: k, mark, raw_text: spell(k, writer, DEMO_FORBID[k.key] || []), row_index: i + 1 };
   });
 }
 
@@ -324,7 +336,7 @@ const hours = [];
 const hourKey = (mid, date, siteKey, program) => `${mid}|${date}|${siteKey}|${program}`;
 function addHours(mentorKey, s, h, source, reported_at, raw = null, note = null) {
   const m = M[mentorKey];
-  hours.push({ mentor_id: m.id, session_id: s ? s.id : null, held_on: s ? s.held_at : reported_at.slice(0, 10), site: s ? s.site : null, program: s ? s.program : 'event', hours: h, reported_at, source, raw_text: raw, dedupe_key: s ? hourKey(m.id, s.held_at, s.siteKey, s.program) : `${m.id}|${reported_at.slice(0, 10)}|event|${raw?.slice(0, 12)}`, note });
+  hours.push({ mentor_id: m.id, session_id: s ? s.id : null, held_on: s ? s.held_at : reported_at.slice(0, 10), site: s ? s.site : null, program: s ? s.program : 'event', hours: h, reported_at, source, raw_text: raw, dedupe_key: s ? hourKey(m.id, s.held_at, s.siteKey, s.program) : `${m.id}|${reported_at.slice(0, 10)}|event|${hours.length}`, note });
 }
 const mentorSites = { CG: ['luis', 'sofia', 'ana', 'danielb'], WLR: ['marcus', 'jeanmarc', 'gabriela', 'patrick', 'wislande'] };
 for (const s of sessions) {

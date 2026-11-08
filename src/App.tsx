@@ -1,148 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import cloudflareLogo from './assets/cloudflare.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect } from 'react'
+import { Link, Outlet, Route, Routes, useLocation } from 'react-router'
+import { AppProvider, useApp } from './components/AppContext'
+import { DemoBanner, Header, PhoneBar } from './components/Chrome'
+import { IconSprite } from './components/ui'
+import Welcome from './pages/Welcome'
+import Today from './pages/Today'
+import SnapStart from './pages/SnapStart'
+import SnapReview from './pages/SnapReview'
+import Calls from './pages/Calls'
+import People from './pages/People'
+import KidProfile from './pages/KidProfile'
+import FamilyDetail from './pages/FamilyDetail'
+import MentorDetail from './pages/MentorDetail'
+import Report from './pages/Report'
+import Integrations from './pages/Integrations'
+import Signup from './pages/Signup'
+import Lab from './pages/Lab'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [name, setName] = useState('unknown')
-
+function Layout() {
+  const { pathname } = useLocation()
+  const { refreshCounts } = useApp()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    refreshCounts()
+  }, [pathname, refreshCounts])
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started with Cloudflare</h1>
-          <p>
-            Edit <code>src/App.tsx</code> or <code>worker/index.ts</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none', padding: 0 }}>
-          <li>
-            <button
-              className="counter"
-              onClick={() => setCount((count) => count + 1)}
-            >
-              Count is {count}
-            </button>
-          </li>
-          <li>
-          <button
-            className="counter"
-            onClick={() => {
-              fetch('/api/')
-                .then((res) => res.json())
-                .then((data) => setName(data.name))
-            }}
-            aria-label='get name'
-          >
-            Name from API is: {name}
-          </button>
-          </li>
-        </ul>
-
-
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-            <li>
-              <a href="https://workers.cloudflare.com/" target="_blank">
-                <img className="button-icon" src={cloudflareLogo} alt="" />
-                Workers Docs
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <DemoBanner />
+      <Header />
+      <main className="wrap">
+        <Outlet />
+      </main>
+      <PhoneBar />
     </>
   )
 }
 
-export default App
+function NotFound() {
+  return (
+    <section className="card state">
+      <div className="title">Nothing here.</div>
+      <div className="sub">That page doesn't exist.</div>
+      <Link className="btn dark sm" to="/today">Back to Today</Link>
+    </section>
+  )
+}
+
+export default function App() {
+  return (
+    <AppProvider>
+      <IconSprite />
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route element={<Layout />}>
+          <Route path="/today" element={<Today />} />
+          <Route path="/snap" element={<SnapStart />} />
+          <Route path="/snap/:sessionId" element={<SnapReview />} />
+          <Route path="/calls" element={<Calls />} />
+          <Route path="/calls/:id" element={<Calls />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/people/kids/:id" element={<KidProfile />} />
+          <Route path="/people/families/:id" element={<FamilyDetail />} />
+          <Route path="/people/mentors/:id" element={<MentorDetail />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/integrations" element={<Integrations />} />
+          <Route path="/lab" element={<Lab />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </AppProvider>
+  )
+}

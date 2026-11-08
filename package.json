@@ -9,7 +9,11 @@
     "lint": "oxlint",
     "preview": "npm run build && vite preview",
     "deploy": "npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "seed": "node scripts/build-seed.mjs && node scripts/render-sheets.mjs && node scripts/build-sql.mjs",
+    "seed:sql": "node scripts/build-sql.mjs",
+    "db:local": "wrangler d1 migrations apply chiggitycheck --local",
+    "db:remote": "wrangler d1 migrations apply chiggitycheck --remote"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.5",
