@@ -4,6 +4,7 @@ import { AppProvider, useApp } from './components/AppContext'
 import { DemoBanner, Header, PhoneBar } from './components/Chrome'
 import { IconSprite } from './components/ui'
 import Welcome from './pages/Welcome'
+import Stage from './pages/Stage'
 import Today from './pages/Today'
 import SnapStart from './pages/SnapStart'
 import SnapReview from './pages/SnapReview'
@@ -51,7 +52,8 @@ export default function App() {
     <AppProvider>
       <IconSprite />
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Stage />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="/signup" element={<Signup />} />
         <Route element={<Layout />}>
           <Route path="/today" element={<Today />} />
