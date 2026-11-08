@@ -860,3 +860,20 @@ body{background-repeat:no-repeat;background-size:100% 100vh}
 .stg-h1.sm{font-size:calc(var(--u)*4)}
 @media (max-width:860px),(orientation:portrait) and (max-width:1100px){.stg-h1.sm{font-size:28px}.stg-top .stg-brand.sm{visibility:visible!important}}
 .stg-ba{margin-top:calc(var(--u)*3)}.stg-ba>div{padding:calc(var(--u)*2.4) calc(var(--u)*3)}.stg-ba .row{padding:calc(var(--u)*.9) 0}.stg-ba .row b{font-size:calc(var(--u)*2.3)}
+.stg-pains.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--u)*2)}
+.stg-pains.three .stg-pain{padding:calc(var(--u)*3)}
+.stg-pains.three .stg-pain-n{font-size:calc(var(--u)*7)}
+.stg-pains.three .stg-pain-t{font-size:calc(var(--u)*1.8)}
+.stg-what{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:calc(var(--u)*5);align-items:center;width:100%;max-width:calc(var(--u)*90)}
+.stg-what-img{width:100%;border-radius:calc(var(--u)*2.4);box-shadow:0 24px 50px rgba(30,40,90,.22);transform:rotate(-2deg)}
+.stg-list{list-style:none;padding:0;margin:calc(var(--u)*3.2) 0 0;display:flex;flex-direction:column;gap:calc(var(--u)*1.8)}
+.stg-list li{display:flex;gap:calc(var(--u)*1.4);align-items:flex-start;font-size:calc(var(--u)*1.9);line-height:1.4;color:var(--ink-2)}
+.stg-list li b{color:var(--ink);font-weight:600}
+.stg-list li svg{flex:none;width:calc(var(--u)*3);height:calc(var(--u)*3);padding:calc(var(--u)*.6);border-radius:calc(var(--u)*.9);background:var(--blue-wash);color:var(--blue);stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:860px),(orientation:portrait) and (max-width:1100px){
+  .stg-pains.three{grid-template-columns:1fr}.stg-pains.three .stg-pain-n{font-size:44px}.stg-pains.three .stg-pain-t{font-size:16px}
+  .stg-what{grid-template-columns:1fr;gap:24px}.stg-what-img{max-width:260px;margin:0 auto;display:block}
+  .stg-list li{font-size:16px;gap:12px}.stg-list li svg{width:30px;height:30px;padding:6px}
+}
+.stg-list.fix{margin-top:calc(var(--u)*2.4);gap:calc(var(--u)*1.4)}.stg-list.fix li{font-size:calc(var(--u)*1.7)}
+@media (max-width:860px),(orientation:portrait) and (max-width:1100px){.stg-list.fix li{font-size:16px}}
