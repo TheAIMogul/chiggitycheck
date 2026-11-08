@@ -765,3 +765,6 @@ label.btn:focus-within{outline:2px solid var(--blue);outline-offset:2px}
 a.card{color:inherit}
 
 @media (max-width:860px){.demobar{font-size:12px;gap:10px;padding:8px 12px}.demobar .db-long{display:none}}
+
+html{background:#F4F5FA}
+body{background-repeat:no-repeat;background-size:100% 100vh}
