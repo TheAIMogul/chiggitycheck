@@ -5,7 +5,7 @@ const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.
 const p = await b.newPage();
 await p.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
 await p.goto(BASE + '/#1', { waitUntil: 'networkidle0' });
-for (let i = 1; i <= 3; i++) {
+for (let i = 1; i <= 8; i++) {
   await new Promise((r) => setTimeout(r, 900));
   await p.screenshot({ path: `reports/stage/slide-${i}-${W}x${H}.png` });
   await p.keyboard.press('ArrowRight');

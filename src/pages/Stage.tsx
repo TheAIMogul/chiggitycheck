@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { Icon } from '../components/ui'
+import { Icon, type IconName } from '../components/ui'
 import Explainer from '../components/Explainer'
 
 /* Stage explainer: landscape slides for the presenter. → / Space / PageDown / click = next, ← / PageUp = back, F = full screen, D = demo. */
@@ -11,7 +11,7 @@ const Mark = ({ size = 1 }: { size?: number }) => (
   </span>
 )
 
-function Pain({ n, unit, text }: { n: string; unit: string; text: string }) {
+export function Pain({ n, unit, text }: { n: string; unit: string; text: string }) {
   return (
     <div className="stg-pain">
       <div className="stg-pain-n">{n}<span>{unit}</span></div>
@@ -21,18 +21,29 @@ function Pain({ n, unit, text }: { n: string; unit: string; text: string }) {
 }
 
 type Ctx = { active: boolean; mobile: boolean }
+const Shot = ({ src, alt, top }: { src: string; alt: string; top?: boolean }) => (
+  <div className={`stg-shot${top ? ' top' : ''}`}><img src={src} alt={alt} /></div>
+)
+const Feature = ({ eyebrow, title, bullets, shot, alt, top }: { eyebrow: string; title: ReactNode; bullets: [IconName, ReactNode][]; shot: string; alt: string; top?: boolean }) => (
+  <div className="stg-feat">
+    <div>
+      <p className="stg-eyebrow">{eyebrow}</p>
+      <h2 className="stg-h1 sm">{title}</h2>
+      <ul className="stg-list fix">{bullets.map(([ic, t], i) => <li key={i}><Icon name={ic} /><span>{t}</span></li>)}</ul>
+    </div>
+    <Shot src={shot} alt={alt} top={top} />
+  </div>
+)
+
 const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => ReactNode }[] = [
   {
     key: 'problem',
     render: () => (
       <div className="stg-wrap">
         <p className="stg-eyebrow">The problem</p>
-        <h2 className="stg-h1">Attendance lives on paper.<br /><span className="muted">So kids slip away and nobody notices.</span></h2>
-        <div className="stg-pains three">
-          <Pain n="5–15" unit="hrs/week" text="Staff retype paper sign-in sheets into spreadsheets." />
-          <Pain n="3" unit="misses" text="before anyone calls the family. The sheets weren't typed in yet." />
-          <Pain n="3" unit="days" text="to build the funder report. And the numbers don't match." />
-        </div>
+        <h2 className="stg-h1">Kids are slipping through the cracks,<br /><span className="muted">and the paperwork is why.</span></h2>
+        <p className="stg-lede big">At a Miami youth nonprofit, attendance lives on paper sign-in sheets. Staff spend 5 to 15 hours a week retyping them. A kid can miss three sessions before anyone calls home, because the sheets aren't typed in yet. And every quarter, the funder report takes three days and the numbers don't match.</p>
+        <p className="stg-lede big blue strong">We built a tool to solve that.</p>
       </div>
     ),
   },
@@ -41,7 +52,7 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
     render: (_go, ctx) => (
       <div className="xp-slide">
         <div>
-          <p className="stg-eyebrow">What ChiggityCheck does</p>
+          <p className="stg-eyebrow">Meet ChiggityCheck</p>
           <h2 className="stg-h1 sm">Take a photo of the sign-in sheet. <span className="blue">It does the rest.</span></h2>
         </div>
         <Explainer active={ctx.active} still={ctx.mobile} />
@@ -49,17 +60,67 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
     ),
   },
   {
+    key: 'snap',
+    render: () => (
+      <Feature eyebrow="1 · Snap" title={<>It reads the handwriting<br /><span className="blue">and knows who's who.</span></>} shot="/stage/snap.png" alt="Sheet review screen" top
+        bullets={[
+          ['cam', <><b>One photo.</b> Every name and check mark read in about 12 seconds.</>],
+          ['merge', <><b>Each spelling matched</b> to the right kid with a probability. "Dariel Rmz" is Dariel Ramírez, 99%. Learned forever.</>],
+          ['q', <><b>It only asks when it must.</b> A kid it has never seen, or a half-finished check mark.</>],
+        ]} />
+    ),
+  },
+  {
+    key: 'calls',
+    render: () => (
+      <Feature eyebrow="2 · Nobody left behind" title={<>Who to call this week,<br /><span className="blue">with the message already written.</span></>} shot="/stage/calls.png" alt="Calls screen" top
+        bullets={[
+          ['phone', <><b>Flagged at the second miss.</b> Every kid's pattern is scored the moment a sheet is saved.</>],
+          ['msg', <><b>Written in the family's language</b> from the real facts: the dates, the mentor, the next session. Spanish, Haitian Creole or English.</>],
+          ['check', <><b>Sent on WhatsApp.</b> Delivered, read, and the reply lands on the kid's record.</>],
+        ]} />
+    ),
+  },
+  {
+    key: 'people',
+    render: () => (
+      <Feature eyebrow="3 · One record per person" title={<>Three spellings.<br /><span className="blue">One family.</span></>} shot="/stage/family.png" alt="Family page showing one family found in three places" top
+        bullets={[
+          ['people', <><b>The same mom</b> from a sign-up form, a sheet and a text message becomes one record, with every spelling kept.</>],
+          ['school', <><b>A kid changes schools</b> and keeps their history. Counted once in the report.</>],
+          ['pen', <><b>Edit anything</b> and the app shows you everything else that moved.</>],
+        ]} />
+    ),
+  },
+  {
+    key: 'report',
+    render: () => (
+      <Feature eyebrow="4 · Prove it" title={<>The funder report is done.<br /><span className="blue">Every number opens its photo.</span></>} shot="/stage/evidence.png" alt="Report with the evidence drawer open" top
+        bullets={[
+          ['doc', <><b>Always current.</b> Kids served, attendance, sessions, mentor matches, volunteer hours, follow-ups.</>],
+          ['sheet', <><b>Tap any number</b> and see the sheets and lines behind it, with the photo and the line highlighted.</>],
+          ['lock', <><b>Honest by design.</b> Duplicate hours removed, unclear marks left out, counseling shown as totals only.</>],
+        ]} />
+    ),
+  },
+  {
+    key: 'real',
+    render: () => (
+      <Feature eyebrow="5 · It's a real app" title={<>Live data.<br /><span className="blue">Nothing is faked.</span></>} shot="/stage/today.png" alt="Today dashboard" top
+        bullets={[
+          ['form', <><b>Public sign-up form</b> and spreadsheet import. Every submission is matched to existing families, so no duplicates.</>],
+          ['db', <><b>Describe a program in a sentence</b> and it creates the kids, sessions, sheets and calls in 20 seconds.</>],
+          ['plug', <><b>Connected tools:</b> WhatsApp, SMS, Google Sheets, Mailchimp, QuickBooks, calendar. Runs on Cloudflare at the edge.</>],
+        ]} />
+    ),
+  },
+  {
     key: 'how',
     render: (go) => (
       <div className="stg-demo">
         <div>
-          <p className="stg-eyebrow">How that fixes it</p>
-          <h2 className="stg-h1 sm">One photo replaces<br />all the retyping.</h2>
-          <ul className="stg-list fix">
-            <li><Icon name="check" /><span><b>No more retyping.</b> One photo per session instead of 40 minutes of typing.</span></li>
-            <li><Icon name="phone" /><span><b>No kid slips through.</b> Flagged at the 2nd miss, with the call message ready.</span></li>
-            <li><Icon name="doc" /><span><b>No report crunch.</b> The report fills itself as sheets come in.</span></li>
-          </ul>
+          <p className="stg-eyebrow">Live demo</p>
+          <h2 className="stg-h1 sm">No more retyping.<br />No kid slips through.<br /><span className="blue">No report crunch.</span></h2>
           <button className="stg-go" onClick={(e) => { e.stopPropagation(); go('/today') }}>
             <Icon name="cam" /> Start the demo
           </button>

@@ -1002,3 +1002,14 @@ h1.ie{display:inline-flex}
   .rp-card,.rp-row,.rp-saving,.rp-to,.rp-bar,.rp-dot,.livedot,.badge.bump,.bd.bump,.seg a.glow,.pbar a.glow,.vflash,.stats4 div.vflash b,.pop,.cal button.just,.livebar span,.dest,.dq.count b,.savedflash,.composer .msg.justsaved{animation:none!important}
   .cal button{transition:none}
 }
+/* stage: feature slides with real desktop screenshots */
+.stg-lede.big{font-size:calc(var(--u)*2.1);max-width:calc(var(--u)*84);margin-top:calc(var(--u)*3)}
+.stg-lede.strong{font-weight:600;color:var(--blue)}
+.stg-feat{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:calc(var(--u)*4);align-items:center;width:100%;max-width:calc(var(--u)*94)}
+.stg-shot{border-radius:calc(var(--u)*1.8);overflow:hidden;box-shadow:0 30px 70px rgba(30,40,90,.28);border:1px solid rgba(255,255,255,.6);background:#fff;aspect-ratio:16/11;}
+.stg-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+@media (max-width:860px),(orientation:portrait) and (max-width:1100px){
+  .stg-lede.big{font-size:17px}
+  .stg-feat{grid-template-columns:1fr;gap:20px}
+  .stg-shot{aspect-ratio:16/10}
+}
