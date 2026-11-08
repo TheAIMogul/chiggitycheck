@@ -3,7 +3,7 @@
 import puppeteer from 'puppeteer-core';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const BASE = process.env.BASE || 'http://localhost:5173';
-const OUT = 'reports/screens';
+const OUT = process.env.OUT || 'reports/screens';
 const args = process.argv.slice(2);
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ['--hide-scrollbars'] });
 for (let i = 0; i < args.length; i += 2) {
