@@ -4,7 +4,7 @@ Snap the paper sign-in sheet. ChiggityCheck reads it, matches every handwritten 
 
 Built for the Give Miami Day Hackathon 2026 (The Miami Foundation), challenge #1 "From sign-up to quarterly report", for a fictional Miami nonprofit, Tidepath Family Alliance.
 
-**Live:** https://chiggitycheck.micahberkley.com
+**Live:** https://check.micahberkley.com
 
 > Work in progress during the hackathon. Full README with screenshots, architecture and the demo script lands before the deadline.
 
