@@ -11,7 +11,14 @@ export async function liveSummary(env: Env): Promise<LiveSummary> {
   const c = (await env.DB.prepare(`SELECT SUM(status='open' AND severity IN ('call','urgent')) open, SUM(status='open' AND severity='urgent') urgent, SUM(status='open' AND severity='watch') watch FROM followups`).first()) as Row;
   const r = await report(env);
   const al = (await env.DB.prepare(`SELECT COUNT(*) n FROM aliases WHERE source!='record'`).first()) as Row;
-  return { calls_open: c.open ?? 0, urgent: c.urgent ?? 0, watch: c.watch ?? 0, attendance_rate: Number(r.kpis[1].value.replace('%', '')), kids_served: Number(r.kpis[0].value), hours: Number(r.kpis[3].value), sheets: r.data_quality.sheets, aliases: al.n ?? 0, updated_at: nowISO(env) };
+  const sc = (await env.DB.prepare(`SELECT COUNT(*) n FROM signups`).first()) as Row;
+  const ls = (await env.DB.prepare(`SELECT s.*, f.household_name FROM signups s LEFT JOIN families f ON f.id=s.family_id ORDER BY s.id DESC LIMIT 1`).first()) as Row | null;
+  let last: LiveSummary['last_signup'] = null;
+  if (ls) {
+    const j = JSON.parse(ls.raw_json);
+    last = { id: ls.id, kid: `${j.kid_first ?? ''} ${j.kid_last ?? ''}`.trim(), guardian: `${j.guardian_first ?? ''} ${j.guardian_last ?? ''}`.trim(), status: ls.status, matched_to: ls.status === 'linked' && ls.household_name ? `${ls.household_name} family` : null, family_id: ls.family_id, kid_id: ls.kid_id, at: ls.received_at };
+  }
+  return { calls_open: c.open ?? 0, urgent: c.urgent ?? 0, watch: c.watch ?? 0, attendance_rate: Number(r.kpis[1].value.replace('%', '')), kids_served: Number(r.kpis[0].value), hours: Number(r.kpis[3].value), sheets: r.data_quality.sheets, aliases: al.n ?? 0, signups: sc.n ?? 0, last_signup: last, updated_at: nowISO(env) };
 }
 
 async function kidSnapshot(env: Env, kidId: number) {

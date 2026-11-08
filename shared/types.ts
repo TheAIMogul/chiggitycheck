@@ -260,4 +260,4 @@ export interface EditResponse { ok: true; changes: Ripple[]; ms: number }
 // PATCH /api/families/:id              body { primary_contact_name?, relationship?, phone?, language?, neighborhood? }            -> EditResponse
 // PATCH /api/sessions/:id/attendance   body { kid_id: number, mark: Mark }  (add a kid to a session) -> EditResponse
 // GET   /api/live                      -> LiveSummary (for nav badges / pulses)
-export interface LiveSummary { calls_open: number; urgent: number; watch: number; attendance_rate: number; kids_served: number; hours: number; sheets: number; aliases: number; updated_at: string }
+export interface LiveSummary { calls_open: number; urgent: number; watch: number; attendance_rate: number; kids_served: number; hours: number; sheets: number; aliases: number; signups: number; last_signup: { id: number; kid: string; guardian: string; status: 'linked' | 'new' | 'review'; matched_to: string | null; family_id: number | null; kid_id: number | null; at: string } | null; updated_at: string }

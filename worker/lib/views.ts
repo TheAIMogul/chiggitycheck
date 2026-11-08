@@ -351,7 +351,7 @@ export async function mentorDetail(env: Env, id: number): Promise<MentorDetail |
 }
 
 export async function signupList(env: Env): Promise<SignupItem[]> {
-  const rows = await all(env, `SELECT s.*, k.first_name kf, k.last_name kl, f.household_name FROM signups s LEFT JOIN kids k ON k.id=s.kid_id LEFT JOIN families f ON f.id=s.family_id ORDER BY (s.status='review') DESC, s.received_at DESC`);
+  const rows = await all(env, `SELECT s.*, k.first_name kf, k.last_name kl, f.household_name FROM signups s LEFT JOIN kids k ON k.id=s.kid_id LEFT JOIN families f ON f.id=s.family_id ORDER BY s.received_at DESC, s.id DESC`);
   return rows.map((s) => {
     const j = JSON.parse(s.raw_json);
     return { id: s.id, received_at: s.received_at, source: s.source, guardian: `${j.guardian_first} ${j.guardian_last}`.trim(), kid: `${j.kid_first} ${j.kid_last}`.trim(), phone: j.phone ?? null, language: j.language ?? null, resolve_probability: s.resolve_probability, status: s.status, family_id: s.family_id, kid_id: s.kid_id, matched_to: s.status === 'linked' && s.kf ? `${s.kf} ${s.kl} · ${s.household_name} family` : s.status === 'review' ? (j.note || `Maybe the ${s.household_name ?? ''} family`).trim() : null };

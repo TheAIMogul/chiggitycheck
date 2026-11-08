@@ -158,8 +158,21 @@ function StatusPill({ s, p, to }: { s: SignupItem['status']; p: number | null; t
 }
 
 function Signups() {
-  const { today } = useApp()
+  const { today, liveTick } = useApp()
   const list = useApi(api.signups, [])
+  const seen = useRef<number | null>(null)
+  const [fresh, setFresh] = useState<Set<number>>(new Set())
+  useEffect(() => { if (liveTick) list.reload(true) }, [liveTick]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!list.data?.length) return
+    const max = Math.max(...list.data.map((s) => s.id))
+    if (seen.current !== null && max > seen.current) {
+      const ids = new Set(list.data.filter((s) => s.id > (seen.current ?? 0)).map((s) => s.id))
+      setFresh(ids)
+      setTimeout(() => setFresh(new Set()), 6000)
+    }
+    seen.current = max
+  }, [list.data])
   const file = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [res, setRes] = useState<ImportResult | null>(null)
@@ -203,7 +216,7 @@ function Signups() {
         )}
       </section>
       <section className="card">
-        <div className="title" style={{ fontSize: 19 }}>Sign-ups</div>
+        <div className="head"><div className="title" style={{ fontSize: 19 }}>Sign-ups</div><span className="pill live-pill"><span className="sn-dot sm" />Updates live</span></div>
         {list.error ? <ErrorState error={list.error} onRetry={list.reload} inCard={false} /> : !list.data ? <ListSkeleton /> : list.data.length === 0 ? (
           <EmptyState text="No sign-ups yet." action={<Link className="btn dark sm" to="/signup">Open the sign-up form</Link>} />
         ) : (
@@ -220,7 +233,8 @@ function Signups() {
                   <div className="side"><StatusPill s={s.status} p={s.resolve_probability} to={s.matched_to} />{s.language && <span>{LANG_NAME[s.language]}</span>}</div>
                 </>
               )
-              return to ? <Link key={s.id} to={to} className="li">{body}</Link> : <div key={s.id} className="li">{body}</div>
+              const cls = `li${fresh.has(s.id) ? ' fresh' : ''}`
+              return to ? <Link key={s.id} to={to} className={cls}>{body}</Link> : <div key={s.id} className={cls}>{body}</div>
             })}
           </div>
         )}
