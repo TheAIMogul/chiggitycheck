@@ -53,7 +53,7 @@ export function DemoBanner() {
   const reset = useReset()
   return (
     <div className="demobar noprint">
-      <span><b>Sandbox</b> · Today is {fmtFull(today) || 'Wed Sep 23, 2026'} · Tidepath Family Alliance is fictional</span>
+      <span><b>Sandbox</b> · <span className="db-long">Today is </span>{fmtFull(today) || 'Wed Sep 23, 2026'}<span className="db-long"> · Tidepath Family Alliance is fictional</span></span>
       <Link to="/lab" style={{ whiteSpace: 'nowrap' }}>Build a dataset</Link>
       <span className="sep">·</span>
       <button type="button" onClick={reset.ask}>Reset</button>

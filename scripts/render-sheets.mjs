@@ -110,7 +110,7 @@ function render(name, opts) {
   writeFileSync(html, sheetHTML(opts));
   execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--virtual-time-budget=6000', `--window-size=${W},${H}`, `--screenshot=${png}`, 'file://' + html], { stdio: 'ignore' });
   const jpg = join(OUT, name + '.jpg');
-  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '78', png, '--out', jpg], { stdio: 'ignore' });
+  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '80', '-Z', '1200', png, '--out', jpg], { stdio: 'ignore' });
   return createHash('sha256').update(readFileSync(jpg)).digest('hex');
 }
 

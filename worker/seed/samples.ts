@@ -9,7 +9,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-23",
   "time": "4:00 pm",
   "photo_url": "/sheets/demo-cg-2026-09-23.jpg",
-  "photo_sha256": "315190d11fe267a4cebcc21bb95a2dac8b58816a24bb997e13cdf90d7a016cc3",
+  "photo_sha256": "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a",
   "recommended": true,
   "session_id": null
  },
@@ -21,7 +21,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-16",
   "time": "4:00 pm",
   "photo_url": "/sheets/s37.jpg",
-  "photo_sha256": "0bf11b294065332b91282f8e39caf833eda3d08c7bbbc229ad837a1874de0e5c",
+  "photo_sha256": "87f6b5db50c98a27d02a245a11c036b497a4ad388421f3ac378e7a7ea49373da",
   "recommended": false,
   "session_id": 37
  },
@@ -33,7 +33,7 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-17",
   "time": "4:30 pm",
   "photo_url": "/sheets/s38.jpg",
-  "photo_sha256": "d310e6aa7358b3d63354d8c228ecdb596962475edf943fa3c22e87b4341e1145",
+  "photo_sha256": "53f480e8bd1d1ec6d43a257858a1fca79e7381530cafafbaa74d0c91cb5a349e",
   "recommended": false,
   "session_id": 38
  },
@@ -45,14 +45,14 @@ export const SAMPLES: SampleDef[] = [
   "held_at": "2026-09-15",
   "time": "6:00 pm",
   "photo_url": "/sheets/s36.jpg",
-  "photo_sha256": "678a8bce4b0d9ad16c1754bd0e4ed9b5449f54d331849439f7664bae8375a262",
+  "photo_sha256": "bbcf3cf2c4ff9f7e413ed637946a2eba37c035e82fa6cfd0a736f48c061d74c1",
   "recommended": false,
   "session_id": 36
  }
 ];
 // Verified transcription of the live demo sheet. Used only if every live vision model fails (e.g. venue Wi-Fi), and labeled as such.
 export const VERIFIED_READS: Record<string, { header: { program: string; site: string; date: string; facilitator: string }; rows: { row_index: number; name_as_written: string; mark: 'present' | 'absent' | 'unclear'; bbox: [number, number, number, number] }[] }> = {
- "315190d11fe267a4cebcc21bb95a2dac8b58816a24bb997e13cdf90d7a016cc3": {
+ "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a": {
   "header": {
    "program": "mentoring",
    "site": "Citrus Grove MS",

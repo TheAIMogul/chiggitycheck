@@ -7,7 +7,7 @@ import { PhotoWithBox } from '../components/Photo'
 import { ErrorState, Icon, Seg, Shimmer, ShimmerCard, useApi, useEscape } from '../components/ui'
 import { PROGRAM, fmtDay, fmtDow, fmtWhen, hrs, pct, pctNum, plural, prob } from '../format'
 
-const QUARTERS = [{ value: 'FY26Q4', label: 'Q4 FY26' }, { value: 'FY27Q1', label: 'Q1 FY27' }]
+const QUARTERS = [{ value: 'FY27Q1', label: 'Q1 FY27' }]
 
 function Spark({ v }: { v: number[] }) {
   if (v.length < 2) return <svg className="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22 L200 22" stroke="#4D6BFE" strokeWidth="2" fill="none" strokeDasharray="3 6" /></svg>

@@ -191,7 +191,7 @@ export async function week(env: Env): Promise<WeekResponse> {
   const greetingHour = Number(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', hour12: false, timeZone: 'America/New_York' }));
   return {
     today, now: new Date().toISOString(),
-    greeting: `${new Date(today + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' })} · Good ${greetingHour < 12 ? 'morning' : greetingHour < 18 ? 'afternoon' : 'evening'}, ${env.STAFF_NAME}`,
+    greeting: `Good ${greetingHour < 12 ? 'morning' : greetingHour < 18 ? 'afternoon' : 'evening'}, ${env.STAFF_NAME}`,
     range,
     headline: { count: call.length, text: call.length ? `${call.length} ${call.length === 1 ? 'family needs' : 'families need'} a call.` : "Everybody's accounted for this week.", sub: call.length ? 'Everything else is on track.' : `${md(range.start)} to ${md(range.end)}` },
     plan: {
@@ -309,11 +309,17 @@ export async function familyDetail(env: Env, id: number): Promise<FamilyDetail |
     if (a.source === 'record') continue;
     let label = '', photo: string | null = null;
     const [kind, ref] = String(a.source_ref || '').split(':');
-    if (a.source === 'form') { const s = await one(env, `SELECT received_at, source FROM signups WHERE id=?`, Number(ref)); label = `Sign-up form · ${md(s?.received_at ?? a.first_seen_at)}`; }
-    if (a.source === 'sheet') { const s = await one(env, `SELECT held_at, program, photo_url FROM sessions WHERE id=?`, Number(ref)); label = `${PROGRAM_LABEL[s?.program] ?? 'Sheet'} sheet · ${md(s?.held_at ?? a.first_seen_at)} · parent helper`; photo = s?.photo_url ?? null; }
-    if (a.source === 'text') { const h = await one(env, `SELECT h.reported_at, m.full_name FROM hours h JOIN mentors m ON m.id=h.mentor_id WHERE h.id=?`, Number(ref)); label = `Hours text from ${h?.full_name?.split(' ')[0] ?? 'a mentor'} · ${md(h?.reported_at ?? a.first_seen_at)}`; }
+    if (a.source === 'form') { const s = await one(env, `SELECT received_at, source FROM signups WHERE id=?`, Number(ref)); label = s?.source && s.source !== 'webform' ? `Sign-up (${s.source})` : 'Sign-up form'; }
+    if (a.source === 'sheet') { const s = await one(env, `SELECT held_at, program, photo_url FROM sessions WHERE id=?`, Number(ref)); label = `${s?.program === 'workshop' ? 'Workshop' : PROGRAM_LABEL[s?.program] ?? 'Attendance'} sheet · parent helper`; photo = s?.photo_url ?? null; }
+    if (a.source === 'text') { const h = await one(env, `SELECT h.reported_at, m.full_name FROM hours h JOIN mentors m ON m.id=h.mentor_id WHERE h.id=?`, Number(ref)); label = `Hours text from ${h?.full_name?.split(' ')[0] ?? 'a mentor'}`; }
     void kind;
     sources.push({ kind: a.source, label, date: a.first_seen_at, raw_text: a.raw_text, probability: a.probability, first: false, photo_url: photo, bbox: null });
+  }
+  const firstSignup = await one(env, `SELECT * FROM signups WHERE family_id=? ORDER BY received_at LIMIT 1`, id);
+  if (firstSignup) {
+    const j = JSON.parse(firstSignup.raw_json);
+    const g = `${j.guardian_first ?? ''} ${j.guardian_last ?? ''}`.trim();
+    if (g && !sources.some((x) => normalize(x.raw_text) === normalize(g))) sources.push({ kind: 'form', label: firstSignup.source === 'webform' ? 'Sign-up form' : `Sign-up (${firstSignup.source})`, date: firstSignup.received_at, raw_text: g, probability: null, first: false, photo_url: null, bbox: null });
   }
   if (sources.length) { sources.sort((a, b) => a.date.localeCompare(b.date)); sources[0].first = true; }
   const changes = await all(env, `SELECT h.*, k.first_name, k.last_name FROM kid_status_history h JOIN kids k ON k.id=h.kid_id WHERE k.family_id=?`, id);
@@ -454,11 +460,11 @@ export async function evidence(env: Env, ref: string): Promise<EvidenceResponse>
   }
   const sessOut = visible.map((s) => ({ session_id: s.id, held_at: s.held_at, site: SITE_SHORT[s.site] ?? s.site, program: s.program, facilitator: s.fac, present: s.p || 0, absent: s.ab || 0, unclear: s.u || 0, rate: pct(s.p || 0, s.ab || 0), photo_url: s.photo_url }));
   const rate = pct(P, A);
-  const counselNote = counseling.length ? ` Counseling: ${counseling.length} sessions counted from the counseling records, no names shown.` : '';
-  if (parts[0] === 'sessions') return { ref, title: 'Sessions held', value: String(sessions.length), formula: `Every session with a captured sheet or counseling count between Jul 1 and Sep 30.${counselNote}`, summary: `${visible.length} sheets photographed`, sessions: sessOut, records: [] };
+  const counselNote = counseling.length ? `. Counseling: ${counseling.length} sessions counted from the counseling records, no names shown.` : '';
+  if (parts[0] === 'sessions') return { ref, title: 'Sessions held', value: String(sessions.length), formula: `Every session with a captured sheet or counseling count between Jul 1 and Sep 30${counselNote || '.'}`, summary: `${visible.length} sheets photographed`, sessions: sessOut, records: [] };
   if (parts[0] === 'kids_served' || parts[0] === 'language') {
     const kidsN = new Set(records.filter((r) => r.kid_name).map((r) => r.kid_name)).size;
-    return { ref, title: parts[0] === 'language' ? `Kids from ${LANG_NAME[parts[1]]}-speaking families` : 'Kids served', value: String(kidsN), formula: 'Unique kids marked present on at least one sheet this quarter.' + counselNote, summary: `${records.length} present marks across ${visible.length} sheets`, sessions: sessOut, records };
+    return { ref, title: parts[0] === 'language' ? `Kids from ${LANG_NAME[parts[1]]}-speaking families` : 'Kids served', value: String(kidsN), formula: 'Unique kids marked present on at least one sheet this quarter' + (counselNote || '.'), summary: `${records.length} present marks across ${visible.length} sheets`, sessions: sessOut, records };
   }
   if (parts[0] === 'data_quality') return { ref, title: 'Lines left out', value: String(records.length), formula: 'Names on a sheet that no enrolled kid matched and staff chose to skip. They are not counted anywhere.', summary: '', sessions: sessOut.filter((s) => records.some((r) => r.session_id === s.session_id)), records };
   return { ref, title: `Showed up${title ? ` · ${title}` : ''}`, value: rate !== null ? `${Math.round(rate)}%` : '–', formula: `${P} here ÷ (${P} here + ${A} missed)${Un ? ` · ${Un} unclear left out` : ''}${counselNote}`, summary: `${visible.length} sheets · ${records.length} lines`, sessions: sessOut, records };

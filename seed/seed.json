@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T19:45:55.615Z",
+ "generated_at": "2026-11-08T19:54:32.307Z",
  "today": "2026-09-23",
  "quarter": {
   "start": "2026-07-01",
@@ -1929,7 +1929,7 @@
    "title": "Feelings and stress",
    "photo_key": "sheets/s2.jpg",
    "photo_url": "/sheets/s2.jpg",
-   "photo_sha256": "02ba90807eb023b7271d0bab3230ff45fd64ad37ff766a2c8549a1d6e8dce9a3",
+   "photo_sha256": "1c452c1c7fcdc2f1c78246741934b03703b9fc7e48ff4b78096c1bf0ecdf6c8b",
    "angle": 1.2
   },
   {
@@ -1946,7 +1946,7 @@
    "co_lead": null,
    "photo_key": "sheets/s3.jpg",
    "photo_url": "/sheets/s3.jpg",
-   "photo_sha256": "b511105e158d556c02e61e12b455aad9f415410a23a449debedd9ac8fa9ebf7b",
+   "photo_sha256": "727cb45bf624c7577a26a60f8ef1c5ca95f80002add074b163323b5c73a81624",
    "angle": 1.44
   },
   {
@@ -1962,7 +1962,7 @@
    "header_confidence": 0.9151485770568252,
    "photo_key": "sheets/s4.jpg",
    "photo_url": "/sheets/s4.jpg",
-   "photo_sha256": "e36135cadf3fd677cc269cd38005ed4b045d4a6340af0390d18932f6cddef7bd",
+   "photo_sha256": "153b9927d219daf40bcdb51ea0ca0bd90b34ab7d6b0646ec6a40e690f9325597",
    "angle": -1.31
   },
   {
@@ -1992,7 +1992,7 @@
    "co_lead": null,
    "photo_key": "sheets/s6.jpg",
    "photo_url": "/sheets/s6.jpg",
-   "photo_sha256": "e6dcd8e974ddc72e8b77022f6f9fbba71f9c95e8384e11f397d52cbf1b45a631",
+   "photo_sha256": "51470e2bbfff5ef691eb97d8106ecdc07ccb099790cd3a7e0b9a83772cf170ef",
    "angle": -0.67
   },
   {
@@ -2008,7 +2008,7 @@
    "header_confidence": 0.9701466434262693,
    "photo_key": "sheets/s7.jpg",
    "photo_url": "/sheets/s7.jpg",
-   "photo_sha256": "188b14bfa82356f56027606d826d49f8e44afd45c10e4967f1cf941f215fa3f4",
+   "photo_sha256": "b62d591de8334172657c37b2add274209853861c3e9283d6bf4510a3345a060a",
    "angle": 0.46
   },
   {
@@ -2038,7 +2038,7 @@
    "title": "Feelings and stress",
    "photo_key": "sheets/s9.jpg",
    "photo_url": "/sheets/s9.jpg",
-   "photo_sha256": "602af233d587ebedf1cfa6cce333172bbb3f0acae65a4b5916fa540d3b66d0fe",
+   "photo_sha256": "9e05b38a8b45b35c8df74a8c0b9c9196ed55faebc0969f154a6037725b65966a",
    "angle": 0.81
   },
   {
@@ -2055,7 +2055,7 @@
    "co_lead": null,
    "photo_key": "sheets/s10.jpg",
    "photo_url": "/sheets/s10.jpg",
-   "photo_sha256": "e3421a8f28e07fd73fc380ea7f67a279c38e916745a925566b3a9aa920ccf6a1",
+   "photo_sha256": "2550698a19b79cd0b5937b8205b1e376d1985131c8c0ef7cb62eb6a65141ea28",
    "angle": -0.02
   },
   {
@@ -2071,7 +2071,7 @@
    "header_confidence": 0.9215344413416461,
    "photo_key": "sheets/s11.jpg",
    "photo_url": "/sheets/s11.jpg",
-   "photo_sha256": "4753ad1bffada8b18fe9a6b3bd0a232527b8593dc4b4478fc0c89883d5034091",
+   "photo_sha256": "3a1250871f717399758f83d9e8b1ce0ea1913cfbac6f007def615f089b879ee7",
    "angle": -0.42
   },
   {
@@ -2101,7 +2101,7 @@
    "co_lead": null,
    "photo_key": "sheets/s13.jpg",
    "photo_url": "/sheets/s13.jpg",
-   "photo_sha256": "7e923424903158beb6584fa44680930ba55134bebbda3a9630950c483a3fabf5",
+   "photo_sha256": "4d1a8e2e7f7d07e26c4ef99d456e16f3016d696b0b77a42f19ddc7faa7fe480c",
    "angle": 0.68
   },
   {
@@ -2117,7 +2117,7 @@
    "header_confidence": 0.9789479519077577,
    "photo_key": "sheets/s14.jpg",
    "photo_url": "/sheets/s14.jpg",
-   "photo_sha256": "fd8f4d4bdba89fa5e1696bc5d63a44e70fb13f5c8547f81e791e214375986975",
+   "photo_sha256": "47c87a70869b65c694d0b49ebc5d6fad4e765da97cd3ce5f8e06ae7872a6d3eb",
    "angle": -0.94
   },
   {
@@ -2147,7 +2147,7 @@
    "title": "Back to school ready",
    "photo_key": "sheets/s16.jpg",
    "photo_url": "/sheets/s16.jpg",
-   "photo_sha256": "128f47d00edfe6665f9e4e69562f46f6fa307340780cfe8ad4c1349325e343a4",
+   "photo_sha256": "b613b05cf79b4191c691fa8aeada421f327362bea742b980bea1a962ad2b8b08",
    "angle": 0.58
   },
   {
@@ -2164,7 +2164,7 @@
    "co_lead": null,
    "photo_key": "sheets/s17.jpg",
    "photo_url": "/sheets/s17.jpg",
-   "photo_sha256": "6f503cfe8d89650b2768ffc97889d5048d79a749113cf9bb35bfdb0abbbb014b",
+   "photo_sha256": "54e165e9e7aaded3fa8ee23041706f93eaeb7955b74853f4adcf7781e3581a48",
    "angle": -1.51
   },
   {
@@ -2180,7 +2180,7 @@
    "header_confidence": 0.9231519216718153,
    "photo_key": "sheets/s18.jpg",
    "photo_url": "/sheets/s18.jpg",
-   "photo_sha256": "4608c8a334a01a40cb65c4f507ff380ab4a556eba751c5ce3e944012119ff8bb",
+   "photo_sha256": "40638d5b045d3e592830dffcc23d869bc36a029e2e5da9e334dfa6908f927a0b",
    "angle": -1.52
   },
   {
@@ -2210,7 +2210,7 @@
    "co_lead": null,
    "photo_key": "sheets/s20.jpg",
    "photo_url": "/sheets/s20.jpg",
-   "photo_sha256": "e91d44cb6b760ad56466db90cd1674e8172e96e3934cc97afa16b1a36212727b",
+   "photo_sha256": "6308120c8425875c2d4618532ae032c71de60dfcbe0ec480ec24918f9badb30e",
    "angle": 1.49
   },
   {
@@ -2226,7 +2226,7 @@
    "header_confidence": 0.9560105261136778,
    "photo_key": "sheets/s21.jpg",
    "photo_url": "/sheets/s21.jpg",
-   "photo_sha256": "33f116a4d14e0992f8a56ec5ef0eb5d69f04a20eaf652da4d5bba09ed9712e67",
+   "photo_sha256": "161116c0626eee46116910d030a801b152c5c31eea4b0fe0f79fad9c6fcba577",
    "angle": -0.63
   },
   {
@@ -2257,7 +2257,7 @@
    "parent_helper": "Marie Jean Baptiste",
    "photo_key": "sheets/s23.jpg",
    "photo_url": "/sheets/s23.jpg",
-   "photo_sha256": "6c0d40254861cda3ecb9a1bf1437dc8520bc6fc01f2b068f84795e19709bdcd1",
+   "photo_sha256": "6c438cf003b814852e13a4ffec1e82fbd1d2efe13b946cb1ff9948b25e06d129",
    "angle": -0.16
   },
   {
@@ -2274,7 +2274,7 @@
    "co_lead": null,
    "photo_key": "sheets/s24.jpg",
    "photo_url": "/sheets/s24.jpg",
-   "photo_sha256": "1ac597d2912eecc2aca5380b13c2df9fc906bf43f300efbf2920cb516259a095",
+   "photo_sha256": "828cb2663383aca90745a8672cc52390f2feefadc3d926363e3d7cd2953eb7d9",
    "angle": 0.42
   },
   {
@@ -2290,7 +2290,7 @@
    "header_confidence": 0.9808755725459196,
    "photo_key": "sheets/s25.jpg",
    "photo_url": "/sheets/s25.jpg",
-   "photo_sha256": "1cda5e2b0d462b9d45c7255470ee59b3b2f90a16c8b362611d9c03e68861c5b4",
+   "photo_sha256": "e415db85a3834d63b55d2b78276f7d4769558352de2877ccb20839c7cba04a23",
    "angle": 0.15
   },
   {
@@ -2320,7 +2320,7 @@
    "co_lead": null,
    "photo_key": "sheets/s27.jpg",
    "photo_url": "/sheets/s27.jpg",
-   "photo_sha256": "e131135a37f6995dd6a3c5d95ec5801767cc977da76e514220a9a9d6ec123b45",
+   "photo_sha256": "a07d5a6f13c3879c7b4a85939198ce17f88ee510e026a2c4397c3e41c5b84f6b",
    "angle": 1.11
   },
   {
@@ -2336,7 +2336,7 @@
    "header_confidence": 0.9554209849121981,
    "photo_key": "sheets/s28.jpg",
    "photo_url": "/sheets/s28.jpg",
-   "photo_sha256": "9faabd843f099f400640660bd7cefb03867fbeb071d30e6005accfd8b2892e48",
+   "photo_sha256": "1f3bccee5c1e17c09d3e043a418a7902074732e3c9997b9faa7bdebaf3bb3ab7",
    "angle": -1.58
   },
   {
@@ -2366,7 +2366,7 @@
    "title": "Staying safe online",
    "photo_key": "sheets/s30.jpg",
    "photo_url": "/sheets/s30.jpg",
-   "photo_sha256": "3c69cfdc72f052ea2b33695bbb45c297567dcd596ad943e435ad651887b6090f",
+   "photo_sha256": "3c1ec947f40e844da64c0e6ea62b994e844d741fa712fae4c72b76bf5b36a0ea",
    "angle": 0.16
   },
   {
@@ -2383,7 +2383,7 @@
    "co_lead": null,
    "photo_key": "sheets/s31.jpg",
    "photo_url": "/sheets/s31.jpg",
-   "photo_sha256": "9c3d7427ebbe71209f7f1b080c73ff41476ac9e3ddc90cc187399af8e345ce27",
+   "photo_sha256": "d047d60b31d7bd96e12e989fa201fe4191ea5463cc43e276ab838c67f13c1bf7",
    "angle": -0.79
   },
   {
@@ -2399,7 +2399,7 @@
    "header_confidence": 0.9883156153187156,
    "photo_key": "sheets/s32.jpg",
    "photo_url": "/sheets/s32.jpg",
-   "photo_sha256": "fbc32162582ec8537705b50a3ecde9686601dc3c07c157ee1b4af34e3658b05b",
+   "photo_sha256": "47dc02f8b67298527e85a87a1b5c04e4be006177988c8f310d82b15eba452ec7",
    "angle": 0.62
   },
   {
@@ -2416,7 +2416,7 @@
    "co_lead": null,
    "photo_key": "sheets/s33.jpg",
    "photo_url": "/sheets/s33.jpg",
-   "photo_sha256": "1da6acc5b80a0b6176e0124c96d37e57eb10d68c2c19a65cfab01cdd7af79b4b",
+   "photo_sha256": "1b8c7ec7897b99f51f3237667fd6f6059cc9ca574ba19d3846b0a849775aa984",
    "angle": 1.03
   },
   {
@@ -2432,7 +2432,7 @@
    "header_confidence": 0.9516743937623687,
    "photo_key": "sheets/s34.jpg",
    "photo_url": "/sheets/s34.jpg",
-   "photo_sha256": "523554274391c6ecc00e4d9c64f345a0e222489a8cc7269eef52c73da4204da1",
+   "photo_sha256": "be1d7f2d0522b1bb87d84dd689d95f5cd27718e0d42251b9a08a7fb190f40bbd",
    "angle": 1.35
   },
   {
@@ -2462,7 +2462,7 @@
    "title": "Healthy friendships",
    "photo_key": "sheets/s36.jpg",
    "photo_url": "/sheets/s36.jpg",
-   "photo_sha256": "678a8bce4b0d9ad16c1754bd0e4ed9b5449f54d331849439f7664bae8375a262",
+   "photo_sha256": "bbcf3cf2c4ff9f7e413ed637946a2eba37c035e82fa6cfd0a736f48c061d74c1",
    "angle": -0.25
   },
   {
@@ -2479,7 +2479,7 @@
    "co_lead": "ana",
    "photo_key": "sheets/s37.jpg",
    "photo_url": "/sheets/s37.jpg",
-   "photo_sha256": "0bf11b294065332b91282f8e39caf833eda3d08c7bbbc229ad837a1874de0e5c",
+   "photo_sha256": "87f6b5db50c98a27d02a245a11c036b497a4ad388421f3ac378e7a7ea49373da",
    "angle": -0.69
   },
   {
@@ -2495,7 +2495,7 @@
    "header_confidence": 0.9715540528320707,
    "photo_key": "sheets/s38.jpg",
    "photo_url": "/sheets/s38.jpg",
-   "photo_sha256": "d310e6aa7358b3d63354d8c228ecdb596962475edf943fa3c22e87b4341e1145",
+   "photo_sha256": "53f480e8bd1d1ec6d43a257858a1fca79e7381530cafafbaa74d0c91cb5a349e",
    "angle": -0.45
   },
   {
@@ -16538,16 +16538,6 @@
    "first_seen_at": "2026-09-03T20:15:00"
   },
   {
-   "entity": "family",
-   "entity_id": 13,
-   "raw_text": "Marie Claire Jeanbaptiste",
-   "normalized": "marie claire jeanbaptiste",
-   "source": "form",
-   "source_ref": "signup:41",
-   "probability": 0.96,
-   "first_seen_at": "2026-09-09T19:30:00"
-  },
-  {
    "entity": "mentor",
    "entity_id": 1,
    "raw_text": "Luis Oyola",
@@ -18341,7 +18331,7 @@
   ],
   "photo_url": "/sheets/demo-cg-2026-09-23.jpg",
   "photo_key": "sheets/demo-cg-2026-09-23.jpg",
-  "photo_sha256": "315190d11fe267a4cebcc21bb95a2dac8b58816a24bb997e13cdf90d7a016cc3",
+  "photo_sha256": "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a",
   "angle": -1.4
  },
  "samples": [
@@ -18353,7 +18343,7 @@
    "held_at": "2026-09-23",
    "time": "4:00 pm",
    "photo_url": "/sheets/demo-cg-2026-09-23.jpg",
-   "photo_sha256": "315190d11fe267a4cebcc21bb95a2dac8b58816a24bb997e13cdf90d7a016cc3",
+   "photo_sha256": "14d4466bcd1edb8cdc660e7a6deb2ddb05d762fbc04f3a8c227b5638dc909f9a",
    "recommended": true,
    "session_id": null
   },
@@ -18365,7 +18355,7 @@
    "held_at": "2026-09-16",
    "time": "4:00 pm",
    "photo_url": "/sheets/s37.jpg",
-   "photo_sha256": "0bf11b294065332b91282f8e39caf833eda3d08c7bbbc229ad837a1874de0e5c",
+   "photo_sha256": "87f6b5db50c98a27d02a245a11c036b497a4ad388421f3ac378e7a7ea49373da",
    "recommended": false,
    "session_id": 37
   },
@@ -18377,7 +18367,7 @@
    "held_at": "2026-09-17",
    "time": "4:30 pm",
    "photo_url": "/sheets/s38.jpg",
-   "photo_sha256": "d310e6aa7358b3d63354d8c228ecdb596962475edf943fa3c22e87b4341e1145",
+   "photo_sha256": "53f480e8bd1d1ec6d43a257858a1fca79e7381530cafafbaa74d0c91cb5a349e",
    "recommended": false,
    "session_id": 38
   },
@@ -18389,7 +18379,7 @@
    "held_at": "2026-09-15",
    "time": "6:00 pm",
    "photo_url": "/sheets/s36.jpg",
-   "photo_sha256": "678a8bce4b0d9ad16c1754bd0e4ed9b5449f54d331849439f7664bae8375a262",
+   "photo_sha256": "bbcf3cf2c4ff9f7e413ed637946a2eba37c035e82fa6cfd0a736f48c061d74c1",
    "recommended": false,
    "session_id": 36
   }

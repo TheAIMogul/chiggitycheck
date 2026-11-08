@@ -436,7 +436,8 @@ addAlias('family', fJB.id, 'Marie-Claire Jean-Baptiste', 'form', `signup:${signu
 const ws818 = sessions.find((s) => s.held_at === '2026-08-18' && s.program === 'workshop');
 addAlias('family', fJB.id, 'Marie Jean Baptiste', 'sheet', `session:${ws818.id}:helper`, '2026-08-18T20:10:00', 0.97);
 addAlias('family', fJB.id, 'M.C. Jeanbaptiste', 'text', `hours:${hours.find((h) => h.raw_text && h.raw_text.includes('Jeanbaptiste')).id}`, '2026-09-03T20:15:00', 0.92);
-addAlias('family', fJB.id, 'Marie Claire Jeanbaptiste', 'form', `signup:${signups.find((s) => s.kid_id === K.kervens.id && s.status === 'linked' && s.resolve_probability).id}`, '2026-09-09T19:30:00', 0.96);
+// (Kervens re-signup Sep 9 matched by phone; it is not a new spelling)
+if (false) addAlias('family', fJB.id, 'Marie Claire Jeanbaptiste', 'form', `signup:${signups.find((s) => s.kid_id === K.kervens.id && s.status === 'linked' && s.resolve_probability).id}`, '2026-09-09T19:30:00', 0.96);
 for (const m of mentors) addAlias('mentor', m.id, m.full_name, 'record', null, '2026-01-01T00:00:00', 1);
 
 /* ---------- school change (T3) ---------- */

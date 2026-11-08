@@ -8,7 +8,10 @@ function toDate(s: string): { d: Date; tz: string } {
     const [y, m, dd] = s.split('-').map(Number)
     return { d: new Date(Date.UTC(y, m - 1, dd, 12)), tz: 'UTC' }
   }
-  return { d: new Date(s.includes('T') || s.includes('Z') ? s : s.replace(' ', 'T') + 'Z'), tz: TZ }
+  // Timestamps with an explicit zone are converted to Miami time. The API's zone-less timestamps are already
+  // Miami wall-clock time, so they are shown exactly as written.
+  if (/[zZ]$|[+-]\d{2}:?\d{2}$/.test(s)) return { d: new Date(s), tz: TZ }
+  return { d: new Date(s.replace(' ', 'T').slice(0, 19) + 'Z'), tz: 'UTC' }
 }
 function fmt(s: string | null | undefined, o: Intl.DateTimeFormatOptions): string {
   if (!s) return ''
@@ -36,9 +39,9 @@ export const fmtWeekday = (s?: string | null) => fmt(s, { weekday: 'short' })
 export function dayKey(s?: string | null): string {
   if (!s) return ''
   if (DATE_ONLY.test(s)) return s
-  const { d } = toDate(s)
+  const { d, tz } = toDate(s)
   if (isNaN(d.getTime())) return ''
-  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d)
+  return new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d)
 }
 /** "Today 4:42 pm" / "Sep 21, 4:42 pm" */
 export function fmtWhen(s?: string | null, today?: string): string {

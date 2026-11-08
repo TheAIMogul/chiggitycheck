@@ -90,7 +90,7 @@ export default function FamilyDetail() {
               <Link key={`f${x.id}`} to={`/calls/${x.id}`} className="ev"><span className={`d ${FU_DOT[x.severity] ?? ''}`} /><div className="t">{firstName(x.kid_name)} · {SEV[x.severity]}<span>{x.summary}</span></div><span className="w">{fmtDay(x.date)}</span></Link>
             ))}
             {d.contacts.map((c, i) => (
-              <div key={`c${i}`} className="ev"><span className="d g" /><div className="t">{c.kind}<span>{c.body}</span></div><span className="w">{fmtDay(c.date)}</span></div>
+              <div key={`c${i}`} className="ev"><span className="d g" /><div className="t">{c.kind === 'call' ? 'Called the family' : c.kind === 'reply' ? 'Family replied' : 'Note'}<span>{c.body}</span></div><span className="w">{fmtDay(c.date)}</span></div>
             ))}
           </div>
         </section>
