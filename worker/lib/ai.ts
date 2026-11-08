@@ -22,35 +22,16 @@ async function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise
   try { return await Promise.race([p, timeout]); } finally { if (t !== undefined) clearTimeout(t); }
 }
 
-/* ---------------- Cloudflare AI Gateway ----------------
- * Every model call runs through the "chiggitycheck" AI Gateway (logs, spend, rate limits in one place).
- * OpenAI models go through the gateway's unified catalog (openai/decisions, openai/gpt-5.5), billed to Cloudflare
- * credit, so the Worker needs no OpenAI key. If the gateway call fails and an OpenAI key is set, we call OpenAI
- * directly so a live demo never stalls. */
+/* ---------------- Model routing ----------------
+ * OpenAI models (Decisions API, gpt-5.5) are called directly with the OpenAI key.
+ * Workers AI vision runs through the "chiggitycheck" AI Gateway, which only adds logging (Workers AI bills the same). */
 const gw = (env: Env) => ({ gateway: { id: env.AI_GATEWAY_ID } });
-export let lastRoute: 'gateway' | 'direct' = 'gateway';
-async function viaGateway<T>(env: Env, model: string, input: unknown, ms: number, label: string): Promise<T> {
-  return (await withTimeout(env.AI.run(model as never, input as never, gw(env) as never), ms, `${label} (AI Gateway)`)) as T;
-}
-async function directOpenAI<T>(env: Env, path: string, body: unknown, ms: number, label: string): Promise<T> {
+async function openai<T>(env: Env, path: string, body: unknown, ms: number, label: string): Promise<T> {
   const res = await withTimeout(fetch(`https://api.openai.com/v1/${path}`, {
     method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
   }), ms, label);
   if (!res.ok) throw new Error(`${label} ${res.status}: ${(await res.text()).slice(0, 300)}`);
   return (await res.json()) as T;
-}
-async function openai<T>(env: Env, gatewayModel: string, path: string, body: Record<string, unknown>, ms: number, label: string): Promise<T> {
-  const { model: _m, ...rest } = body;
-  try {
-    const r = await viaGateway<T>(env, gatewayModel, rest, ms, label);
-    lastRoute = 'gateway';
-    return r;
-  } catch (e) {
-    if (!env.OPENAI_API_KEY) throw e;
-    console.warn(`${label}: gateway failed, calling OpenAI directly: ${(e as Error).message}`);
-    lastRoute = 'direct';
-    return directOpenAI<T>(env, path, body, ms, label);
-  }
 }
 
 /* ---------------- OpenAI Decisions API ---------------- */
@@ -68,15 +49,14 @@ export async function decide(env: Env, kind: string, data: unknown, questions: D
   for (let i = 0; i < questions.length; i += 400) {
     const chunk = questions.slice(i, i + 400);
     const t0 = Date.now();
-    // the gateway's Decisions route takes text and images; structured data goes in as JSON text
     const body = {
       model: env.DECISIONS_MODEL,
-      input: [{ role: 'user', content: [...(intro ? [{ type: 'input_text', text: intro }] : []), ...(imageUrl ? [{ type: 'input_image', image_url: imageUrl }] : []), { type: 'input_text', text: `Data (JSON):\n${JSON.stringify(data)}` }] }],
+      input: [{ role: 'user', content: [...(intro ? [{ type: 'input_text', text: intro }] : []), ...(imageUrl ? [{ type: 'input_image', image_url: imageUrl }] : []), { type: 'input_json', data }] }],
       questions: chunk,
     };
     let j: { answers: DecisionAnswer[]; usage?: { input_tokens?: number } };
     try {
-      j = await openai(env, 'openai/decisions', 'decisions', body, 30000, 'Decisions API');
+      j = await openai(env, 'decisions', body, 30000, 'Decisions API');
     } catch (e) {
       await logAI(env, kind, env.DECISIONS_MODEL, 0, 0, Date.now() - t0, 0, false);
       throw e;
@@ -104,7 +84,7 @@ export async function respond(env: Env, kind: string, opts: { instructions: stri
   type Resp = { output?: { type: string; content?: { type: string; text?: string }[] }[]; output_text?: string; usage?: { input_tokens?: number; output_tokens?: number } };
   let j: Resp;
   try {
-    j = await openai<Resp>(env, `openai/${env.DRAFT_MODEL}`, 'responses', body, opts.timeoutMs ?? 45000, 'Responses API');
+    j = await openai<Resp>(env, 'responses', body, opts.timeoutMs ?? 45000, 'Responses API');
   } catch (e) {
     await logAI(env, kind, env.DRAFT_MODEL, 0, 0, Date.now() - t0, 0, false);
     throw e;
