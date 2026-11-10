@@ -52,6 +52,11 @@ const qs = (o: Record<string, string | undefined | null>) => {
   return s ? `?${s}` : ''
 }
 
+export type TesterForm = {
+  name: string; email: string; organization: string; role?: string; org_type?: string
+  people_served?: string; phone?: string; notes?: string; website?: string
+}
+
 export const api = {
   week: () => get<WeekResponse>('/api/week'),
   samples: () => get<SampleSheet[]>('/api/sheets/samples'),
@@ -77,6 +82,8 @@ export const api = {
   mentor: (id: number) => get<MentorDetail>(`/api/mentors/${id}`),
   signups: () => get<SignupItem[]>('/api/signups'),
   signup: (form: SignupForm) => post<SignupResult>('/api/signups', form),
+  joinTesters: (form: TesterForm) => post<{ ok: boolean; position: number; returning: boolean }>('/api/early-testers', form),
+  testerCount: () => get<{ count: number }>('/api/early-testers/count'),
   importCsv: (file: File) => { const f = new FormData(); f.append('file', file); return post<ImportResult>('/api/import', f) },
 
   report: (quarter: string) => get<ReportResponse>(`/api/report${qs({ quarter })}`),

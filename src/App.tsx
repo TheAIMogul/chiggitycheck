@@ -16,6 +16,7 @@ import MentorDetail from './pages/MentorDetail'
 import Report from './pages/Report'
 import Integrations from './pages/Integrations'
 import Signup from './pages/Signup'
+import EarlyAccess from './pages/EarlyAccess'
 import Lab from './pages/Lab'
 
 function Layout() {
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/" element={<Stage />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/early-access" element={<EarlyAccess />} />
         <Route element={<Layout />}>
           <Route path="/today" element={<Today />} />
           <Route path="/snap" element={<SnapStart />} />

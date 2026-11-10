@@ -1037,3 +1037,10 @@ h1.ie{display:inline-flex}
 @keyframes snFresh{0%{background:rgba(77,107,254,.28)}100%{background:rgba(77,107,254,0)}}
 @media (max-width:860px){.signup-note{left:12px;right:12px;bottom:96px;max-width:none}}
 @media (prefers-reduced-motion:reduce){.signup-note,.sn-dot,.list .li.fresh{animation:none}}
+
+/* ---------- early testers ---------- */
+.ea{max-width:680px}
+.ea-kicker{display:inline-block;font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.02em}
+.ea .field textarea{font-size:16px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+@media (max-width:600px){.signup.ea .two{grid-template-columns:1fr}.signup.ea .card{padding:24px!important}}

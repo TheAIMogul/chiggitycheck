@@ -229,6 +229,7 @@ export function Header() {
             <button role="menuitem" className="phone-only" onClick={() => { setMenu(false); setPalette(true) }}><Icon name="search" />Search</button>
             <Link role="menuitem" to="/lab" onClick={closeMenu}><Icon name="db" />Build a dataset</Link>
             <Link role="menuitem" to="/integrations" onClick={closeMenu}><Icon name="plug" />Connected tools</Link>
+            <Link role="menuitem" to="/early-access" onClick={closeMenu}><Icon name="spark" />Become an early tester</Link>
             <Link role="menuitem" to="/signup" onClick={closeMenu}><Icon name="form" />Public sign-up form</Link>
             <button role="menuitem" onClick={() => { setMenu(false); setAbout(true) }}><Icon name="info" />About and AI spend</button>
             <button role="menuitem" onClick={() => { setMenu(false); reset.ask() }}><Icon name="reset" />Reset demo</button>

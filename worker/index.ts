@@ -8,6 +8,7 @@ import * as messaging from './lib/messaging';
 import { buildScenario, listScenarios, sheetSvg } from './lib/scenario';
 import * as sheets from './lib/sheets';
 import * as signups from './lib/signups';
+import * as testers from './lib/testers';
 import { type Env, HttpError, nowISO } from './lib/util';
 import * as views from './lib/views';
 
@@ -112,6 +113,8 @@ app.get('/api/mentors', async (c) => c.json(await views.mentorList(c.env)));
 app.get('/api/mentors/:id', async (c) => { const m = await views.mentorDetail(c.env, Number(c.req.param('id'))); if (!m) throw new HttpError(404, 'no_mentor', 'No such mentor.'); return c.json(m); });
 app.get('/api/signups', async (c) => c.json(await views.signupList(c.env)));
 app.post('/api/signups', async (c) => c.json(await signups.submit(c.env, await c.req.json())));
+app.post('/api/early-testers', async (c) => c.json(await testers.join(c.env, await c.req.json())));
+app.get('/api/early-testers/count', async (c) => c.json(await testers.count(c.env)));
 app.post('/api/import', async (c) => {
   const form = await c.req.formData();
   const file = form.get('file') as unknown as File | null;
