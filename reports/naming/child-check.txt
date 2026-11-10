@@ -1,0 +1,76 @@
+everychildcounts       FREE: app $8.20/14.20   taken: com,org
+everychildpresent      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildhere         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildseen         FREE: app $8.20/14.20   taken: com,org
+everychildcounted      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildaccounted    FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildknown        FREE: com $11.17/11.17 | app $8.20/14.20   taken: org
+everychildnoticed      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildshowsup      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychildeveryweek    FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+nochildmissed          FREE: com $11.17/11.17 | app $8.20/14.20   taken: org
+nochildunseen          FREE: app $8.20/14.20   taken: com,org
+nochildunnoticed       FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+nochildlost            FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+nochildforgotten       FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+nochilduncounted       FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+nochildmissing         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+nochildoverlooked      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childpresent           FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childaccounted         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcounted           FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childseen              FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childnoticed           FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcheckin           FREE: app $8.20/14.20   taken: com,org
+childsignin            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childroll              FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childrollcall          FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childroster            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childtally             FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcount             FREE: app $8.20/14.20   taken: com,org
+childcounts            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcheck             FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childhere              FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childkept              FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childproof             FREE: app $8.20/14.20   taken: com,org
+childledger            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childpath              FREE: org $8.50/11.20   taken: com,app
+childfollow            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcircle            FREE: app $8.20/14.20   taken: com,org
+childthread            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childbridge            FREE: app $8.20/14.20   taken: com,org
+childattendance        FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childattend            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childshowup            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childshowsup           FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childpulse             FREE: org $8.50/11.20   taken: com,app
+childsignal            FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childwatchful          FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcompass           FREE: org $8.50/11.20   taken: com,app
+childanchor            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childfirsthand         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+presentchild           FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+seenchild              FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+countedchild           FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+everychild             FREE: app $8.20/14.20   taken: com,org
+heychild               FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+herechild              FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childishere            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+thechildishere         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childcountsdaily       FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childrencount          FREE: app $8.20/14.20   taken: com,org
+childrenpresent        FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childrenseen           FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childrenaccounted      FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childrencounted        FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+allchildrenhere        FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+allchildrenpresent     FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+allchildrencount       FREE: app $8.20/14.20   taken: com,org
+signedchild            FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childsheet             FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+sheetchild             FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childnote              FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childnotes             FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childledgerapp         FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 
+childreport            FREE: org $8.50/11.20 | app $8.20/14.20   taken: com
+childproofreport       FREE: com $11.17/11.17 | org $8.50/11.20 | app $8.20/14.20 

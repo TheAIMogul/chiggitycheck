@@ -11,8 +11,8 @@ for (let i = 0; i < args.length; i += 2) {
   for (const [kind, vp] of [['desktop', { width: 1440, height: 900, deviceScaleFactor: 1 }], ['phone', { width: 375, height: 812, deviceScaleFactor: 2, isMobile: true, hasTouch: true }]]) {
     const page = await browser.newPage();
     await page.setViewport(vp);
-    await page.goto(BASE + path, { waitUntil: 'networkidle0', timeout: 60000 });
-    await new Promise((r) => setTimeout(r, 1200));
+    await page.goto(BASE + path, { waitUntil: 'networkidle2', timeout: 60000 });
+    await new Promise((r) => setTimeout(r, 1500));
     await page.screenshot({ path: `${OUT}/${kind}-${name}.png`, fullPage: true });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     if (overflow > 0) console.log(`${kind}-${name}: horizontal overflow ${overflow}px`);

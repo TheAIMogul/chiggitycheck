@@ -207,7 +207,7 @@ export default function Explainer({ active = true, still = false }: { active?: b
       className={cls}
       onClick={(e) => { e.stopPropagation(); if (!still) setPaused((p) => !p) }}
       role={still ? undefined : 'button'}
-      aria-label={still ? 'How ChiggityCheck works' : paused ? 'Resume the animation' : 'Pause the animation'}
+      aria-label={still ? 'How AttendClear works' : paused ? 'Resume the animation' : 'Pause the animation'}
     >
       <div className="xp-stage">
         {!still && wires && (

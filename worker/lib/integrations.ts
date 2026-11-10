@@ -52,7 +52,7 @@ async function audience(env: Env) {
 }
 
 export async function calendar(env: Env): Promise<string> {
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//ChiggityCheck//Tidepath Family Alliance//EN', 'X-WR-CALNAME:Tidepath sessions', 'X-WR-TIMEZONE:America/New_York'];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AttendClear//Tidepath Family Alliance//EN', 'X-WR-CALNAME:Tidepath sessions', 'X-WR-TIMEZONE:America/New_York'];
   const series = [
     { name: 'Mentoring · Citrus Grove MS', start: '2026-07-08', time: '160000', end: '180000', rule: 'FREQ=WEEKLY;BYDAY=WE;UNTIL=20261216T235959Z' },
     { name: 'Mentoring · West Little River CC', start: '2026-07-09', time: '163000', end: '183000', rule: 'FREQ=WEEKLY;BYDAY=TH;UNTIL=20261217T235959Z' },

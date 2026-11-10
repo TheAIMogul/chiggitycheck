@@ -24,7 +24,7 @@ export default function Welcome() {
         <div>
           <div className="pill wash">Built for Tidepath Family Alliance · Give Miami Day Hackathon</div>
           <h1 style={{ marginTop: 20 }}>Snap the sign-in sheet.<br /><span>Everything else is done.</span></h1>
-          <p className="lede">ChiggityCheck reads the paper attendance sheet mentors already fill in. It tells you which families to call this week, writes the message in their language, and keeps the funder report finished.</p>
+          <p className="lede">AttendClear reads the paper attendance sheet mentors already fill in. It tells you which families to call this week, writes the message in their language, and keeps the funder report finished.</p>
           <div className="ctas">
             <Link className="btn dark lg" to="/snap"><Icon name="cam" />Try it with a sheet</Link>
             <Link className="btn ghost lg" to="/today">See Marisol's week</Link>
@@ -70,7 +70,7 @@ export default function Welcome() {
             <div className="row"><span>Kid missed before anyone called</span><b>3 weeks</b></div>
             <div className="row" style={{ border: 0 }}><span>Quarterly report</span><b>3 days</b></div>
           </div>
-          <div className="after"><div className="k">With ChiggityCheck</div>
+          <div className="after"><div className="k">With AttendClear</div>
             <div className="row"><span>Per session</span><b>1 photo</b></div>
             <div className="row"><span>Same mom</span><b>1 record</b></div>
             <div className="row"><span>Flagged after</span><b>2nd miss</b></div>

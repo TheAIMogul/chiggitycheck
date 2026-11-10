@@ -12,9 +12,9 @@ const navCls = ({ isActive }: { isActive: boolean }) => (isActive ? 'on' : undef
 export function Brand({ to = '/today', live }: { to?: string; live?: boolean }) {
   const { liveTick } = useApp()
   return (
-    <Link to={to} className="brand" aria-label="ChiggityCheck home">
+    <Link to={to} className="brand" aria-label="AttendClear home">
       <div className="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
-      ChiggityCheck
+      AttendClear
       {live && <span key={liveTick} className={`livedot${liveTick ? ' go' : ''}`} title="Live: numbers update the moment anything is edited" aria-label="Live" />}
     </Link>
   )
@@ -150,9 +150,9 @@ function AboutDialog({ onClose }: { onClose: () => void }) {
   const load = useCallback(() => { setErr(null); api.about().then(setA, (e) => setErr(errMsg(e))) }, [])
   useEffect(load, [load])
   return (
-    <Modal onClose={onClose} label="About ChiggityCheck">
+    <Modal onClose={onClose} label="About AttendClear">
       <span className="eyebrow">About this demo</span>
-      <div className="title" style={{ marginTop: 4 }}>ChiggityCheck</div>
+      <div className="title" style={{ marginTop: 4 }}>AttendClear</div>
       {err && <div className="notice bad" style={{ marginTop: 14 }}>{err} <button className="btn dark sm" onClick={load}>Retry</button></div>}
       {!a && !err && <div style={{ marginTop: 16 }}><Shimmer h={16} /><Shimmer h={16} style={{ marginTop: 12 }} /><Shimmer h={16} w="60%" style={{ marginTop: 12 }} /></div>}
       {a && (

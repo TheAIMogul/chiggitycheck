@@ -130,7 +130,7 @@ app.patch('/api/families/:id', async (c) => c.json(await edits.editFamily(c.env,
 /* ---------- Report ---------- */
 app.get('/api/report', async (c) => {
   const q = c.req.query('quarter') || 'FY27Q1';
-  if (q !== 'FY27Q1') throw new HttpError(404, 'no_quarter', 'Only Q1 FY2027 is in ChiggityCheck. Earlier quarters were kept in spreadsheets.');
+  if (q !== 'FY27Q1') throw new HttpError(404, 'no_quarter', 'Only Q1 FY2027 is in AttendClear. Earlier quarters were kept in spreadsheets.');
   return c.json(await views.report(c.env));
 });
 app.get('/api/report/evidence/:ref', async (c) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import type { WeekResponse } from '../../shared/types'
 import { api, errMsg } from '../api'
@@ -49,6 +49,12 @@ function TodaySkeleton() {
 export default function Today() {
   const { data: w, error, loading, reload } = useApi(api.week, [])
   const { snap, busy } = useSnapSample()
+  // on a phone the week scrolls sideways: start it on today
+  const weekRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = weekRef.current, t = el?.querySelector<HTMLElement>('.day.today')
+    if (el && t && el.scrollWidth > el.clientWidth) el.scrollLeft = t.offsetLeft - el.offsetLeft - 4
+  }, [w])
 
   if (loading && !w) return <TodaySkeleton />
   if (error || !w) return <ErrorState error={error} onRetry={reload} />
@@ -103,26 +109,25 @@ export default function Today() {
             <div><div className="title">This week's sessions</div><div className="sub">{w.sheets_in} of {w.sheets_expected} sheets are in.{waitingToday ? ' One is waiting for you today.' : ''}</div></div>
             <span className="pill">{fmtDay(w.range.start)} – {fmtDay(w.range.end)}</span>
           </div>
-          <div className="week">
+          <div className="week" ref={weekRef}>
             {w.days.map((d) => (
               <div key={d.date} className={`day${d.is_today ? ' today' : ''}`}>
                 <div className="d">{d.is_today ? 'Today' : d.dow} <b>{d.day}</b></div>
-                {d.sessions.length === 0 && <div className="sess later" style={{ borderStyle: 'dashed' }}>No sessions</div>}
-                {d.sessions.map((x, i) => {
-                  if (x.status === 'captured')
-                    return (
-                      <div key={i} className="sess"><b>{PROGRAM[x.program]}</b><span>{x.site}{x.kids !== null ? ` · ${x.kids} kids` : ''}</span><div className="ok">✓ Captured</div></div>
-                    )
-                  if (x.status === 'waiting')
-                    return (
-                      <div key={i} className="sess wait"><b>{PROGRAM[x.program]}</b><span>{x.site} · {x.time}</span><br />
-                        <button className="go" onClick={() => snap(x.sample_key)} disabled={!!busy}>
-                          {busy === x.sample_key ? <span className="spin" style={{ width: 12, height: 12 }} /> : <Icon name="cam" style={{ width: 13, height: 13 }} />}Snap sheet
-                        </button>
-                      </div>
-                    )
-                  return <div key={i} className="sess later"><b>{PROGRAM[x.program]}</b>{x.site} · {x.time}</div>
-                })}
+                {d.sessions.length === 0 && <div className="sess-none">No sessions</div>}
+                {d.sessions.map((x, i) => (
+                  <div key={i} className={`sess ${x.status}`}>
+                    <b>{PROGRAM[x.program]}</b>
+                    <span className="where">{x.site}</span>
+                    <span className="when">{x.status === 'captured' && x.kids !== null ? `${x.kids} kids` : x.time}</span>
+                    {x.status === 'captured' && <span className="ok"><Icon name="check" style={{ width: 13, height: 13, strokeWidth: 2.8 }} />Captured</span>}
+                    {x.status === 'waiting' && (
+                      <button className="go" onClick={() => snap(x.sample_key)} disabled={!!busy}>
+                        {busy === x.sample_key ? <span className="spin" style={{ width: 12, height: 12 }} /> : <Icon name="cam" style={{ width: 14, height: 14 }} />}Snap sheet
+                      </button>
+                    )}
+                    {x.status !== 'captured' && x.status !== 'waiting' && <span className="soon">Upcoming</span>}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -229,7 +234,7 @@ export default function Today() {
           <div className="mark" style={{ width: 52, height: 52, borderRadius: 16, color: '#fff' }}><Icon name="db" style={{ width: 24, height: 24 }} /></div>
           <div style={{ flex: 1, minWidth: 220 }}>
             <div className="title" style={{ fontSize: 20 }}>Try it: describe a program and we'll create it</div>
-            <div className="sub">Type one sentence. ChiggityCheck writes the kids, sessions and sheets, saves them, and scores who needs a call.</div>
+            <div className="sub">Type one sentence. AttendClear writes the kids, sessions and sheets, saves them, and scores who needs a call.</div>
           </div>
           <span className="btn dark sm">Build a dataset</span>
         </Link>

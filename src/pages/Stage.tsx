@@ -52,7 +52,7 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
     render: (_go, ctx) => (
       <div className="xp-slide">
         <div>
-          <p className="stg-eyebrow">Meet ChiggityCheck</p>
+          <p className="stg-eyebrow">Meet AttendClear</p>
           <h2 className="stg-h1 sm">Take a photo of the sign-in sheet. <span className="blue">It does the rest.</span></h2>
         </div>
         <Explainer active={ctx.active} still={ctx.mobile} />
@@ -126,10 +126,10 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
           </button>
         </div>
         <div className="stg-qr" onClick={(e) => e.stopPropagation()}>
-          <img src="/qr-signup.svg" alt="QR code for the public sign-up form at check.micahberkley.com/signup" />
+          <img src="/qr-signup.svg" alt="QR code for the public sign-up form at attendclear.com/signup" />
           <b>Try it from your seat</b>
           <span>Sign up a family and watch it land in the records.</span>
-          <code>check.micahberkley.com/signup</code>
+          <code>attendclear.com/signup</code>
         </div>
       </div>
     ),
@@ -146,7 +146,7 @@ export default function Stage() {
   const next = useCallback(() => setI((x) => Math.min(SLIDES.length - 1, x + 1)), [])
   const prev = useCallback(() => setI((x) => Math.max(0, x - 1)), [])
 
-  useEffect(() => { window.history.replaceState(null, '', `#${i + 1}`); document.title = 'ChiggityCheck' }, [i])
+  useEffect(() => { window.history.replaceState(null, '', `#${i + 1}`); document.title = 'AttendClear' }, [i])
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return
@@ -166,7 +166,7 @@ export default function Stage() {
   return (
     <div className="stg" onClick={(e) => { if (e.clientX < window.innerWidth * 0.25) prev(); else next() }}>
       <div className="stg-top" onClick={(e) => e.stopPropagation()}>
-        <div className="stg-brand sm" ><Mark size={0.8} /><span>ChiggityCheck</span></div>
+        <div className="stg-brand sm" ><Mark size={0.8} /><span>AttendClear</span></div>
         <Link to="/today" className="stg-skip">Skip to demo <Icon name="arrow" /></Link>
       </div>
       {SLIDES.map((s, idx) => (

@@ -60,7 +60,7 @@ export default function FamilyDetail() {
         <div className="head" style={{ alignItems: 'flex-start' }}>
           <div>
             <h1 style={{ fontSize: 40 }}>{n > 1 ? `One family, found in ${word(n, true)} places.` : 'One family, one record.'}</h1>
-            <div className="sub" style={{ fontSize: 17, marginTop: 6 }}>{n > 1 ? 'Nobody typed this family twice. ChiggityCheck connected the spellings.' : 'Every mention of this family points here.'}</div>
+            <div className="sub" style={{ fontSize: 17, marginTop: 6 }}>{n > 1 ? 'Nobody typed this family twice. AttendClear connected the spellings.' : 'Every mention of this family points here.'}</div>
           </div>
         </div>
         <div className="merge">

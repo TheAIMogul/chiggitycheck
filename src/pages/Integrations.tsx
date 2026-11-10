@@ -56,7 +56,7 @@ export default function Integrations() {
       <div className="tabs">
         <div>
           <h1>Connected tools</h1>
-          <div className="sub" style={{ fontSize: 17, marginTop: 4 }}>Where ChiggityCheck sends messages and picks up lists. Sandbox tools never reach a real phone or inbox.</div>
+          <div className="sub" style={{ fontSize: 17, marginTop: 4 }}>Where AttendClear sends messages and picks up lists. Sandbox tools never reach a real phone or inbox.</div>
         </div>
       </div>
       {list.error ? <ErrorState error={list.error} onRetry={list.reload} /> : !list.data ? (

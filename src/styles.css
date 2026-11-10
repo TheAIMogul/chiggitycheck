@@ -85,19 +85,25 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stro
 .hello{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:10px 0 24px}
 .hello h1{font-size:52px;line-height:1.04;letter-spacing:-0.035em}
 .hello .actions{display:flex;gap:10px;flex:none}
-.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:18px}
-.day{border-radius:20px;padding:14px;background:rgba(255,255,255,.45);min-height:168px;display:flex;flex-direction:column;gap:8px}
-.day.today{background:#fff;box-shadow:0 0 0 2px var(--blue) inset}
-.day .d{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-3);font-weight:500}
-.day .d b{font-family:var(--display);font-size:22px;color:var(--ink);font-weight:600}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:20px}
+.day{border-radius:20px;padding:14px 12px 12px;background:rgba(255,255,255,.45);min-height:176px;display:flex;flex-direction:column;gap:10px}
+.day.today{background:#fff;box-shadow:0 0 0 2px var(--blue) inset,0 10px 26px rgba(77,107,254,.14)}
+.day .d{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-3);font-weight:500;padding:0 2px}
+.day .d b{font-family:var(--display);font-size:22px;color:var(--ink);font-weight:600;letter-spacing:-0.02em}
+.day.today .d{color:var(--blue);font-weight:600}
 .day.today .d b{color:var(--blue)}
-.sess{border-radius:14px;padding:10px 11px;background:rgba(255,255,255,.8);font-size:13px;line-height:1.3}
-.sess b{display:block;font-weight:600;font-size:14px}
-.sess span{color:var(--ink-3)}
-.sess .ok{color:var(--good);font-weight:600;margin-top:4px}
-.sess.wait{background:transparent;border:1.5px dashed rgba(77,107,254,.55)}
-.sess.wait .go{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:999px;padding:5px 10px;font-weight:600;font-size:12px}
-.sess.later{background:transparent;border:1px solid var(--line);color:var(--ink-3)}
+.sess{border-radius:14px;padding:11px 12px;background:rgba(255,255,255,.85);font-size:13px;line-height:1.35;display:flex;flex-direction:column;gap:2px;flex:1}
+.sess b{font-weight:600;font-size:14px;color:var(--ink)}
+.sess .where{color:var(--ink-2)}
+.sess .when{color:var(--ink-3)}
+.sess .ok,.sess .soon{margin-top:auto;padding-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600}
+.sess .ok{color:var(--good)}
+.sess .soon{color:var(--ink-3);font-weight:500}
+.sess.waiting{background:transparent;padding:2px 2px 0}
+.sess.waiting .go{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;white-space:nowrap;background:var(--blue);color:#fff;border-radius:999px;padding:9px 8px;font-weight:600;font-size:13px;box-shadow:0 6px 14px rgba(77,107,254,.28)}
+.sess.waiting .go:disabled{opacity:.7}
+.sess:not(.captured):not(.waiting){background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.sess-none{flex:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-3);opacity:.7}
 .list .li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .list .li:last-child{border-bottom:0}
 .li .n{font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

@@ -1,10 +1,10 @@
-# ChiggityCheck
+# AttendClear
 
 **Snap the sign-in sheet. Everything else is done.**
 
-ChiggityCheck reads the paper attendance sheet that youth-program mentors already fill in, matches every handwritten name to the right kid, tells staff which families to call this week (with the message already written in the family's language), and keeps the funder's quarterly report finished. Every number in the report opens the photo it came from.
+AttendClear reads the paper attendance sheet that youth-program mentors already fill in, matches every handwritten name to the right kid, tells staff which families to call this week (with the message already written in the family's language), and keeps the funder's quarterly report finished. Every number in the report opens the photo it came from.
 
-**Live:** https://check.micahberkley.com · Built for the Give Miami Day Hackathon 2026 (The Miami Foundation), challenge 1 "From sign-up to quarterly report". The nonprofit, Tidepath Family Alliance, is fictional: a composite of 14 real South Florida nonprofits.
+**Live:** https://attendclear.com (also https://check.micahberkley.com) · Built for the Give Miami Day Hackathon 2026 (The Miami Foundation), challenge 1 "From sign-up to quarterly report". The nonprofit, Tidepath Family Alliance, is fictional: a composite of 14 real South Florida nonprofits.
 
 ![Today](docs/screens/today.png)
 
