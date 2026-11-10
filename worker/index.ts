@@ -21,6 +21,18 @@ app.onError((err, c) => {
   return c.json({ error: { code: 'server_error', message: 'Something went wrong on our side. Try again.' } }, 500);
 });
 const origin = (c: Context<App>) => new URL(c.req.url).origin;
+
+/* ---------- Demo auto-reset: any successful write marks the data changed; the cron restores it an hour later ---------- */
+const NOT_DEMO_DATA = new Set(['/api/early-testers', '/api/demo/reset']);
+app.use('/api/*', async (c, next) => {
+  await next();
+  if (c.req.method === 'GET' || c.req.method === 'HEAD' || NOT_DEMO_DATA.has(c.req.path) || c.res.status >= 400) return;
+  await c.env.DB.prepare(`UPDATE demo_state SET changed_at = datetime('now') WHERE id = 1`).run();
+});
+const resetDemo = async (env: Env) => {
+  await env.DB.batch([env.DB.prepare('DELETE FROM scenarios'), ...SEED_STATEMENTS.map((s) => env.DB.prepare(s)), env.DB.prepare(`UPDATE demo_state SET changed_at = NULL WHERE id = 1`)]);
+};
+const RESET_AFTER = '-1 hour';
 const fu = async (env: Env, id: number): Promise<FollowupItem> => {
   const [item] = await views.followupItems(env, 'fu.id=?', id);
   if (!item) throw new HttpError(404, 'no_followup', 'That follow-up does not exist.');
@@ -173,7 +185,7 @@ app.post('/api/scenarios', async (c) => { const { prompt } = await c.req.json<{ 
 /* ---------- Demo & about ---------- */
 app.post('/api/demo/reset', async (c) => {
   const t0 = Date.now();
-  await c.env.DB.batch([c.env.DB.prepare('DELETE FROM scenarios'), ...SEED_STATEMENTS.map((s) => c.env.DB.prepare(s))]);
+  await resetDemo(c.env);
   const counts = (await c.env.DB.prepare(`SELECT (SELECT COUNT(*) FROM kids) kids, (SELECT COUNT(*) FROM families) families, (SELECT COUNT(*) FROM sessions) sessions, (SELECT COUNT(*) FROM attendance) attendance, (SELECT COUNT(*) FROM hours) hours, (SELECT COUNT(*) FROM signups) signups`).first()) as Record<string, number>;
   return c.json({ ok: true, ms: Date.now() - t0, seeded: counts });
 });
@@ -182,13 +194,25 @@ app.get('/api/about', async (c) => {
   const counts = (await c.env.DB.prepare(`SELECT (SELECT COUNT(*) FROM kids WHERE program!='counseling') kids, (SELECT COUNT(*) FROM families) families, (SELECT COUNT(*) FROM mentors) mentors, (SELECT COUNT(*) FROM sessions) sessions, (SELECT COUNT(*) FROM attendance) attendance_lines, (SELECT COUNT(*) FROM aliases) spellings, (SELECT COUNT(*) FROM messages) messages`).first()) as Record<string, number>;
   return c.json({ models: { vision: c.env.VISION_MODEL, vision_fallback: c.env.VISION_FALLBACK_MODEL, decisions: c.env.DECISIONS_MODEL, drafting: c.env.DRAFT_MODEL }, ai_gateway: c.env.AI_GATEWAY_ID, ai_spend_usd: Math.round(ai.usd * 10000) / 10000, ai_calls: ai.n, counts, today: c.env.DEMO_TODAY, repo: 'https://github.com/TheAIMogul/chiggitycheck' });
 });
+app.get('/api/demo/status', async (c) => {
+  const r = (await c.env.DB.prepare(`SELECT changed_at, datetime(changed_at, '+1 hour') resets_at FROM demo_state WHERE id = 1`).first()) as { changed_at: string | null; resets_at: string | null } | null;
+  return c.json({ changed_at: r?.changed_at ?? null, resets_at: r?.resets_at ?? null });
+});
 app.get('/api/health', (c) => c.json({ ok: true, today: c.env.DEMO_TODAY }));
 app.all('/api/*', (c) => c.json({ error: { code: 'not_found', message: 'No such endpoint.' } }, 404));
 
 export default {
   fetch: app.fetch,
-  // 6am Miami: re-score every active kid and send stale follow-ups back to the call list
-  async scheduled(_e: ScheduledController, env: Env, ctx: ExecutionContext) {
+  async scheduled(e: ScheduledController, env: Env, ctx: ExecutionContext) {
+    // Every 5 minutes: if the demo data was changed more than an hour ago, put it back to the starting data.
+    if (e.cron !== '0 11 * * *') {
+      ctx.waitUntil((async () => {
+        const due = await env.DB.prepare(`SELECT 1 FROM demo_state WHERE id = 1 AND changed_at IS NOT NULL AND changed_at <= datetime('now', ?)`).bind(RESET_AFTER).first();
+        if (due) await resetDemo(env);
+      })());
+      return;
+    }
+    // 6am Miami: re-score every active kid and send stale follow-ups back to the call list
     ctx.waitUntil((async () => {
       await messaging.nudgeStale(env);
       const ids = ((await env.DB.prepare(`SELECT id FROM kids WHERE status!='exited' AND program!='counseling'`).all()).results as { id: number }[]).map((r) => r.id);
