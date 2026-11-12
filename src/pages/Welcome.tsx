@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { Brand } from '../components/Chrome'
 import { Icon } from '../components/ui'
+import LaunchPopup from '../components/LaunchPopup'
 
 const SHEET = [
   ['Dariel Rmz', ''], ['Camila Delgado', ''], ['Josh Carter', '✓'], ['Sofia Fernandez', '✓'], ['Kevin Nguyen', '✓'],
@@ -10,6 +11,7 @@ const SHEET = [
 export default function Welcome() {
   return (
     <div>
+      <LaunchPopup landing />
       <div className="wtop">
         <Brand to="/" />
         <nav aria-label="Page sections">

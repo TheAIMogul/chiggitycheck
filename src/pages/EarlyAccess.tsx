@@ -3,8 +3,9 @@ import { Link } from 'react-router'
 import { api, errMsg, type TesterForm } from '../api'
 import { Brand } from '../components/Chrome'
 import { Icon } from '../components/ui'
+import { markJoined } from '../components/LaunchPopup'
+import { LAUNCH } from '../format'
 
-const LAUNCH = 'November 17'
 const EMPTY: TesterForm = { name: '', email: '', organization: '', role: '', org_type: '', people_served: '', phone: '', notes: '', website: '' }
 
 export default function EarlyAccess() {
@@ -22,7 +23,7 @@ export default function EarlyAccess() {
     setBusy(true); setErr(null)
     try {
       const r = await api.joinTesters(f)
-      setDone(r); window.scrollTo({ top: 0, behavior: 'smooth' })
+      setDone(r); markJoined(); window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (x) { setErr(errMsg(x)) } finally { setBusy(false) }
   }
 

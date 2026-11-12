@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link, Outlet, Route, Routes, useLocation } from 'react-router'
 import { AppProvider, useApp } from './components/AppContext'
 import { DemoBanner, Header, PhoneBar } from './components/Chrome'
+import LaunchPopup from './components/LaunchPopup'
 import { IconSprite } from './components/ui'
 import Welcome from './pages/Welcome'
 import Stage from './pages/Stage'
@@ -34,6 +35,7 @@ function Layout() {
         <Outlet />
       </main>
       <PhoneBar />
+      <LaunchPopup />
     </>
   )
 }

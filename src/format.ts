@@ -99,3 +99,6 @@ export function gradeLabel(g: string): string {
   }
   return `${g} grade`
 }
+
+/** Public launch date, shown on the early-tester page and the launch popup. */
+export const LAUNCH = 'November 17'
