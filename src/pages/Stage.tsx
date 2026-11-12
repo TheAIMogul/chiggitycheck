@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Icon, type IconName } from '../components/ui'
 import Explainer from '../components/Explainer'
@@ -21,17 +21,18 @@ export function Pain({ n, unit, text }: { n: string; unit: string; text: string 
 }
 
 type Ctx = { active: boolean; mobile: boolean }
-const Shot = ({ src, alt, top }: { src: string; alt: string; top?: boolean }) => (
-  <div className={`stg-shot${top ? ' top' : ''}`}><img src={src} alt={alt} /></div>
+/* `m` is a tight crop of the same screen, readable at phone width */
+const Shot = ({ src, m, alt, mobile }: { src: string; m: string; alt: string; mobile: boolean }) => (
+  <div className={`stg-shot${mobile ? ' m' : ''}`}><img src={mobile ? m : src} alt={alt} /></div>
 )
-const Feature = ({ eyebrow, title, bullets, shot, alt, top }: { eyebrow: string; title: ReactNode; bullets: [IconName, ReactNode][]; shot: string; alt: string; top?: boolean }) => (
+const Feature = ({ eyebrow, title, bullets, shot, m, alt, mobile }: { eyebrow: string; title: ReactNode; bullets: [IconName, ReactNode][]; shot: string; m: string; alt: string; mobile: boolean }) => (
   <div className="stg-feat">
     <div>
       <p className="stg-eyebrow">{eyebrow}</p>
       <h2 className="stg-h1 sm">{title}</h2>
       <ul className="stg-list fix">{bullets.map(([ic, t], i) => <li key={i}><Icon name={ic} /><span>{t}</span></li>)}</ul>
     </div>
-    <Shot src={shot} alt={alt} top={top} />
+    <Shot src={shot} m={m} alt={alt} mobile={mobile} />
   </div>
 )
 
@@ -40,9 +41,19 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
     key: 'problem',
     render: () => (
       <div className="stg-wrap">
-        <p className="stg-eyebrow">The problem</p>
-        <h2 className="stg-h1">Kids are slipping through the cracks,<br /><span className="muted">and the paperwork is why.</span></h2>
-        <p className="stg-lede big">At a Miami youth nonprofit, attendance lives on paper sign-in sheets. Staff spend 5 to 15 hours a week retyping them. A kid can miss three sessions before anyone calls home, because the sheets aren't typed in yet. And every quarter, the funder report takes three days and the numbers don't match.</p>
+        <div className="stg-prob">
+          <div>
+            <p className="stg-eyebrow">The problem</p>
+            <h2 className="stg-h1">Kids in afterschool programs are slipping through the cracks.<br /><span className="muted">Attendance still lives on paper.</span></h2>
+            <p className="stg-lede">Afterschool programs, mentoring groups and college-prep nonprofits sign kids in on paper sheets. Nobody has time to type them up, so when a kid stops coming, no one notices until it's too late.</p>
+          </div>
+          <img className="stg-photo" src="/stage/problem.jpg" alt="A staff member sorting a stack of paper sign-in sheets while kids do homework, one chair left empty" />
+        </div>
+        <div className="stg-pains three">
+          <Pain n="15" unit="hrs a week" text="staff spend retyping sign-in sheets" />
+          <Pain n="3" unit="misses" text="before anyone notices and calls home" />
+          <Pain n="3" unit="days" text="to pull the numbers together for funders" />
+        </div>
         <p className="stg-lede big blue strong">We built a tool to solve that.</p>
       </div>
     ),
@@ -55,69 +66,75 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
           <p className="stg-eyebrow">Meet AttendClear</p>
           <h2 className="stg-h1 sm">Take a photo of the sign-in sheet. <span className="blue">It does the rest.</span></h2>
         </div>
-        <Explainer active={ctx.active} still={ctx.mobile} />
+        {ctx.mobile ? (
+          <div className="stg-mwhat">
+            <div className="stg-shot m"><img src="/sheets/demo-cg-2026-09-23.jpg" alt="A paper sign-in sheet on a clipboard" /></div>
+            <div className="stg-mflow">{['Snap', 'Match', 'Call', 'Report'].map((x, k) => <span key={x}>{k > 0 && <i>›</i>}<b>{x}</b></span>)}</div>
+          </div>
+        ) : <Explainer active={ctx.active} />}
       </div>
     ),
   },
   {
     key: 'snap',
-    render: () => (
-      <Feature eyebrow="1 · Snap" title={<>It reads the handwriting<br /><span className="blue">and knows who's who.</span></>} shot="/stage/snap.png" alt="Sheet review screen" top
+    render: (_go, ctx) => (
+      <Feature eyebrow="1 · Snap" title={<>It reads the handwriting<br /><span className="blue">and knows who's who.</span></>} shot="/stage/snap.png" m="/stage/m-snap.jpg" alt="Sheet review screen" mobile={ctx.mobile}
         bullets={[
-          ['cam', <><b>One photo.</b> Every name and check mark read in about 12 seconds.</>],
-          ['merge', <><b>Each spelling matched</b> to the right kid with a probability. "Dariel Rmz" is Dariel Ramírez, 99%. Learned forever.</>],
-          ['q', <><b>It only asks when it must.</b> A kid it has never seen, or a half-finished check mark.</>],
+          ['cam', <><b>One photo.</b> Every name read.</>],
+          ['merge', <><b>"Dariel Rmz"</b> is Dariel Ramírez.</>],
+          ['q', <><b>It asks</b> only when unsure.</>],
         ]} />
     ),
   },
   {
     key: 'calls',
-    render: () => (
-      <Feature eyebrow="2 · Nobody left behind" title={<>Who to call this week,<br /><span className="blue">with the message already written.</span></>} shot="/stage/calls.png" alt="Calls screen" top
+    render: (_go, ctx) => (
+      <Feature eyebrow="2 · Nobody left behind" title={<>Who to call this week,<br /><span className="blue">with the message already written.</span></>} shot="/stage/calls.png" m="/stage/m-calls.jpg" alt="Calls screen" mobile={ctx.mobile}
         bullets={[
-          ['phone', <><b>Flagged at the second miss.</b> Every kid's pattern is scored the moment a sheet is saved.</>],
-          ['msg', <><b>Written in the family's language</b> from the real facts: the dates, the mentor, the next session. Spanish, Haitian Creole or English.</>],
-          ['check', <><b>Sent on WhatsApp.</b> Delivered, read, and the reply lands on the kid's record.</>],
+          ['phone', <><b>Flagged</b> at the second miss.</>],
+          ['msg', <><b>Written</b> in the family's language.</>],
+          ['check', <><b>Sent on WhatsApp.</b> Replies land on the record.</>],
         ]} />
     ),
   },
   {
     key: 'people',
-    render: () => (
-      <Feature eyebrow="3 · One record per person" title={<>Three spellings.<br /><span className="blue">One family.</span></>} shot="/stage/family.png" alt="Family page showing one family found in three places" top
+    render: (_go, ctx) => (
+      <Feature eyebrow="3 · One record per person" title={<>Three spellings.<br /><span className="blue">One family.</span></>} shot="/stage/family.png" m="/stage/m-family.jpg" alt="Family page showing one family found in three places" mobile={ctx.mobile}
         bullets={[
-          ['people', <><b>The same mom</b> from a sign-up form, a sheet and a text message becomes one record, with every spelling kept.</>],
-          ['school', <><b>A kid changes schools</b> and keeps their history. Counted once in the report.</>],
-          ['pen', <><b>Edit anything</b> and the app shows you everything else that moved.</>],
+          ['people', <><b>Form, sheet, text:</b> one mom.</>],
+          ['school', <><b>New school,</b> same history.</>],
+          ['pen', <><b>Every spelling</b> kept.</>],
         ]} />
     ),
   },
   {
     key: 'report',
-    render: () => (
-      <Feature eyebrow="4 · Prove it" title={<>The funder report is done.<br /><span className="blue">Every number opens its photo.</span></>} shot="/stage/evidence.png" alt="Report with the evidence drawer open" top
+    render: (_go, ctx) => (
+      <Feature eyebrow="4 · Prove it" title={<>The funder report is done.<br /><span className="blue">Every number opens its photo.</span></>} shot="/stage/evidence.png" m="/stage/m-evidence.jpg" alt="Report with the evidence drawer open" mobile={ctx.mobile}
         bullets={[
-          ['doc', <><b>Always current.</b> Kids served, attendance, sessions, mentor matches, volunteer hours, follow-ups.</>],
-          ['sheet', <><b>Tap any number</b> and see the sheets and lines behind it, with the photo and the line highlighted.</>],
-          ['lock', <><b>Honest by design.</b> Duplicate hours removed, unclear marks left out, counseling shown as totals only.</>],
+          ['doc', <><b>Always</b> up to date.</>],
+          ['sheet', <><b>Tap a number,</b> see the sheet.</>],
+          ['lock', <><b>Duplicates</b> removed for you.</>],
         ]} />
     ),
   },
   {
     key: 'real',
-    render: () => (
-      <Feature eyebrow="5 · It's a real app" title={<>Live data.<br /><span className="blue">Nothing is faked.</span></>} shot="/stage/today.png" alt="Today dashboard" top
+    render: (_go, ctx) => (
+      <Feature eyebrow="5 · It's a real app" title={<>Live data.<br /><span className="blue">Nothing is faked.</span></>} shot="/stage/today.png" m="/stage/m-today.jpg" alt="Today dashboard" mobile={ctx.mobile}
         bullets={[
-          ['form', <><b>Public sign-up form</b> and spreadsheet import. Every submission is matched to existing families, so no duplicates.</>],
-          ['db', <><b>Describe a program in a sentence</b> and it creates the kids, sessions, sheets and calls in 20 seconds.</>],
-          ['plug', <><b>Connected tools:</b> WhatsApp, SMS, Google Sheets, Mailchimp, QuickBooks, calendar. Runs on Cloudflare at the edge.</>],
+          ['form', <><b>Sign-up form</b> with no duplicates.</>],
+          ['db', <><b>One sentence</b> builds a whole program.</>],
+          ['plug', <><b>WhatsApp, SMS,</b> Sheets, QuickBooks.</>],
         ]} />
     ),
   },
   {
     key: 'how',
-    render: (go) => (
+    render: (go, ctx) => (
       <div className="stg-demo">
+        <img className="stg-photo m-only" src="/stage/solved.jpg" alt="" />
         <div>
           <p className="stg-eyebrow">Live demo</p>
           <h2 className="stg-h1 sm">No more retyping.<br />No kid slips through.<br /><span className="blue">No report crunch.</span></h2>
@@ -125,12 +142,16 @@ const SLIDES: { key: string; render: (go: (to: string) => void, ctx: Ctx) => Rea
             <Icon name="cam" /> Start the demo
           </button>
         </div>
+        {ctx.mobile ? (
+          <Link className="stg-signup" to="/signup" onClick={(e) => e.stopPropagation()}>Sign up a family and watch it land <Icon name="arrow" /></Link>
+        ) : (
         <div className="stg-qr" onClick={(e) => e.stopPropagation()}>
           <img src="/qr-signup.svg" alt="QR code for the public sign-up form at attendclear.com/signup" />
           <b>Try it from your seat</b>
           <span>Sign up a family and watch it land in the records.</span>
           <code>attendclear.com/signup</code>
         </div>
+        )}
       </div>
     ),
   },
@@ -170,7 +191,7 @@ export default function Stage() {
         <Link to="/today" className="stg-skip">Skip to demo <Icon name="arrow" /></Link>
       </div>
       {SLIDES.map((s, idx) => (
-        <section key={s.key} className={`stg-slide${idx === i ? ' on' : idx < i ? ' past' : ''}`} aria-hidden={idx !== i}>
+        <section key={s.key} className={`stg-slide s-${s.key}${idx === i ? ' on' : idx < i ? ' past' : ''}`} aria-hidden={idx !== i}>
           {s.render(go, { active: idx === i, mobile: false })}
         </section>
       ))}
@@ -178,9 +199,27 @@ export default function Stage() {
         {SLIDES.map((s, idx) => <button key={s.key} aria-label={`Slide ${idx + 1}`} className={idx === i ? 'on' : ''} onClick={() => setI(idx)} />)}
       </div>
       
-      {/* Portrait / phone: the same story as one scrolling page */}
-      <div className="stg-mobile">
-        {SLIDES.map((s) => <section key={s.key} className="stg-mslide">{s.render(go, { active: false, mobile: true })}</section>)}
+      {/* Portrait / phone: the same slides, one screen each, swiped sideways */}
+      <MobileSlides go={go} />
+    </div>
+  )
+}
+
+function MobileSlides({ go }: { go: (to: string) => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [at, setAt] = useState(0)
+  const to = (k: number) => { const el = ref.current; if (el) el.scrollTo({ left: Math.max(0, Math.min(SLIDES.length - 1, k)) * el.clientWidth, behavior: 'smooth' }) }
+  return (
+    <div className="stg-mobile">
+      <div className="stg-m" ref={ref} onScroll={(e) => { const el = e.currentTarget; setAt(Math.round(el.scrollLeft / el.clientWidth)) }}>
+        {SLIDES.map((s, idx) => <section key={s.key} className={`stg-mcard s-${s.key}`} aria-label={`Slide ${idx + 1} of ${SLIDES.length}`}>{s.render(go, { active: false, mobile: true })}</section>)}
+      </div>
+      <div className="stg-mnav" onClick={(e) => e.stopPropagation()}>
+        <button className="stg-mbtn" aria-label="Previous slide" disabled={at === 0} onClick={() => to(at - 1)}><Icon name="back" /></button>
+        <div className="stg-mdots">{SLIDES.map((s, idx) => <button key={s.key} aria-label={`Slide ${idx + 1}`} className={idx === at ? 'on' : ''} onClick={() => to(idx)} />)}</div>
+        {at < SLIDES.length - 1
+          ? <button className="stg-mbtn next" onClick={() => to(at + 1)}>Next <Icon name="back" style={{ transform: 'rotate(180deg)' }} /></button>
+          : <button className="stg-mbtn next" onClick={() => go('/today')}>Demo <Icon name="back" style={{ transform: 'rotate(180deg)' }} /></button>}
       </div>
     </div>
   )
