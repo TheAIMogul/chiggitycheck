@@ -35,7 +35,7 @@ function TodaySkeleton() {
   return (
     <>
       <div className="hello"><div style={{ width: '100%' }}><Shimmer h={14} w={260} /><Shimmer h={46} w="60%" style={{ marginTop: 14 }} /><Shimmer h={46} w="48%" style={{ marginTop: 10 }} /></div></div>
-      <div className="plan">{[0, 1, 2].map((i) => <ShimmerCard key={i} lines={2} className="pstep" />)}</div>
+      <div className="plan two">{[0, 1].map((i) => <ShimmerCard key={i} lines={2} className="pstep" />)}</div>
       <div className="bento">
         <ShimmerCard className="card s8" lines={5} />
         <ShimmerCard className="card white s4 r2" lines={8} />
@@ -63,7 +63,6 @@ export default function Today() {
   const snapState = p.snap.done ? 'done' : 'now'
   const callsDone = p.calls.total > 0 && p.calls.done >= p.calls.total
   const callsState = callsDone ? 'done' : p.snap.done ? 'now' : ''
-  const reportState = p.report.ready ? 'done' : p.snap.done && callsDone ? 'now' : ''
   const waitingToday = w.days.some((d) => d.is_today && d.sessions.some((s) => s.status === 'waiting'))
   const s = w.stats
   const rates = s.weekly_rates
@@ -81,7 +80,7 @@ export default function Today() {
         </div>
       </div>
 
-      <div className="plan">
+      <div className="plan two">
         <div className={`pstep ${snapState}`}>
           <div className="n">{p.snap.done ? <Icon name="check" style={{ width: 22, height: 22, strokeWidth: 2.6 }} /> : 1}</div>
           <div><div className="t">{p.snap.label}</div><div className="d">{p.snap.detail}</div></div>
@@ -95,11 +94,6 @@ export default function Today() {
           <div className="n">{callsDone ? <Icon name="check" style={{ width: 22, height: 22, strokeWidth: 2.6 }} /> : 2}</div>
           <div><div className="t">{p.calls.total ? `Call ${plural(p.calls.total, 'family', 'families')}` : 'No calls needed'}</div><div className="d">{p.calls.done} of {p.calls.total} done · messages are written</div></div>
           <div className="a"><Link className={`btn ${callsState === 'now' ? 'dark' : 'ghost'}`} to="/calls">Start calls</Link></div>
-        </div>
-        <div className={`pstep ${reportState}`}>
-          <div className="n">{p.report.ready ? <Icon name="check" style={{ width: 22, height: 22, strokeWidth: 2.6 }} /> : 3}</div>
-          <div><div className="t">Q1 report</div><div className="d">{p.report.ready ? 'Ready for funders' : 'Building'} · due {fmtDay(p.report.due) || p.report.due}</div></div>
-          <div className="a"><Link className="btn ghost" to="/report">Open report</Link></div>
         </div>
       </div>
 
@@ -196,7 +190,7 @@ export default function Today() {
           <div className="saved"><span className="sub" style={{ color: 'var(--ink-2)' }}>Typing saved this quarter</span><b className="num">{hrs(w.typing_hours_saved)} hrs</b></div>
         </section>
 
-        <section className="card s4">
+        <section className="card s6">
           <div className="head"><div className="title" style={{ fontSize: 19 }}>Check these</div><span className="pill">{w.checks.length}</span></div>
           <div style={{ marginTop: 4 }}>
             {w.checks.length === 0 && <div className="sub" style={{ padding: '12px 0' }}>Nothing to check. Nice.</div>}
@@ -210,7 +204,7 @@ export default function Today() {
           </div>
         </section>
 
-        <Link to="/people?tab=mentors" className="card s4" style={{ display: 'block' }}>
+        <Link to="/people?tab=mentors" className="card s6" style={{ display: 'block' }}>
           <div className="head"><span className="eyebrow">Volunteer hours · quarter</span><span className="pill">{s.mentors} mentors</span></div>
           <div className="kpi num" style={{ marginTop: 14 }}>{hrs(s.hours_quarter)}</div>
           <div className="sub" style={{ marginTop: 6 }}>{s.hours_dupes_removed ? `${plural(s.hours_dupes_removed, 'double report')} removed automatically` : 'No double reports found'}</div>
@@ -222,13 +216,6 @@ export default function Today() {
             {s.top_mentor && <span className="sub" style={{ fontSize: 14 }}>Top: {s.top_mentor.name.split(' ')[0]} · {hrs(s.top_mentor.hours)} h</span>}
           </div>
         </Link>
-
-        <section className="card blue s4">
-          <div className="head"><span className="eyebrow">Q1 report for funders</span><Icon name="arrow" style={{ color: '#fff' }} /></div>
-          <div className="kpi" style={{ marginTop: 14 }}>{p.report.ready ? 'Ready' : 'Building'}</div>
-          <div style={{ color: 'rgba(255,255,255,.9)', marginTop: 8 }}>Every number links back to the sheet it came from. Due {fmtDay(p.report.due) || p.report.due}.</div>
-          <Link className="btn white sm" style={{ marginTop: 18 }} to="/report">Open report</Link>
-        </section>
 
         <Link to="/lab" className="card s12" style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
           <div className="mark" style={{ width: 52, height: 52, borderRadius: 16, color: '#fff' }}><Icon name="db" style={{ width: 24, height: 24 }} /></div>
